@@ -1,5 +1,4 @@
 import { useRef, useState } from 'react';
-import { useRouter } from 'next/router';
 import { ProTable } from '@ant-design/pro-components';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { Popconfirm, Tag, Button } from 'antd';
@@ -22,7 +21,6 @@ import SalesOrderDetail from './detail';
 
 const SalesOrderList: React.FC = () => {
   const { messageApi } = useMessageContext();
-  const router = useRouter();
 
   const [detailVisible, setDetailVisible] = useState(false);
   const [record, setRecord] = useState<any>(null);

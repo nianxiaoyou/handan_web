@@ -1,5 +1,4 @@
 import { useRef, useState } from 'react';
-import { useRouter } from 'next/router';
 import { Button } from 'antd';
 import { ProTable } from '@ant-design/pro-components';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
@@ -14,7 +13,6 @@ import BOMNew from './new';
 import BOMDetail from './detail';
 
 const BOMList: React.FC = () => {
-  const router = useRouter();
   const { messageApi } = useMessageContext();
 
   const [detailVisible, setDetailVisible] = useState(false);
@@ -47,6 +45,8 @@ const BOMList: React.FC = () => {
     {
       title: 'uuid',
       key: 'uuid',
+      search: false,
+      width: 200,
       dataIndex: 'uuid',
       render: (text, record) => (
         <Button type="link" onClick={() => handleDetail(record)}>
