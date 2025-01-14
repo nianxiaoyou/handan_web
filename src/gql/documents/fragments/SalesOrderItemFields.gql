@@ -1,4 +1,10 @@
 fragment SalesOrderItemFields on SalesOrderItem {
   uuid
+  itemUuid
+  itemName
+  amount
+  orderedQty
+  deliveredQty
+  remainingQty
 }
 

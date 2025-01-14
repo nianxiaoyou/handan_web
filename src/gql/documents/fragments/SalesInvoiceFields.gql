@@ -1,0 +1,10 @@
+fragment SalesInvoiceFields on SalesInvoice {
+  uuid
+  status
+	amount
+	customerName
+	salesOrderUuid
+	insertedAt
+	updatedAt
+}
+

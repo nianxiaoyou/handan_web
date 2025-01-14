@@ -66,6 +66,10 @@ const SalesOrderNew = (props: any) => {
     });
   };
 
+  const handleSelctCustomer = (value: any, opt: any) => {
+    form.setFieldValue('customerAddress', opt.address);
+  };
+
   return (
     <>
       <Button
@@ -112,6 +116,9 @@ const SalesOrderNew = (props: any) => {
             width="sm"
             name="customerUuid"
             label="客户"
+            fieldProps={{
+              onSelect: (value, opt) => handleSelctCustomer(value, opt),
+            }}
             request={async (e) => fetchCustomers(e)}
             rules={[{ required: true, message: '请选择客户' }]}
             placeholder="请选择客户"

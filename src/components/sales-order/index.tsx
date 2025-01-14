@@ -2,22 +2,54 @@ import { useRef } from 'react';
 import { useRouter } from 'next/router';
 import { ProTable } from '@ant-design/pro-components';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
-import { Tag } from 'antd';
+import { Popconfirm, Tag } from 'antd';
 
 // locale
+import { useMessageContext } from '@/components/common/message-context';
 import client from '@/gql/apollo';
-import { useCreateSalesOrderMutation, SalesOrdersDocument } from '@/gql';
+import {
+  useCreateSalesOrderMutation,
+  SalesOrdersDocument,
+  useConfirmSalesOrderMutation,
+  useCreateDeliveryNoteMutation,
+  useCreateSalesInvoiceMutation,
+} from '@/gql';
 import { onError } from '@/utils';
 import { fetchCustomers } from '@/utils/api';
 
 import SalesOrderNew from './new';
 
 const SalesOrderList: React.FC = () => {
+  const { messageApi } = useMessageContext();
   const router = useRouter();
 
   const [createSalesOrder] = useCreateSalesOrderMutation({
     onCompleted: () => {
-      console.log('onCompleted');
+      messageApi?.success('销售订单创建成功');
+      handleReloadTable();
+    },
+    onError,
+  });
+
+  const [createDeliveryNote] = useCreateDeliveryNoteMutation({
+    onCompleted: () => {
+      messageApi?.success('出库凭证创建成功');
+      handleReloadTable();
+    },
+    onError,
+  });
+
+  const [createSalesInvoice] = useCreateSalesInvoiceMutation({
+    onCompleted: () => {
+      messageApi?.success('收款凭证创建成功');
+      handleReloadTable();
+    },
+    onError,
+  });
+
+  const [confirmSalesOrder] = useConfirmSalesOrderMutation({
+    onCompleted: () => {
+      messageApi?.success('销售订单审核成功');
       handleReloadTable();
     },
     onError,
@@ -31,6 +63,45 @@ const SalesOrderList: React.FC = () => {
 
   const handleCreate = async (values: any) => {
     await createSalesOrder({ variables: { request: values } });
+  };
+
+  const handleConfirmSalesOrder = async (values: any) => {
+    const request = {
+      salesOrderUuid: values.uuid,
+    };
+
+    await confirmSalesOrder({ variables: { request } });
+  };
+
+  const handleCreateDeliveryNote = async (values: any) => {
+    const deliveryItems = values.items.map((item: any) => ({
+      salesOrderItemUuid: item.uuid,
+      actualQty: item.orderedQty,
+    }));
+
+    const request = {
+      salesOrderUuid: values.uuid,
+      deliveryItems,
+    };
+
+    await createDeliveryNote({ variables: { request } });
+  };
+
+  const handleConfirmDeliveryNote = async (values: any) => {
+    // await confirmDeliveryNote({ variables: { request: values } });
+  };
+
+  const handleCreateSalesInvoice = async (values: any) => {
+    const request = {
+      salesOrderUuid: values.uuid,
+      amount: values.remainingAmount,
+    };
+
+    await createSalesInvoice({ variables: { request } });
+  };
+
+  const handleConfirmSalesInvoice = async (values: any) => {
+    // await confirmSalesInvoice({ variables: { request: values } });
   };
 
   const columns: ProColumns<any>[] = [
@@ -68,6 +139,53 @@ const SalesOrderList: React.FC = () => {
       title: '创建时间',
       dataIndex: 'insertedAt',
       valueType: 'dateTime',
+    },
+    {
+      title: '操作',
+      width: 180,
+      key: 'option',
+      valueType: 'option',
+      render: (item: any, record: any) => [
+        <>
+          {record.status === 'draft' && (
+            <Popconfirm
+              key="link2"
+              title="确定提交吗？"
+              onConfirm={() => handleConfirmSalesOrder(record)}
+              okText="是"
+              cancelText="否"
+            >
+              <a key="link2">审核</a>
+            </Popconfirm>
+          )}
+        </>,
+        <>
+          {record.status !== 'draft' && record.billingStatus != 'fully_billed' && (
+            <Popconfirm
+              key="link2"
+              title="确定创建收款凭证吗？"
+              onConfirm={() => handleCreateSalesInvoice(record)}
+              okText="是"
+              cancelText="否"
+            >
+              <a key="link2">添加收款凭证</a>
+            </Popconfirm>
+          )}
+        </>,
+        <>
+          {record.status !== 'draft' && record.deliveryStatus != 'fully_delivered' && (
+            <Popconfirm
+              key="link2"
+              title="确定出库吗？"
+              onConfirm={() => handleCreateDeliveryNote(record)}
+              okText="是"
+              cancelText="否"
+            >
+              <a key="link2">添加出库凭证</a>
+            </Popconfirm>
+          )}
+        </>,
+      ],
     },
   ];
 
