@@ -1068,7 +1068,7 @@ export type SupplierFieldsFragment = { __typename?: 'Supplier', uuid?: string | 
 
 export type UomFieldsFragment = { __typename?: 'Uom', uuid?: string | null, name?: string | null, insertedAt?: any | null, updatedAt?: any | null };
 
-export type WarehouseFieldsFragment = { __typename?: 'Warehouse', uuid?: string | null, name?: string | null, insertedAt?: any | null, updatedAt?: any | null };
+export type WarehouseFieldsFragment = { __typename?: 'Warehouse', uuid?: string | null, name?: string | null, address?: string | null, insertedAt?: any | null, updatedAt?: any | null };
 
 export type WorkOrderFieldsFragment = { __typename?: 'WorkOrder', uuid?: string | null, title?: string | null, startTime?: any | null, endTime?: any | null, type?: string | null, status?: string | null, plannedQty?: any | null, storedQty?: any | null, producedQty?: any | null, scrapedQty?: any | null, itemUuid?: string | null, itemName?: string | null, uomName?: string | null, supplierName?: string | null, supplierUuid?: string | null, salesOrderUuid?: string | null, stockUomUuid?: string | null, insertedAt?: any | null, updatedAt?: any | null };
 
@@ -1307,7 +1307,7 @@ export type DeliveryNotesQuery = { __typename?: 'RootQueryType', deliveryNotes?:
 export type InventoryEntriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type InventoryEntriesQuery = { __typename?: 'RootQueryType', inventoryEntries?: Array<{ __typename?: 'InventoryEntry', actualQty?: any | null, type?: string | null, qtyAfterTransaction?: any | null, threadType?: string | null, stockUomUuid?: string | null, insertedAt?: any | null, updatedAt?: any | null, item?: { __typename?: 'Item', uuid?: string | null, name?: string | null, spec?: string | null, sellingPrice?: any | null, defaultStockUomUuid?: string | null, defaultStockUomName?: string | null, insertedAt?: any | null, updatedAt?: any | null } | null, warehouse?: { __typename?: 'Warehouse', uuid?: string | null, name?: string | null, insertedAt?: any | null, updatedAt?: any | null } | null, stockUom?: { __typename?: 'StockUom', uuid?: string | null, uomName?: string | null } | null } | null> | null };
+export type InventoryEntriesQuery = { __typename?: 'RootQueryType', inventoryEntries?: Array<{ __typename?: 'InventoryEntry', actualQty?: any | null, type?: string | null, qtyAfterTransaction?: any | null, threadType?: string | null, stockUomUuid?: string | null, insertedAt?: any | null, updatedAt?: any | null, item?: { __typename?: 'Item', uuid?: string | null, name?: string | null, spec?: string | null, sellingPrice?: any | null, defaultStockUomUuid?: string | null, defaultStockUomName?: string | null, insertedAt?: any | null, updatedAt?: any | null } | null, warehouse?: { __typename?: 'Warehouse', uuid?: string | null, name?: string | null, address?: string | null, insertedAt?: any | null, updatedAt?: any | null } | null, stockUom?: { __typename?: 'StockUom', uuid?: string | null, uomName?: string | null } | null } | null> | null };
 
 export type ItemQueryVariables = Exact<{
   request: IdRequest;
@@ -1430,7 +1430,7 @@ export type UoMsQuery = { __typename?: 'RootQueryType', uoms?: Array<{ __typenam
 export type WarehousesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type WarehousesQuery = { __typename?: 'RootQueryType', warehouses?: Array<{ __typename?: 'Warehouse', uuid?: string | null, name?: string | null, insertedAt?: any | null, updatedAt?: any | null } | null> | null };
+export type WarehousesQuery = { __typename?: 'RootQueryType', warehouses?: Array<{ __typename?: 'Warehouse', uuid?: string | null, name?: string | null, address?: string | null, insertedAt?: any | null, updatedAt?: any | null } | null> | null };
 
 export type WorkOrderQueryVariables = Exact<{
   request: IdRequest;
@@ -1647,6 +1647,7 @@ export const WarehouseFieldsFragmentDoc = gql`
     fragment WarehouseFields on Warehouse {
   uuid
   name
+  address
   insertedAt
   updatedAt
 }

@@ -13,6 +13,11 @@ const WarehouseList: React.FC = () => {
       key: 'name',
     },
     {
+      title: '地址',
+      dataIndex: 'address',
+      key: 'address',
+    },
+    {
       title: '创建时间',
       dataIndex: 'insertedAt',
       valueType: 'dateTime',
