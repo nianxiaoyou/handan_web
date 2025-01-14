@@ -1,0 +1,6 @@
+mutation CompleteReceiptNote($request: ReceiptNoteRequest!) {
+	completeReceiptNote(request: $request) {
+		status
+		uuid
+	}
+}

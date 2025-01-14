@@ -1,5 +1,3 @@
-const ReceiptNotes = () => {
-  return <div>入库凭证</div>;
-};
+import ReceiptNoteList from '@/components/receipt-note';
 
-export default ReceiptNotes;
+export default ReceiptNoteList;

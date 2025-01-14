@@ -1,5 +1,15 @@
 query PurchaseOrder($request: PurchaseOrderRequest!) {
 	purchaseOrder(request: $request) {
 		...PurchaseOrderFields
+		items {
+			...PurchaseOrderItemFields
+		}
+		purchaseInvoices {
+			...PurchaseInvoiceFields
+		}
+		receiptNotes {
+			...ReceiptNoteFields
+		}
 	}
 }
+

@@ -1,0 +1,10 @@
+fragment PurchaseInvoiceFields on PurchaseInvoice {
+  uuid
+  status
+	amount
+	supplierName
+	purchaseOrderUuid
+	insertedAt
+	updatedAt
+}
+
