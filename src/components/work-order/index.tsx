@@ -6,17 +6,26 @@ import type { ActionType, ProColumns } from '@ant-design/pro-components';
 // locale
 import { useMessageContext } from '@/components/common/message-context';
 import client from '@/gql/apollo';
-import { WorkOrdersDocument, useCreateWorkOrderMutation } from '@/gql';
+import { WorkOrdersDocument, useCreateWorkOrderMutation, useStoreFinishItemMutation } from '@/gql';
 import { onError } from '@/utils';
 
 import WorkOrderNew from './new';
 import WorkOrderDetail from './detail';
+import StoredItem from './stored-item';
 
 const WorkOrderList: React.FC = () => {
   const { messageApi } = useMessageContext();
 
   const [detailVisible, setDetailVisible] = useState(false);
   const [record, setRecord] = useState<any>(null);
+
+  const [storeFinishItem] = useStoreFinishItemMutation({
+    onCompleted: () => {
+      messageApi?.success('入库成功');
+      handleReloadTable();
+    },
+    onError,
+  });
 
   const [createWorkOrder] = useCreateWorkOrderMutation({
     onCompleted: () => {
@@ -39,6 +48,11 @@ const WorkOrderList: React.FC = () => {
   const handleDetail = (record: any) => {
     setDetailVisible(true);
     setRecord(record);
+  };
+
+  const handleStoredItem = async (values: any) => {
+    // console.log(values);
+    await storeFinishItem({ variables: { request: values } });
   };
 
   const columns: ProColumns<any>[] = [
@@ -74,6 +88,19 @@ const WorkOrderList: React.FC = () => {
       title: '结束时间',
       dataIndex: 'endTime',
       valueType: 'date',
+    },
+    {
+      title: '操作',
+      width: 180,
+      key: 'option',
+      valueType: 'option',
+      render: (item: any, record: any) => [
+        <>
+          {record.producedQty > record.storedQty && (
+            <StoredItem key="link2" record={record} onCreate={handleStoredItem} />
+          )}
+        </>,
+      ],
     },
   ];
 
