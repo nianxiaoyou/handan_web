@@ -1,20 +1,20 @@
 import { useRef } from 'react';
-import { useRouter } from 'next/router';
 import { ProTable } from '@ant-design/pro-components';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 
 // locale
+import { useMessageContext } from '@/components/common/message-context';
 import client from '@/gql/apollo';
 import { useCreateCustomerMutation, CustomersDocument } from '@/gql';
 import { onError } from '@/utils';
 import CustomerNew from './new';
 
 const CustomerList: React.FC = () => {
-  const router = useRouter();
+  const { messageApi } = useMessageContext();
 
   const [createCustomer] = useCreateCustomerMutation({
     onCompleted: () => {
-      console.log('onCompleted');
+      messageApi?.success('客户创建成功');
       handleReloadTable();
     },
     onError,

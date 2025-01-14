@@ -1072,6 +1072,8 @@ export type WorkOrderFieldsFragment = { __typename?: 'WorkOrder', uuid?: string 
 
 export type WorkOrderItemFieldsFragment = { __typename?: 'WorkOrderItem', uuid?: string | null };
 
+export type WorkstationFieldsFragment = { __typename?: 'Workstation', uuid?: string | null, name?: string | null, insertedAt?: any | null, updatedAt?: any | null };
+
 export type CompleteDeliveryNoteMutationVariables = Exact<{
   request: DeliveryNoteRequest;
 }>;
@@ -1450,7 +1452,7 @@ export type WorkstationQuery = { __typename?: 'RootQueryType', workstation?: { _
 export type WorkstationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type WorkstationsQuery = { __typename?: 'RootQueryType', workstations?: Array<{ __typename?: 'Workstation', name?: string | null } | null> | null };
+export type WorkstationsQuery = { __typename?: 'RootQueryType', workstations?: Array<{ __typename?: 'Workstation', uuid?: string | null, name?: string | null, insertedAt?: any | null, updatedAt?: any | null } | null> | null };
 
 export type PurchaseOrderQueryVariables = Exact<{
   request: PurchaseOrderRequest;
@@ -1673,6 +1675,14 @@ export const WorkOrderFieldsFragmentDoc = gql`
 export const WorkOrderItemFieldsFragmentDoc = gql`
     fragment WorkOrderItemFields on WorkOrderItem {
   uuid
+}
+    `;
+export const WorkstationFieldsFragmentDoc = gql`
+    fragment WorkstationFields on Workstation {
+  uuid
+  name
+  insertedAt
+  updatedAt
 }
     `;
 export const CompleteDeliveryNoteDocument = gql`
@@ -3943,10 +3953,10 @@ export type WorkstationQueryResult = Apollo.QueryResult<WorkstationQuery, Workst
 export const WorkstationsDocument = gql`
     query Workstations {
   workstations {
-    name
+    ...WorkstationFields
   }
 }
-    `;
+    ${WorkstationFieldsFragmentDoc}`;
 
 /**
  * __useWorkstationsQuery__

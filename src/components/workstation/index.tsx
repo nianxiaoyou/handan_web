@@ -1,16 +1,29 @@
 import { useRef } from 'react';
-import { useRouter } from 'next/router';
 import { ProTable } from '@ant-design/pro-components';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 
 // locale
+import { useMessageContext } from '@/components/common/message-context';
 import client from '@/gql/apollo';
-import { WorkstationsDocument } from '@/gql';
+import { WorkstationsDocument, useCreateWorkstationMutation } from '@/gql';
+import { onError } from '@/utils';
+import WorkstationNew from './new';
 
 const WorkstationList: React.FC = () => {
-  const router = useRouter();
-
+  const { messageApi } = useMessageContext();
   const actionRef = useRef<ActionType | null>(null);
+
+  const [createWorkstation] = useCreateWorkstationMutation({
+    onCompleted: () => {
+      messageApi?.success('工作站创建成功');
+      handleReloadTable();
+    },
+    onError,
+  });
+
+  const handleCreate = async (values: any) => {
+    await createWorkstation({ variables: { request: values } });
+  };
 
   const handleReloadTable = () => {
     actionRef.current?.reload();
@@ -53,10 +66,12 @@ const WorkstationList: React.FC = () => {
         showQuickJumper: true,
       }}
       search={{
+        span: 6,
         layout: 'vertical',
         defaultCollapsed: true,
       }}
       dateFormatter="string"
+      toolBarRender={() => [<WorkstationNew key="workstation-new" onCreate={(values: any) => handleCreate(values)} />]}
     />
   );
 };
