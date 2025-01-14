@@ -3,6 +3,7 @@ fragment ItemFields on Item {
   name
 	spec
   sellingPrice
+  defaultStockUomUuid
 	defaultStockUomName
   insertedAt
   updatedAt

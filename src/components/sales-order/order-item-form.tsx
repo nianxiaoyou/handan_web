@@ -61,7 +61,6 @@ const OrderItemForm = (props: any) => {
             fetch({ variables: {} });
           },
           onChange: (value: any) => {
-            console.log('values:', value);
             if (value) {
               const item = JSON.parse(value);
               form.setFieldsValue({

@@ -1,5 +1,18 @@
 query Bom($request: IdRequest!) {
 	bom(request: $request) {
 		uuid
+		name
+		itemName
+		bomItems {
+			uuid
+			itemName
+			uomName
+			qty
+		}
+		bomProcesses {
+			uuid
+			position
+			processName
+		}
 	}
 }
