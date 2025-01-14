@@ -1,31 +1,36 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import { ProTable } from '@ant-design/pro-components';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
-import { Popconfirm } from 'antd';
+import { Popconfirm, Button } from 'antd';
 
 // locale
 import { useMessageContext } from '@/components/common/message-context';
 import client from '@/gql/apollo';
-import { useCreateDeliveryNoteMutation, useConfirmDeliveryNoteMutation, DeliveryNotesDocument } from '@/gql';
+import { useConfirmDeliveryNoteMutation, useCompleteDeliveryNoteMutation, DeliveryNotesDocument } from '@/gql';
 import { onError } from '@/utils';
 import { fetchWarehouses } from '@/utils/api';
+
+import DeliveryNoteDetail from './detail';
 
 const DeliveryNoteList: React.FC = () => {
   const { messageApi } = useMessageContext();
   const router = useRouter();
 
-  const [createDeliveryNote] = useCreateDeliveryNoteMutation({
+  const [detailVisible, setDetailVisible] = useState(false);
+  const [record, setRecord] = useState<any>({});
+
+  const [confirmDeliveryNote] = useConfirmDeliveryNoteMutation({
     onCompleted: () => {
-      messageApi?.success('出库凭证创建成功');
+      messageApi?.success('出库凭证提交成功');
       handleReloadTable();
     },
     onError,
   });
 
-  const [confirmDeliveryNote] = useConfirmDeliveryNoteMutation({
+  const [completeDeliveryNote] = useCompleteDeliveryNoteMutation({
     onCompleted: () => {
-      messageApi?.success('出库凭证审核成功');
+      messageApi?.success('出库凭证完成成功');
       handleReloadTable();
     },
     onError,
@@ -46,7 +51,32 @@ const DeliveryNoteList: React.FC = () => {
     await confirmDeliveryNote({ variables: { request } });
   };
 
+  const handleCompleteDeliveryNote = async (values: any) => {
+    const request = {
+      salesOrderUuid: values.salesOrderUuid,
+      deliveryNoteUuid: values.uuid,
+    };
+
+    await completeDeliveryNote({ variables: { request } });
+  };
+
+  const handleDetail = (record: any) => {
+    setDetailVisible(true);
+    setRecord(record);
+  };
+
   const columns: ProColumns<any>[] = [
+    {
+      title: 'uuid',
+      key: 'uuid',
+      dataIndex: 'uuid',
+      search: false,
+      render: (text, record) => (
+        <Button type="link" onClick={() => handleDetail(record)}>
+          {text}
+        </Button>
+      ),
+    },
     {
       title: '仓库名称',
       key: 'warehouseUuid',
@@ -86,7 +116,20 @@ const DeliveryNoteList: React.FC = () => {
               okText="是"
               cancelText="否"
             >
-              <a key="link2">审核</a>
+              <a key="link2">确定</a>
+            </Popconfirm>
+          )}
+        </>,
+        <>
+          {record.status === 'to_deliver' && (
+            <Popconfirm
+              key="link2"
+              title="确定完成吗？"
+              onConfirm={() => handleCompleteDeliveryNote(record)}
+              okText="是"
+              cancelText="否"
+            >
+              <a key="link2">出库</a>
             </Popconfirm>
           )}
         </>,
@@ -95,34 +138,43 @@ const DeliveryNoteList: React.FC = () => {
   ];
 
   return (
-    <ProTable
-      actionRef={actionRef}
-      columns={columns}
-      request={async (params, sorter, filter) => {
-        const { data } = await client.query({
-          query: DeliveryNotesDocument,
-          variables: {
-            request: {},
-          },
-        });
+    <>
+      <ProTable
+        actionRef={actionRef}
+        columns={columns}
+        request={async (params, sorter, filter) => {
+          const { data } = await client.query({
+            query: DeliveryNotesDocument,
+            variables: {
+              request: {},
+            },
+          });
 
-        return {
-          data: data.deliveryNotes,
-          total: data.deliveryNotes.length,
-          success: true,
-        };
-      }}
-      rowKey="uuid"
-      pagination={{
-        showQuickJumper: true,
-      }}
-      search={{
-        span: 6,
-        layout: 'vertical',
-        defaultCollapsed: true,
-      }}
-      dateFormatter="string"
-    />
+          return {
+            data: data.deliveryNotes,
+            total: data.deliveryNotes.length,
+            success: true,
+          };
+        }}
+        rowKey="uuid"
+        pagination={{
+          showQuickJumper: true,
+        }}
+        search={{
+          span: 6,
+          layout: 'vertical',
+          defaultCollapsed: true,
+        }}
+        dateFormatter="string"
+      />
+
+      <DeliveryNoteDetail
+        uuid={record?.uuid}
+        visible={detailVisible}
+        record={record}
+        onClose={() => setDetailVisible(false)}
+      />
+    </>
   );
 };
 

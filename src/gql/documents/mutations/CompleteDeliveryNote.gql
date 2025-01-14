@@ -1,0 +1,6 @@
+mutation CompleteDeliveryNote($request: DeliveryNoteRequest!) {
+	completeDeliveryNote(request: $request) {
+		status
+		uuid
+	}
+}

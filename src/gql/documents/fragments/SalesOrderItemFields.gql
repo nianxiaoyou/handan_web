@@ -3,6 +3,7 @@ fragment SalesOrderItemFields on SalesOrderItem {
   itemUuid
   itemName
   amount
+  unitPrice
   orderedQty
   deliveredQty
   remainingQty

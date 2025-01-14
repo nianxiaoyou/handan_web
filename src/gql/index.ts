@@ -230,6 +230,21 @@ export type IdRequest = {
   uuid?: InputMaybe<Scalars['ID']['input']>;
 };
 
+export type InventoryEntry = {
+  __typename?: 'InventoryEntry';
+  actualQty?: Maybe<Scalars['Decimal']['output']>;
+  insertedAt?: Maybe<Scalars['DateTime']['output']>;
+  item?: Maybe<Item>;
+  qtyAfterTransaction?: Maybe<Scalars['Decimal']['output']>;
+  stockUom?: Maybe<StockUom>;
+  threadType?: Maybe<Scalars['String']['output']>;
+  threadUuid?: Maybe<Scalars['ID']['output']>;
+  type?: Maybe<Scalars['String']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  uuid?: Maybe<Scalars['ID']['output']>;
+  warehouse?: Maybe<Warehouse>;
+};
+
 export type Item = {
   __typename?: 'Item';
   bom?: Maybe<Bom>;
@@ -409,6 +424,8 @@ export type ReportJobCardRequest = {
 /** the root of mutaion. */
 export type RootMutationType = {
   __typename?: 'RootMutationType';
+  /** complete delivery note */
+  completeDeliveryNote?: Maybe<DeliveryNote>;
   /** confirm delivery note */
   confirmDeliveryNote?: Maybe<DeliveryNote>;
   /** confirm purchase invoice */
@@ -460,6 +477,12 @@ export type RootMutationType = {
   reportJobCard?: Maybe<WorkOrder>;
   /** store finish item */
   storeFinishItem?: Maybe<WorkOrder>;
+};
+
+
+/** the root of mutaion. */
+export type RootMutationTypeCompleteDeliveryNoteArgs = {
+  request: DeliveryNoteRequest;
 };
 
 
@@ -630,6 +653,8 @@ export type RootQueryType = {
   deliveryNote?: Maybe<DeliveryNote>;
   /** delivery notes */
   deliveryNotes?: Maybe<Array<Maybe<DeliveryNote>>>;
+  /** list inventory entries */
+  inventoryEntries?: Maybe<Array<Maybe<InventoryEntry>>>;
   /** get item by uuid */
   item?: Maybe<Item>;
   /** list items */
@@ -658,6 +683,8 @@ export type RootQueryType = {
   salesOrder?: Maybe<SalesOrder>;
   /** list sales orders */
   salesOrders?: Maybe<Array<Maybe<SalesOrder>>>;
+  /** list stock items */
+  stockItems?: Maybe<Array<Maybe<StockItem>>>;
   /** get supplier */
   supplier?: Maybe<Supplier>;
   /** list suppliers */
@@ -779,12 +806,14 @@ export type SalesOrder = {
   customerName?: Maybe<Scalars['String']['output']>;
   customerUuid?: Maybe<Scalars['ID']['output']>;
   deliveredQty?: Maybe<Scalars['Decimal']['output']>;
+  deliveryNotes?: Maybe<Array<Maybe<DeliveryNote>>>;
   deliveryStatus?: Maybe<Scalars['String']['output']>;
   insertedAt?: Maybe<Scalars['DateTime']['output']>;
   items?: Maybe<Array<Maybe<SalesOrderItem>>>;
   paidAmount?: Maybe<Scalars['Decimal']['output']>;
   remainingAmount?: Maybe<Scalars['Decimal']['output']>;
   remainingQty?: Maybe<Scalars['Decimal']['output']>;
+  salesInvoices?: Maybe<Array<Maybe<SalesInvoice>>>;
   status?: Maybe<Scalars['String']['output']>;
   totalAmount?: Maybe<Scalars['Decimal']['output']>;
   totalQty?: Maybe<Scalars['Decimal']['output']>;
@@ -985,6 +1014,8 @@ export type CustomerFieldsFragment = { __typename?: 'Customer', uuid?: string | 
 
 export type DeliveryNoteFieldsFragment = { __typename?: 'DeliveryNote', uuid?: string | null, status?: string | null, customerName?: string | null, totalAmount?: any | null, totalQty?: any | null, salesOrderUuid?: string | null, insertedAt?: any | null, updatedAt?: any | null };
 
+export type DeliveryNoteItemFieldsFragment = { __typename?: 'DeliveryNoteItem', uuid?: string | null, itemName?: string | null, actualQty?: any | null, unitPrice?: any | null, amount?: any | null, uomName?: string | null, insertedAt?: any | null, updatedAt?: any | null };
+
 export type ItemFieldsFragment = { __typename?: 'Item', uuid?: string | null, name?: string | null, spec?: string | null, sellingPrice?: any | null, defaultStockUomName?: string | null, insertedAt?: any | null, updatedAt?: any | null };
 
 export type ProcessFieldsFragment = { __typename?: 'Process', uuid?: string | null, name?: string | null, description?: string | null, insertedAt?: any | null, updatedAt?: any | null };
@@ -997,7 +1028,7 @@ export type SalesInvoiceFieldsFragment = { __typename?: 'SalesInvoice', uuid?: s
 
 export type SalesOrderFieldsFragment = { __typename?: 'SalesOrder', uuid?: string | null, status?: string | null, billingStatus?: string | null, deliveryStatus?: string | null, customerName?: string | null, totalAmount?: any | null, paidAmount?: any | null, remainingAmount?: any | null, totalQty?: any | null, deliveredQty?: any | null, remainingQty?: any | null, insertedAt?: any | null, updatedAt?: any | null };
 
-export type SalesOrderItemFieldsFragment = { __typename?: 'SalesOrderItem', uuid?: string | null, itemUuid?: string | null, itemName?: string | null, amount?: any | null, orderedQty?: any | null, deliveredQty?: any | null, remainingQty?: any | null };
+export type SalesOrderItemFieldsFragment = { __typename?: 'SalesOrderItem', uuid?: string | null, itemUuid?: string | null, itemName?: string | null, amount?: any | null, unitPrice?: any | null, orderedQty?: any | null, deliveredQty?: any | null, remainingQty?: any | null };
 
 export type SupplierFieldsFragment = { __typename?: 'Supplier', uuid?: string | null, name?: string | null, address?: string | null, insertedAt?: any | null, updatedAt?: any | null };
 
@@ -1008,6 +1039,13 @@ export type WarehouseFieldsFragment = { __typename?: 'Warehouse', uuid?: string 
 export type WorkOrderFieldsFragment = { __typename?: 'WorkOrder', uuid?: string | null, title?: string | null, startTime?: any | null, endTime?: any | null, type?: string | null, status?: string | null, plannedQty?: any | null, storedQty?: any | null, producedQty?: any | null, scrapedQty?: any | null, itemUuid?: string | null, itemName?: string | null, uomName?: string | null, supplierName?: string | null, supplierUuid?: string | null, salesOrderUuid?: string | null, stockUomUuid?: string | null, insertedAt?: any | null, updatedAt?: any | null };
 
 export type WorkOrderItemFieldsFragment = { __typename?: 'WorkOrderItem', uuid?: string | null };
+
+export type CompleteDeliveryNoteMutationVariables = Exact<{
+  request: DeliveryNoteRequest;
+}>;
+
+
+export type CompleteDeliveryNoteMutation = { __typename?: 'RootMutationType', completeDeliveryNote?: { __typename?: 'DeliveryNote', status?: string | null, uuid?: string | null } | null };
 
 export type ConfirmDeliveryNoteMutationVariables = Exact<{
   request: DeliveryNoteRequest;
@@ -1216,12 +1254,17 @@ export type DeliveryNoteQueryVariables = Exact<{
 }>;
 
 
-export type DeliveryNoteQuery = { __typename?: 'RootQueryType', deliveryNote?: { __typename?: 'DeliveryNote', uuid?: string | null, status?: string | null, customerName?: string | null, totalAmount?: any | null, totalQty?: any | null, salesOrderUuid?: string | null, insertedAt?: any | null, updatedAt?: any | null } | null };
+export type DeliveryNoteQuery = { __typename?: 'RootQueryType', deliveryNote?: { __typename?: 'DeliveryNote', uuid?: string | null, status?: string | null, customerName?: string | null, totalAmount?: any | null, totalQty?: any | null, salesOrderUuid?: string | null, insertedAt?: any | null, updatedAt?: any | null, items?: Array<{ __typename?: 'DeliveryNoteItem', uuid?: string | null, itemName?: string | null, actualQty?: any | null, unitPrice?: any | null, amount?: any | null, uomName?: string | null, insertedAt?: any | null, updatedAt?: any | null } | null> | null } | null };
 
 export type DeliveryNotesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type DeliveryNotesQuery = { __typename?: 'RootQueryType', deliveryNotes?: Array<{ __typename?: 'DeliveryNote', uuid?: string | null, status?: string | null, customerName?: string | null, totalAmount?: any | null, totalQty?: any | null, salesOrderUuid?: string | null, insertedAt?: any | null, updatedAt?: any | null } | null> | null };
+
+export type InventoryEntriesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type InventoryEntriesQuery = { __typename?: 'RootQueryType', inventoryEntries?: Array<{ __typename?: 'InventoryEntry', actualQty?: any | null, type?: string | null, qtyAfterTransaction?: any | null, threadType?: string | null, insertedAt?: any | null, updatedAt?: any | null, item?: { __typename?: 'Item', uuid?: string | null, name?: string | null, spec?: string | null, sellingPrice?: any | null, defaultStockUomName?: string | null, insertedAt?: any | null, updatedAt?: any | null } | null, warehouse?: { __typename?: 'Warehouse', uuid?: string | null, name?: string | null, insertedAt?: any | null, updatedAt?: any | null } | null, stockUom?: { __typename?: 'StockUom', uomName?: string | null } | null } | null> | null };
 
 export type ItemQueryVariables = Exact<{
   request: IdRequest;
@@ -1293,12 +1336,12 @@ export type SalesOrderQueryVariables = Exact<{
 }>;
 
 
-export type SalesOrderQuery = { __typename?: 'RootQueryType', salesOrder?: { __typename?: 'SalesOrder', uuid?: string | null, status?: string | null, billingStatus?: string | null, deliveryStatus?: string | null, customerName?: string | null, totalAmount?: any | null, paidAmount?: any | null, remainingAmount?: any | null, totalQty?: any | null, deliveredQty?: any | null, remainingQty?: any | null, insertedAt?: any | null, updatedAt?: any | null } | null };
+export type SalesOrderQuery = { __typename?: 'RootQueryType', salesOrder?: { __typename?: 'SalesOrder', uuid?: string | null, status?: string | null, billingStatus?: string | null, deliveryStatus?: string | null, customerName?: string | null, totalAmount?: any | null, paidAmount?: any | null, remainingAmount?: any | null, totalQty?: any | null, deliveredQty?: any | null, remainingQty?: any | null, insertedAt?: any | null, updatedAt?: any | null, items?: Array<{ __typename?: 'SalesOrderItem', uuid?: string | null, itemUuid?: string | null, itemName?: string | null, amount?: any | null, unitPrice?: any | null, orderedQty?: any | null, deliveredQty?: any | null, remainingQty?: any | null } | null> | null, deliveryNotes?: Array<{ __typename?: 'DeliveryNote', uuid?: string | null, status?: string | null, customerName?: string | null, totalAmount?: any | null, totalQty?: any | null, salesOrderUuid?: string | null, insertedAt?: any | null, updatedAt?: any | null } | null> | null, salesInvoices?: Array<{ __typename?: 'SalesInvoice', uuid?: string | null, status?: string | null, amount?: any | null, customerName?: string | null, salesOrderUuid?: string | null, insertedAt?: any | null, updatedAt?: any | null } | null> | null } | null };
 
 export type SalesOrdersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type SalesOrdersQuery = { __typename?: 'RootQueryType', salesOrders?: Array<{ __typename?: 'SalesOrder', uuid?: string | null, status?: string | null, billingStatus?: string | null, deliveryStatus?: string | null, customerName?: string | null, totalAmount?: any | null, paidAmount?: any | null, remainingAmount?: any | null, totalQty?: any | null, deliveredQty?: any | null, remainingQty?: any | null, insertedAt?: any | null, updatedAt?: any | null, items?: Array<{ __typename?: 'SalesOrderItem', uuid?: string | null, itemUuid?: string | null, itemName?: string | null, amount?: any | null, orderedQty?: any | null, deliveredQty?: any | null, remainingQty?: any | null } | null> | null } | null> | null };
+export type SalesOrdersQuery = { __typename?: 'RootQueryType', salesOrders?: Array<{ __typename?: 'SalesOrder', uuid?: string | null, status?: string | null, billingStatus?: string | null, deliveryStatus?: string | null, customerName?: string | null, totalAmount?: any | null, paidAmount?: any | null, remainingAmount?: any | null, totalQty?: any | null, deliveredQty?: any | null, remainingQty?: any | null, insertedAt?: any | null, updatedAt?: any | null, items?: Array<{ __typename?: 'SalesOrderItem', uuid?: string | null, itemUuid?: string | null, itemName?: string | null, amount?: any | null, unitPrice?: any | null, orderedQty?: any | null, deliveredQty?: any | null, remainingQty?: any | null } | null> | null } | null> | null };
 
 export type SupplierQueryVariables = Exact<{
   request: IdRequest;
@@ -1382,6 +1425,18 @@ export const DeliveryNoteFieldsFragmentDoc = gql`
   updatedAt
 }
     `;
+export const DeliveryNoteItemFieldsFragmentDoc = gql`
+    fragment DeliveryNoteItemFields on DeliveryNoteItem {
+  uuid
+  itemName
+  actualQty
+  unitPrice
+  amount
+  uomName
+  insertedAt
+  updatedAt
+}
+    `;
 export const ItemFieldsFragmentDoc = gql`
     fragment ItemFields on Item {
   uuid
@@ -1460,6 +1515,7 @@ export const SalesOrderItemFieldsFragmentDoc = gql`
   itemUuid
   itemName
   amount
+  unitPrice
   orderedQty
   deliveredQty
   remainingQty
@@ -1518,6 +1574,40 @@ export const WorkOrderItemFieldsFragmentDoc = gql`
   uuid
 }
     `;
+export const CompleteDeliveryNoteDocument = gql`
+    mutation CompleteDeliveryNote($request: DeliveryNoteRequest!) {
+  completeDeliveryNote(request: $request) {
+    status
+    uuid
+  }
+}
+    `;
+export type CompleteDeliveryNoteMutationFn = Apollo.MutationFunction<CompleteDeliveryNoteMutation, CompleteDeliveryNoteMutationVariables>;
+
+/**
+ * __useCompleteDeliveryNoteMutation__
+ *
+ * To run a mutation, you first call `useCompleteDeliveryNoteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCompleteDeliveryNoteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [completeDeliveryNoteMutation, { data, loading, error }] = useCompleteDeliveryNoteMutation({
+ *   variables: {
+ *      request: // value for 'request'
+ *   },
+ * });
+ */
+export function useCompleteDeliveryNoteMutation(baseOptions?: Apollo.MutationHookOptions<CompleteDeliveryNoteMutation, CompleteDeliveryNoteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CompleteDeliveryNoteMutation, CompleteDeliveryNoteMutationVariables>(CompleteDeliveryNoteDocument, options);
+      }
+export type CompleteDeliveryNoteMutationHookResult = ReturnType<typeof useCompleteDeliveryNoteMutation>;
+export type CompleteDeliveryNoteMutationResult = Apollo.MutationResult<CompleteDeliveryNoteMutation>;
+export type CompleteDeliveryNoteMutationOptions = Apollo.BaseMutationOptions<CompleteDeliveryNoteMutation, CompleteDeliveryNoteMutationVariables>;
 export const ConfirmDeliveryNoteDocument = gql`
     mutation ConfirmDeliveryNote($request: DeliveryNoteRequest!) {
   confirmDeliveryNote(request: $request) {
@@ -2586,9 +2676,13 @@ export const DeliveryNoteDocument = gql`
     query DeliveryNote($request: DeliveryNoteRequest!) {
   deliveryNote(request: $request) {
     ...DeliveryNoteFields
+    items {
+      ...DeliveryNoteItemFields
+    }
   }
 }
-    ${DeliveryNoteFieldsFragmentDoc}`;
+    ${DeliveryNoteFieldsFragmentDoc}
+${DeliveryNoteItemFieldsFragmentDoc}`;
 
 /**
  * __useDeliveryNoteQuery__
@@ -2661,6 +2755,60 @@ export type DeliveryNotesQueryHookResult = ReturnType<typeof useDeliveryNotesQue
 export type DeliveryNotesLazyQueryHookResult = ReturnType<typeof useDeliveryNotesLazyQuery>;
 export type DeliveryNotesSuspenseQueryHookResult = ReturnType<typeof useDeliveryNotesSuspenseQuery>;
 export type DeliveryNotesQueryResult = Apollo.QueryResult<DeliveryNotesQuery, DeliveryNotesQueryVariables>;
+export const InventoryEntriesDocument = gql`
+    query InventoryEntries {
+  inventoryEntries {
+    actualQty
+    type
+    qtyAfterTransaction
+    threadType
+    item {
+      ...ItemFields
+    }
+    warehouse {
+      ...WarehouseFields
+    }
+    stockUom {
+      uomName
+    }
+    insertedAt
+    updatedAt
+  }
+}
+    ${ItemFieldsFragmentDoc}
+${WarehouseFieldsFragmentDoc}`;
+
+/**
+ * __useInventoryEntriesQuery__
+ *
+ * To run a query within a React component, call `useInventoryEntriesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useInventoryEntriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useInventoryEntriesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useInventoryEntriesQuery(baseOptions?: Apollo.QueryHookOptions<InventoryEntriesQuery, InventoryEntriesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<InventoryEntriesQuery, InventoryEntriesQueryVariables>(InventoryEntriesDocument, options);
+      }
+export function useInventoryEntriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<InventoryEntriesQuery, InventoryEntriesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<InventoryEntriesQuery, InventoryEntriesQueryVariables>(InventoryEntriesDocument, options);
+        }
+export function useInventoryEntriesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<InventoryEntriesQuery, InventoryEntriesQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<InventoryEntriesQuery, InventoryEntriesQueryVariables>(InventoryEntriesDocument, options);
+        }
+export type InventoryEntriesQueryHookResult = ReturnType<typeof useInventoryEntriesQuery>;
+export type InventoryEntriesLazyQueryHookResult = ReturnType<typeof useInventoryEntriesLazyQuery>;
+export type InventoryEntriesSuspenseQueryHookResult = ReturnType<typeof useInventoryEntriesSuspenseQuery>;
+export type InventoryEntriesQueryResult = Apollo.QueryResult<InventoryEntriesQuery, InventoryEntriesQueryVariables>;
 export const ItemDocument = gql`
     query Item($request: IdRequest!) {
   item(request: $request) {
@@ -3109,9 +3257,21 @@ export const SalesOrderDocument = gql`
     query SalesOrder($request: SalesOrderRequest!) {
   salesOrder(request: $request) {
     ...SalesOrderFields
+    items {
+      ...SalesOrderItemFields
+    }
+    deliveryNotes {
+      ...DeliveryNoteFields
+    }
+    salesInvoices {
+      ...SalesInvoiceFields
+    }
   }
 }
-    ${SalesOrderFieldsFragmentDoc}`;
+    ${SalesOrderFieldsFragmentDoc}
+${SalesOrderItemFieldsFragmentDoc}
+${DeliveryNoteFieldsFragmentDoc}
+${SalesInvoiceFieldsFragmentDoc}`;
 
 /**
  * __useSalesOrderQuery__

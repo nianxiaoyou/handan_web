@@ -1,0 +1,11 @@
+fragment DeliveryNoteItemFields on DeliveryNoteItem {
+  uuid
+	itemName
+	actualQty
+	unitPrice
+	amount
+	uomName
+	insertedAt
+	updatedAt
+}
+

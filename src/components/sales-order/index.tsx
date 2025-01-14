@@ -1,8 +1,8 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import { ProTable } from '@ant-design/pro-components';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
-import { Popconfirm, Tag } from 'antd';
+import { Popconfirm, Tag, Button } from 'antd';
 
 // locale
 import { useMessageContext } from '@/components/common/message-context';
@@ -18,10 +18,14 @@ import { onError } from '@/utils';
 import { fetchCustomers } from '@/utils/api';
 
 import SalesOrderNew from './new';
+import SalesOrderDetail from './detail';
 
 const SalesOrderList: React.FC = () => {
   const { messageApi } = useMessageContext();
   const router = useRouter();
+
+  const [detailVisible, setDetailVisible] = useState(false);
+  const [record, setRecord] = useState<any>(null);
 
   const [createSalesOrder] = useCreateSalesOrderMutation({
     onCompleted: () => {
@@ -49,7 +53,7 @@ const SalesOrderList: React.FC = () => {
 
   const [confirmSalesOrder] = useConfirmSalesOrderMutation({
     onCompleted: () => {
-      messageApi?.success('销售订单审核成功');
+      messageApi?.success('销售订单提交成功');
       handleReloadTable();
     },
     onError,
@@ -87,10 +91,6 @@ const SalesOrderList: React.FC = () => {
     await createDeliveryNote({ variables: { request } });
   };
 
-  const handleConfirmDeliveryNote = async (values: any) => {
-    // await confirmDeliveryNote({ variables: { request: values } });
-  };
-
   const handleCreateSalesInvoice = async (values: any) => {
     const request = {
       salesOrderUuid: values.uuid,
@@ -100,11 +100,21 @@ const SalesOrderList: React.FC = () => {
     await createSalesInvoice({ variables: { request } });
   };
 
-  const handleConfirmSalesInvoice = async (values: any) => {
-    // await confirmSalesInvoice({ variables: { request: values } });
+  const handleDetail = (record: any) => {
+    setDetailVisible(true);
+    setRecord(record);
   };
 
   const columns: ProColumns<any>[] = [
+    {
+      title: 'ID',
+      dataIndex: 'uuid',
+      render: (text, record) => (
+        <Button type="link" onClick={() => handleDetail(record)}>
+          {text}
+        </Button>
+      ),
+    },
     {
       title: '客户名称',
       key: 'customerUuid',
@@ -155,7 +165,7 @@ const SalesOrderList: React.FC = () => {
               okText="是"
               cancelText="否"
             >
-              <a key="link2">审核</a>
+              <a key="link2">确定</a>
             </Popconfirm>
           )}
         </>,
@@ -190,35 +200,44 @@ const SalesOrderList: React.FC = () => {
   ];
 
   return (
-    <ProTable
-      actionRef={actionRef}
-      columns={columns}
-      request={async (params, sorter, filter) => {
-        const { data } = await client.query({
-          query: SalesOrdersDocument,
-          variables: {
-            request: {},
-          },
-        });
+    <>
+      <ProTable
+        actionRef={actionRef}
+        columns={columns}
+        request={async (params, sorter, filter) => {
+          const { data } = await client.query({
+            query: SalesOrdersDocument,
+            variables: {
+              request: {},
+            },
+          });
 
-        return {
-          data: data.salesOrders,
-          total: data.salesOrders.length,
-          success: true,
-        };
-      }}
-      rowKey="uuid"
-      pagination={{
-        showQuickJumper: true,
-      }}
-      search={{
-        span: 6,
-        layout: 'vertical',
-        defaultCollapsed: true,
-      }}
-      dateFormatter="string"
-      toolBarRender={() => [<SalesOrderNew key="sales-order-new" onCreate={(values: any) => handleCreate(values)} />]}
-    />
+          return {
+            data: data.salesOrders,
+            total: data.salesOrders.length,
+            success: true,
+          };
+        }}
+        rowKey="uuid"
+        pagination={{
+          showQuickJumper: true,
+        }}
+        search={{
+          span: 6,
+          layout: 'vertical',
+          defaultCollapsed: true,
+        }}
+        dateFormatter="string"
+        toolBarRender={() => [<SalesOrderNew key="sales-order-new" onCreate={(values: any) => handleCreate(values)} />]}
+      />
+
+      <SalesOrderDetail
+        uuid={record?.uuid}
+        visible={detailVisible}
+        record={record}
+        onClose={() => setDetailVisible(false)}
+      />
+    </>
   );
 };
 

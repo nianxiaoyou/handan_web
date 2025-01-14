@@ -117,11 +117,15 @@ const menuProps = {
         name: '财务管理',
         routes: [
           {
-            name: '销售发票',
+            name: '销售收款凭证',
             path: '/finance/sales-invoices',
           },
           {
-            name: '收付款',
+            name: '采购付款凭证',
+            path: '/finance/purchase-invoices',
+          },
+          {
+            name: '交易记录',
             path: '/finance/payment-entries',
           },
           {

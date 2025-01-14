@@ -1,0 +1,19 @@
+query InventoryEntries{
+	inventoryEntries {
+		actualQty
+		type
+		qtyAfterTransaction
+		threadType
+		item {
+			...ItemFields
+		}
+		warehouse {
+			...WarehouseFields
+		}
+		stockUom {
+			uomName
+		}
+		insertedAt
+		updatedAt
+	}
+}

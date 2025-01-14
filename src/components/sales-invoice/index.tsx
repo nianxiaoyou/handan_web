@@ -16,7 +16,7 @@ const SalesInvoiceList: React.FC = () => {
 
   const [confirmSalesInvoice] = useConfirmSalesInvoiceMutation({
     onCompleted: () => {
-      messageApi?.success('销售发票审核成功');
+      messageApi?.success('销售发票提交成功');
       handleReloadTable();
     },
     onError,
@@ -45,6 +45,7 @@ const SalesInvoiceList: React.FC = () => {
     {
       title: '金额',
       dataIndex: 'amount',
+      valueType: 'money',
     },
     {
       title: '状态',
@@ -70,7 +71,7 @@ const SalesInvoiceList: React.FC = () => {
               okText="是"
               cancelText="否"
             >
-              <a key="link2">审核</a>
+              <a key="link2">提交</a>
             </Popconfirm>
           )}
         </>,
