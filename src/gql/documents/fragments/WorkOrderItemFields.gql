@@ -1,4 +1,10 @@
 fragment WorkOrderItemFields on WorkOrderItem {
   uuid
+  itemName
+  processName
+  position
+  requiredQty
+  defectiveQty
+  producedQty
 }
 
