@@ -29,10 +29,6 @@ const menuProps = {
         name: '销售管理',
         routes: [
           {
-            path: '/selling/customers',
-            name: '客户管理',
-          },
-          {
             path: '/selling/sales-orders',
             name: '销售订单',
           },
@@ -40,6 +36,10 @@ const menuProps = {
           //   path: '/sales-order/returns',
           //   name: '销售退货',
           // },
+          {
+            path: '/selling/customers',
+            name: '客户管理',
+          },
           {
             path: '/selling/stats',
             name: '销售统计',
@@ -51,10 +51,6 @@ const menuProps = {
         name: '采购管理',
         routes: [
           {
-            path: '/purchasing/suppliers',
-            name: '供应商管理',
-          },
-          {
             path: '/purchasing/purchase-orders',
             name: '采购订单',
           },
@@ -62,6 +58,10 @@ const menuProps = {
           //   path: '/purchase-order/returns',
           //   name: '采购退货',
           // },
+          {
+            path: '/purchasing/suppliers',
+            name: '供应商管理',
+          },
           {
             path: '/purchasing/stats',
             name: '采购统计',
