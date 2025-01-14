@@ -107,7 +107,7 @@ const menuProps = {
             path: '/stock/receipt-notes',
           },
           {
-            name: '出入库',
+            name: '库存记录',
             path: '/stock/inventory-entries',
           },
         ],

@@ -237,6 +237,7 @@ export type InventoryEntry = {
   item?: Maybe<Item>;
   qtyAfterTransaction?: Maybe<Scalars['Decimal']['output']>;
   stockUom?: Maybe<StockUom>;
+  stockUomUuid?: Maybe<Scalars['ID']['output']>;
   threadType?: Maybe<Scalars['String']['output']>;
   threadUuid?: Maybe<Scalars['ID']['output']>;
   type?: Maybe<Scalars['String']['output']>;
@@ -1264,7 +1265,7 @@ export type DeliveryNotesQuery = { __typename?: 'RootQueryType', deliveryNotes?:
 export type InventoryEntriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type InventoryEntriesQuery = { __typename?: 'RootQueryType', inventoryEntries?: Array<{ __typename?: 'InventoryEntry', actualQty?: any | null, type?: string | null, qtyAfterTransaction?: any | null, threadType?: string | null, insertedAt?: any | null, updatedAt?: any | null, item?: { __typename?: 'Item', uuid?: string | null, name?: string | null, spec?: string | null, sellingPrice?: any | null, defaultStockUomName?: string | null, insertedAt?: any | null, updatedAt?: any | null } | null, warehouse?: { __typename?: 'Warehouse', uuid?: string | null, name?: string | null, insertedAt?: any | null, updatedAt?: any | null } | null, stockUom?: { __typename?: 'StockUom', uomName?: string | null } | null } | null> | null };
+export type InventoryEntriesQuery = { __typename?: 'RootQueryType', inventoryEntries?: Array<{ __typename?: 'InventoryEntry', actualQty?: any | null, type?: string | null, qtyAfterTransaction?: any | null, threadType?: string | null, stockUomUuid?: string | null, insertedAt?: any | null, updatedAt?: any | null, item?: { __typename?: 'Item', uuid?: string | null, name?: string | null, spec?: string | null, sellingPrice?: any | null, defaultStockUomName?: string | null, insertedAt?: any | null, updatedAt?: any | null } | null, warehouse?: { __typename?: 'Warehouse', uuid?: string | null, name?: string | null, insertedAt?: any | null, updatedAt?: any | null } | null, stockUom?: { __typename?: 'StockUom', uuid?: string | null, uomName?: string | null } | null } | null> | null };
 
 export type ItemQueryVariables = Exact<{
   request: IdRequest;
@@ -2768,7 +2769,9 @@ export const InventoryEntriesDocument = gql`
     warehouse {
       ...WarehouseFields
     }
+    stockUomUuid
     stockUom {
+      uuid
       uomName
     }
     insertedAt

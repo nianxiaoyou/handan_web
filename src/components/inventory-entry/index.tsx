@@ -13,29 +13,23 @@ const InventoryEntryList: React.FC = () => {
 
   const columns: ProColumns<any>[] = [
     {
-      title: '实际数量',
+      title: '物品',
+      search: false,
+      dataIndex: ['item', 'name'],
+    },
+    {
+      title: '转移数量',
       dataIndex: 'actualQty',
       search: false,
     },
     {
-      title: '类型',
-      search: false,
-      dataIndex: 'type',
-    },
-    {
-      title: '数量',
+      title: '转移后库存',
       search: false,
       dataIndex: 'qtyAfterTransaction',
     },
     {
-      title: '线程类型',
-      search: false,
-      dataIndex: 'threadType',
-    },
-    {
-      title: '物品',
-      search: false,
-      dataIndex: ['item', 'name'],
+      title: '类型',
+      dataIndex: 'type',
     },
     {
       title: '仓库',
@@ -65,6 +59,8 @@ const InventoryEntryList: React.FC = () => {
             request: {},
           },
         });
+
+        console.log('data:', data);
 
         return {
           data: data.inventoryEntries,
