@@ -1,5 +1,8 @@
 query DeliveryNotes{
 	deliveryNotes {
 		...DeliveryNoteFields
+		warehouse {
+			name
+		}
 	}
 }

@@ -1,17 +1,16 @@
-import { useRouter } from 'next/router';
 import { ProTable } from '@ant-design/pro-components';
 import type { ProColumns } from '@ant-design/pro-components';
 
 // locale
-import { useMessageContext } from '@/components/common/message-context';
 import client from '@/gql/apollo';
 import { InventoryEntriesDocument } from '@/gql';
 
 const InventoryEntryList: React.FC = () => {
-  const { messageApi } = useMessageContext();
-  const router = useRouter();
-
   const columns: ProColumns<any>[] = [
+    {
+      title: '类型',
+      dataIndex: 'type',
+    },
     {
       title: '物品',
       search: false,
@@ -27,10 +26,7 @@ const InventoryEntryList: React.FC = () => {
       search: false,
       dataIndex: 'qtyAfterTransaction',
     },
-    {
-      title: '类型',
-      dataIndex: 'type',
-    },
+
     {
       title: '仓库',
       dataIndex: ['warehouse', 'name'],
@@ -59,8 +55,6 @@ const InventoryEntryList: React.FC = () => {
             request: {},
           },
         });
-
-        console.log('data:', data);
 
         return {
           data: data.inventoryEntries,

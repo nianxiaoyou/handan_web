@@ -35,6 +35,11 @@ const ReceiptNoteDetail = ({ uuid, visible, record, onClose }: any) => {
       title: '数量',
       dataIndex: 'actualQty',
       key: 'actualQty',
+      render: (text: any, record: any) => (
+        <span>
+          {record.actualQty} {record.uomName}
+        </span>
+      ),
     },
     {
       title: '单价',

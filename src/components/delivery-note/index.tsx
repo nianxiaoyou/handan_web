@@ -9,7 +9,6 @@ import { useMessageContext } from '@/components/common/message-context';
 import client from '@/gql/apollo';
 import { useConfirmDeliveryNoteMutation, useCompleteDeliveryNoteMutation, DeliveryNotesDocument } from '@/gql';
 import { onError } from '@/utils';
-import { fetchWarehouses } from '@/utils/api';
 
 import DeliveryNoteDetail from './detail';
 
@@ -70,6 +69,7 @@ const DeliveryNoteList: React.FC = () => {
       title: 'uuid',
       key: 'uuid',
       dataIndex: 'uuid',
+      width: 200,
       search: false,
       render: (text, record) => (
         <Button type="link" onClick={() => handleDetail(record)}>
@@ -80,9 +80,7 @@ const DeliveryNoteList: React.FC = () => {
     {
       title: '仓库名称',
       key: 'warehouseUuid',
-      dataIndex: 'warehouseName',
-      valueType: 'select',
-      request: () => fetchWarehouses({}),
+      dataIndex: ['warehouse', 'name'],
     },
     {
       title: '客户名称',

@@ -198,6 +198,7 @@ export type DeliveryNote = {
   totalQty?: Maybe<Scalars['Decimal']['output']>;
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
   uuid?: Maybe<Scalars['ID']['output']>;
+  warehouse?: Maybe<Warehouse>;
 };
 
 export type DeliveryNoteItem = {
@@ -384,6 +385,7 @@ export type ReceiptNote = {
   totalQty?: Maybe<Scalars['Decimal']['output']>;
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
   uuid?: Maybe<Scalars['ID']['output']>;
+  warehouse?: Maybe<Warehouse>;
 };
 
 export type ReceiptNoteItem = {
@@ -1300,7 +1302,7 @@ export type DeliveryNoteQuery = { __typename?: 'RootQueryType', deliveryNote?: {
 export type DeliveryNotesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type DeliveryNotesQuery = { __typename?: 'RootQueryType', deliveryNotes?: Array<{ __typename?: 'DeliveryNote', uuid?: string | null, status?: string | null, customerName?: string | null, totalAmount?: any | null, totalQty?: any | null, salesOrderUuid?: string | null, insertedAt?: any | null, updatedAt?: any | null } | null> | null };
+export type DeliveryNotesQuery = { __typename?: 'RootQueryType', deliveryNotes?: Array<{ __typename?: 'DeliveryNote', uuid?: string | null, status?: string | null, customerName?: string | null, totalAmount?: any | null, totalQty?: any | null, salesOrderUuid?: string | null, insertedAt?: any | null, updatedAt?: any | null, warehouse?: { __typename?: 'Warehouse', name?: string | null } | null } | null> | null };
 
 export type InventoryEntriesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1382,7 +1384,7 @@ export type ReceiptNoteQuery = { __typename?: 'RootQueryType', receiptNote?: { _
 export type ReceiptNotesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ReceiptNotesQuery = { __typename?: 'RootQueryType', receiptNotes?: Array<{ __typename?: 'ReceiptNote', uuid?: string | null, status?: string | null, supplierName?: string | null, totalAmount?: any | null, totalQty?: any | null, purchaseOrderUuid?: string | null, insertedAt?: any | null, updatedAt?: any | null } | null> | null };
+export type ReceiptNotesQuery = { __typename?: 'RootQueryType', receiptNotes?: Array<{ __typename?: 'ReceiptNote', uuid?: string | null, status?: string | null, supplierName?: string | null, totalAmount?: any | null, totalQty?: any | null, purchaseOrderUuid?: string | null, insertedAt?: any | null, updatedAt?: any | null, warehouse?: { __typename?: 'Warehouse', name?: string | null } | null } | null> | null };
 
 export type SalesInvoiceQueryVariables = Exact<{
   request: SalesInvoiceRequest;
@@ -2878,6 +2880,9 @@ export const DeliveryNotesDocument = gql`
     query DeliveryNotes {
   deliveryNotes {
     ...DeliveryNoteFields
+    warehouse {
+      name
+    }
   }
 }
     ${DeliveryNoteFieldsFragmentDoc}`;
@@ -3465,6 +3470,9 @@ export const ReceiptNotesDocument = gql`
     query ReceiptNotes {
   receiptNotes {
     ...ReceiptNoteFields
+    warehouse {
+      name
+    }
   }
 }
     ${ReceiptNoteFieldsFragmentDoc}`;

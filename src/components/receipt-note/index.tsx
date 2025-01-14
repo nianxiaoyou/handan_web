@@ -1,5 +1,4 @@
 import { useRef, useState } from 'react';
-import { useRouter } from 'next/router';
 import { ProTable } from '@ant-design/pro-components';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { Popconfirm, Button } from 'antd';
@@ -10,13 +9,11 @@ import { useMessageContext } from '@/components/common/message-context';
 import client from '@/gql/apollo';
 import { useConfirmReceiptNoteMutation, useCompleteReceiptNoteMutation, ReceiptNotesDocument } from '@/gql';
 import { onError } from '@/utils';
-import { fetchWarehouses } from '@/utils/api';
 
 import DeliveryNoteDetail from './detail';
 
 const ReceiptNoteList: React.FC = () => {
   const { messageApi } = useMessageContext();
-  const router = useRouter();
 
   const [detailVisible, setDetailVisible] = useState(false);
   const [record, setRecord] = useState<any>({});
@@ -70,6 +67,7 @@ const ReceiptNoteList: React.FC = () => {
     {
       title: 'uuid',
       key: 'uuid',
+      width: 200,
       dataIndex: 'uuid',
       search: false,
       render: (text, record) => (
@@ -81,9 +79,7 @@ const ReceiptNoteList: React.FC = () => {
     {
       title: '仓库名称',
       key: 'warehouseUuid',
-      dataIndex: 'warehouseName',
-      valueType: 'select',
-      request: () => fetchWarehouses({}),
+      dataIndex: ['warehouse', 'name'],
     },
     {
       title: '供应商名称',
