@@ -69,11 +69,12 @@ const ProcessList: React.FC = () => {
       pagination={{
         showQuickJumper: true,
       }}
-      search={{
-        span: 6,
-        layout: 'vertical',
-        defaultCollapsed: true,
-      }}
+      search={false}
+      // search={{
+      //   span: 6,
+      //   layout: 'vertical',
+      //   defaultCollapsed: true,
+      // }}
       dateFormatter="string"
       toolBarRender={() => [<ProcessNew key="process-new" onCreate={(values: any) => handleCreate(values)} />]}
     />

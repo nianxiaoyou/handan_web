@@ -46,10 +46,11 @@ const PaymentMethodList: React.FC = () => {
       pagination={{
         showQuickJumper: true,
       }}
-      search={{
-        layout: 'vertical',
-        defaultCollapsed: true,
-      }}
+      search={false}
+      // search={{
+      //   layout: 'vertical',
+      //   defaultCollapsed: true,
+      // }}
       dateFormatter="string"
     />
   );

@@ -65,11 +65,12 @@ const WorkstationList: React.FC = () => {
       pagination={{
         showQuickJumper: true,
       }}
-      search={{
-        span: 6,
-        layout: 'vertical',
-        defaultCollapsed: true,
-      }}
+      search={false}
+      // search={{
+      //   span: 6,
+      //   layout: 'vertical',
+      //   defaultCollapsed: true,
+      // }}
       dateFormatter="string"
       toolBarRender={() => [<WorkstationNew key="workstation-new" onCreate={(values: any) => handleCreate(values)} />]}
     />

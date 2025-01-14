@@ -220,11 +220,12 @@ const SalesOrderList: React.FC = () => {
         pagination={{
           showQuickJumper: true,
         }}
-        search={{
-          span: 6,
-          layout: 'vertical',
-          defaultCollapsed: true,
-        }}
+        search={false}
+        // search={{
+        //   span: 6,
+        //   layout: 'vertical',
+        //   defaultCollapsed: true,
+        // }}
         dateFormatter="string"
         toolBarRender={() => [<SalesOrderNew key="sales-order-new" onCreate={(values: any) => handleCreate(values)} />]}
       />
