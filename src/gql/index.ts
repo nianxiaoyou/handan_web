@@ -163,10 +163,8 @@ export type CreateSupplierRequest = {
 export type CreateWorkOrderRequest = {
   bomUuid?: InputMaybe<Scalars['ID']['input']>;
   endTime?: InputMaybe<Scalars['DateTime']['input']>;
-  itemUuid?: InputMaybe<Scalars['ID']['input']>;
   plannedQty?: InputMaybe<Scalars['Decimal']['input']>;
   startTime?: InputMaybe<Scalars['DateTime']['input']>;
-  stockUomUuid?: InputMaybe<Scalars['ID']['input']>;
   warehouseUuid?: InputMaybe<Scalars['ID']['input']>;
 };
 
@@ -968,6 +966,7 @@ export type Warehouse = {
 export type WorkOrder = {
   __typename?: 'WorkOrder';
   bom?: Maybe<Bom>;
+  bomUuid?: Maybe<Scalars['ID']['output']>;
   endTime?: Maybe<Scalars['DateTime']['output']>;
   insertedAt?: Maybe<Scalars['DateTime']['output']>;
   item?: Maybe<Item>;
@@ -1437,12 +1436,12 @@ export type WorkOrderQueryVariables = Exact<{
 }>;
 
 
-export type WorkOrderQuery = { __typename?: 'RootQueryType', workOrder?: { __typename?: 'WorkOrder', uuid?: string | null } | null };
+export type WorkOrderQuery = { __typename?: 'RootQueryType', workOrder?: { __typename?: 'WorkOrder', uuid?: string | null, title?: string | null, startTime?: any | null, endTime?: any | null, type?: string | null, status?: string | null, plannedQty?: any | null, storedQty?: any | null, producedQty?: any | null, scrapedQty?: any | null, itemUuid?: string | null, itemName?: string | null, uomName?: string | null, supplierName?: string | null, supplierUuid?: string | null, salesOrderUuid?: string | null, stockUomUuid?: string | null, insertedAt?: any | null, updatedAt?: any | null } | null };
 
 export type WorkOrdersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type WorkOrdersQuery = { __typename?: 'RootQueryType', workOrders?: Array<{ __typename?: 'WorkOrder', itemName?: string | null } | null> | null };
+export type WorkOrdersQuery = { __typename?: 'RootQueryType', workOrders?: Array<{ __typename?: 'WorkOrder', uuid?: string | null, title?: string | null, startTime?: any | null, endTime?: any | null, type?: string | null, status?: string | null, plannedQty?: any | null, storedQty?: any | null, producedQty?: any | null, scrapedQty?: any | null, itemUuid?: string | null, itemName?: string | null, uomName?: string | null, supplierName?: string | null, supplierUuid?: string | null, salesOrderUuid?: string | null, stockUomUuid?: string | null, insertedAt?: any | null, updatedAt?: any | null } | null> | null };
 
 export type WorkstationQueryVariables = Exact<{
   request: IdRequest;
@@ -3843,10 +3842,10 @@ export type WarehousesQueryResult = Apollo.QueryResult<WarehousesQuery, Warehous
 export const WorkOrderDocument = gql`
     query workOrder($request: IdRequest!) {
   workOrder(request: $request) {
-    uuid
+    ...WorkOrderFields
   }
 }
-    `;
+    ${WorkOrderFieldsFragmentDoc}`;
 
 /**
  * __useWorkOrderQuery__
@@ -3883,10 +3882,10 @@ export type WorkOrderQueryResult = Apollo.QueryResult<WorkOrderQuery, WorkOrderQ
 export const WorkOrdersDocument = gql`
     query WorkOrders {
   workOrders {
-    itemName
+    ...WorkOrderFields
   }
 }
-    `;
+    ${WorkOrderFieldsFragmentDoc}`;
 
 /**
  * __useWorkOrdersQuery__

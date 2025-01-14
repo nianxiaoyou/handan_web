@@ -1,19 +1,34 @@
 import { useRef } from 'react';
-import { useRouter } from 'next/router';
 import { ProTable } from '@ant-design/pro-components';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 
 // locale
+import { useMessageContext } from '@/components/common/message-context';
 import client from '@/gql/apollo';
-import { WorkOrdersDocument } from '@/gql';
-// import SalesOrderNew from './new';
+import { WorkOrdersDocument, useCreateWorkOrderMutation } from '@/gql';
+import { onError } from '@/utils';
+
+import WorkOrderNew from './new';
 
 const WorkOrderList: React.FC = () => {
-  const router = useRouter();
+  const { messageApi } = useMessageContext();
+
+  const [createWorkOrder] = useCreateWorkOrderMutation({
+    onCompleted: () => {
+      messageApi?.success('创建工单成功');
+      handleReloadTable();
+    },
+    onError,
+  });
+
   const actionRef = useRef<ActionType | null>(null);
 
   const handleReloadTable = () => {
     actionRef.current?.reload();
+  };
+
+  const handleCreate = async (values: any) => {
+    await createWorkOrder({ variables: { request: values } });
   };
 
   const columns: ProColumns<any>[] = [
@@ -61,11 +76,13 @@ const WorkOrderList: React.FC = () => {
       pagination={{
         showQuickJumper: true,
       }}
-      search={{
-        layout: 'vertical',
-        defaultCollapsed: true,
-      }}
+      search={false}
+      // search={{
+      //   layout: 'vertical',
+      //   defaultCollapsed: true,
+      // }}
       dateFormatter="string"
+      toolBarRender={() => [<WorkOrderNew key="work-order-new" onCreate={(values: any) => handleCreate(values)} />]}
     />
   );
 };
