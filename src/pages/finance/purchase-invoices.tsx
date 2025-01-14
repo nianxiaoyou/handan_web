@@ -1,5 +1,3 @@
-const PurchaseInvoices = () => {
-  return <div>采购付款凭证</div>;
-};
+import PurchaseInvoiceList from '@/components/purchase-invoice';
 
-export default PurchaseInvoices;
+export default PurchaseInvoiceList;

@@ -2,7 +2,6 @@ fragment SupplierFields on Supplier {
   uuid
   name
   address
-  insertedAt
-  updatedAt
+  
 }
 

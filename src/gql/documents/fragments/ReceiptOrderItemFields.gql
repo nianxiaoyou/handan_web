@@ -1,0 +1,10 @@
+fragment ReceiptNoteItemFields on ReceiptNoteItem {
+  uuid
+  itemName
+  uomName
+  unitPrice
+  actualQty
+  amount
+}
+
+

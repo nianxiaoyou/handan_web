@@ -310,15 +310,9 @@ export type PurchaseInvoice = {
   __typename?: 'PurchaseInvoice';
   amount?: Maybe<Scalars['Decimal']['output']>;
   insertedAt?: Maybe<Scalars['DateTime']['output']>;
-  itemName?: Maybe<Scalars['String']['output']>;
-  orderedQty?: Maybe<Scalars['Decimal']['output']>;
   purchaseOrderUuid?: Maybe<Scalars['ID']['output']>;
-  receivedQty?: Maybe<Scalars['Decimal']['output']>;
-  remainingQty?: Maybe<Scalars['Decimal']['output']>;
   status?: Maybe<Scalars['String']['output']>;
-  stockUomUuid?: Maybe<Scalars['ID']['output']>;
-  unitPrice?: Maybe<Scalars['Decimal']['output']>;
-  uomName?: Maybe<Scalars['String']['output']>;
+  supplierName?: Maybe<Scalars['String']['output']>;
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
   uuid?: Maybe<Scalars['ID']['output']>;
 };
@@ -334,6 +328,8 @@ export type PurchaseOrder = {
   insertedAt?: Maybe<Scalars['DateTime']['output']>;
   items?: Maybe<Array<Maybe<PurchaseOrderItem>>>;
   paidAmount?: Maybe<Scalars['Decimal']['output']>;
+  purchaseInvoices?: Maybe<Array<Maybe<PurchaseInvoice>>>;
+  receiptNotes?: Maybe<Array<Maybe<ReceiptNote>>>;
   receiptStatus?: Maybe<Scalars['String']['output']>;
   receivedQty?: Maybe<Scalars['Decimal']['output']>;
   remainingAmount?: Maybe<Scalars['Decimal']['output']>;
@@ -427,6 +423,8 @@ export type RootMutationType = {
   __typename?: 'RootMutationType';
   /** complete delivery note */
   completeDeliveryNote?: Maybe<DeliveryNote>;
+  /** complete receipt note */
+  completeReceiptNote?: Maybe<ReceiptNote>;
   /** confirm delivery note */
   confirmDeliveryNote?: Maybe<DeliveryNote>;
   /** confirm purchase invoice */
@@ -484,6 +482,12 @@ export type RootMutationType = {
 /** the root of mutaion. */
 export type RootMutationTypeCompleteDeliveryNoteArgs = {
   request: DeliveryNoteRequest;
+};
+
+
+/** the root of mutaion. */
+export type RootMutationTypeCompleteReceiptNoteArgs = {
+  request: ReceiptNoteRequest;
 };
 
 
@@ -672,10 +676,18 @@ export type RootQueryType = {
   process?: Maybe<Process>;
   /** list processes */
   processes?: Maybe<Array<Maybe<Process>>>;
+  /** get purchase invoice */
+  purchaseInvoice?: Maybe<PurchaseInvoice>;
+  /** list purchase invoices */
+  purchaseInvoices?: Maybe<Array<Maybe<PurchaseInvoice>>>;
   /** get purchase order */
   purchaseOrder?: Maybe<PurchaseOrder>;
   /** list purchase orders */
   purchaseOrders?: Maybe<Array<Maybe<PurchaseOrder>>>;
+  /** get receipt note */
+  receiptNote?: Maybe<ReceiptNote>;
+  /** list receipt notes */
+  receiptNotes?: Maybe<Array<Maybe<ReceiptNote>>>;
   /** get sales invoice */
   salesInvoice?: Maybe<SalesInvoice>;
   /** sales invoices */
@@ -748,8 +760,20 @@ export type RootQueryTypeProcessArgs = {
 
 
 /** the root of query. */
+export type RootQueryTypePurchaseInvoiceArgs = {
+  request: PurchaseInvoiceRequest;
+};
+
+
+/** the root of query. */
 export type RootQueryTypePurchaseOrderArgs = {
   request: PurchaseOrderRequest;
+};
+
+
+/** the root of query. */
+export type RootQueryTypeReceiptNoteArgs = {
+  request: ReceiptNoteRequest;
 };
 
 
@@ -1021,9 +1045,15 @@ export type ItemFieldsFragment = { __typename?: 'Item', uuid?: string | null, na
 
 export type ProcessFieldsFragment = { __typename?: 'Process', uuid?: string | null, name?: string | null, description?: string | null, insertedAt?: any | null, updatedAt?: any | null };
 
+export type PurchaseInvoiceFieldsFragment = { __typename?: 'PurchaseInvoice', uuid?: string | null, status?: string | null, amount?: any | null, supplierName?: string | null, purchaseOrderUuid?: string | null, insertedAt?: any | null, updatedAt?: any | null };
+
 export type PurchaseOrderFieldsFragment = { __typename?: 'PurchaseOrder', uuid?: string | null, status?: string | null, receiptStatus?: string | null, billingStatus?: string | null, supplierUuid?: string | null, supplierName?: string | null, supplierAddress?: string | null, totalAmount?: any | null, paidAmount?: any | null, remainingAmount?: any | null, totalQty?: any | null, receivedQty?: any | null, remainingQty?: any | null, insertedAt?: any | null, updatedAt?: any | null };
 
-export type PurchaseOrderItemFieldsFragment = { __typename?: 'PurchaseOrderItem', uuid?: string | null };
+export type PurchaseOrderItemFieldsFragment = { __typename?: 'PurchaseOrderItem', uuid?: string | null, itemName?: string | null, uomName?: string | null, unitPrice?: any | null, orderedQty?: any | null, receivedQty?: any | null, amount?: any | null };
+
+export type ReceiptNoteFieldsFragment = { __typename?: 'ReceiptNote', uuid?: string | null, status?: string | null, supplierName?: string | null, totalAmount?: any | null, totalQty?: any | null, purchaseOrderUuid?: string | null, insertedAt?: any | null, updatedAt?: any | null };
+
+export type ReceiptNoteItemFieldsFragment = { __typename?: 'ReceiptNoteItem', uuid?: string | null, itemName?: string | null, uomName?: string | null, unitPrice?: any | null, actualQty?: any | null, amount?: any | null };
 
 export type SalesInvoiceFieldsFragment = { __typename?: 'SalesInvoice', uuid?: string | null, status?: string | null, amount?: any | null, customerName?: string | null, salesOrderUuid?: string | null, insertedAt?: any | null, updatedAt?: any | null };
 
@@ -1031,7 +1061,7 @@ export type SalesOrderFieldsFragment = { __typename?: 'SalesOrder', uuid?: strin
 
 export type SalesOrderItemFieldsFragment = { __typename?: 'SalesOrderItem', uuid?: string | null, itemUuid?: string | null, itemName?: string | null, amount?: any | null, unitPrice?: any | null, orderedQty?: any | null, deliveredQty?: any | null, remainingQty?: any | null };
 
-export type SupplierFieldsFragment = { __typename?: 'Supplier', uuid?: string | null, name?: string | null, address?: string | null, insertedAt?: any | null, updatedAt?: any | null };
+export type SupplierFieldsFragment = { __typename?: 'Supplier', uuid?: string | null, name?: string | null, address?: string | null };
 
 export type UomFieldsFragment = { __typename?: 'Uom', uuid?: string | null, name?: string | null, insertedAt?: any | null, updatedAt?: any | null };
 
@@ -1047,6 +1077,13 @@ export type CompleteDeliveryNoteMutationVariables = Exact<{
 
 
 export type CompleteDeliveryNoteMutation = { __typename?: 'RootMutationType', completeDeliveryNote?: { __typename?: 'DeliveryNote', status?: string | null, uuid?: string | null } | null };
+
+export type CompleteReceiptNoteMutationVariables = Exact<{
+  request: ReceiptNoteRequest;
+}>;
+
+
+export type CompleteReceiptNoteMutation = { __typename?: 'RootMutationType', completeReceiptNote?: { __typename?: 'ReceiptNote', status?: string | null, uuid?: string | null } | null };
 
 export type ConfirmDeliveryNoteMutationVariables = Exact<{
   request: DeliveryNoteRequest;
@@ -1315,10 +1352,41 @@ export type ProcessesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type ProcessesQuery = { __typename?: 'RootQueryType', processes?: Array<{ __typename?: 'Process', uuid?: string | null, name?: string | null, description?: string | null, insertedAt?: any | null, updatedAt?: any | null } | null> | null };
 
+export type PurchaseInvoiceQueryVariables = Exact<{
+  request: PurchaseInvoiceRequest;
+}>;
+
+
+export type PurchaseInvoiceQuery = { __typename?: 'RootQueryType', purchaseInvoice?: { __typename?: 'PurchaseInvoice', uuid?: string | null, status?: string | null, amount?: any | null, supplierName?: string | null, purchaseOrderUuid?: string | null, insertedAt?: any | null, updatedAt?: any | null } | null };
+
+export type PurchaseInvoicesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type PurchaseInvoicesQuery = { __typename?: 'RootQueryType', purchaseInvoices?: Array<{ __typename?: 'PurchaseInvoice', uuid?: string | null, status?: string | null, amount?: any | null, supplierName?: string | null, purchaseOrderUuid?: string | null, insertedAt?: any | null, updatedAt?: any | null } | null> | null };
+
+export type PurchaseOrderQueryVariables = Exact<{
+  request: PurchaseOrderRequest;
+}>;
+
+
+export type PurchaseOrderQuery = { __typename?: 'RootQueryType', purchaseOrder?: { __typename?: 'PurchaseOrder', uuid?: string | null, status?: string | null, receiptStatus?: string | null, billingStatus?: string | null, supplierUuid?: string | null, supplierName?: string | null, supplierAddress?: string | null, totalAmount?: any | null, paidAmount?: any | null, remainingAmount?: any | null, totalQty?: any | null, receivedQty?: any | null, remainingQty?: any | null, insertedAt?: any | null, updatedAt?: any | null, items?: Array<{ __typename?: 'PurchaseOrderItem', uuid?: string | null, itemName?: string | null, uomName?: string | null, unitPrice?: any | null, orderedQty?: any | null, receivedQty?: any | null, amount?: any | null } | null> | null, purchaseInvoices?: Array<{ __typename?: 'PurchaseInvoice', uuid?: string | null, status?: string | null, amount?: any | null, supplierName?: string | null, purchaseOrderUuid?: string | null, insertedAt?: any | null, updatedAt?: any | null } | null> | null, receiptNotes?: Array<{ __typename?: 'ReceiptNote', uuid?: string | null, status?: string | null, supplierName?: string | null, totalAmount?: any | null, totalQty?: any | null, purchaseOrderUuid?: string | null, insertedAt?: any | null, updatedAt?: any | null } | null> | null } | null };
+
 export type PurchaseOrdersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type PurchaseOrdersQuery = { __typename?: 'RootQueryType', purchaseOrders?: Array<{ __typename?: 'PurchaseOrder', uuid?: string | null, status?: string | null, receiptStatus?: string | null, billingStatus?: string | null, supplierUuid?: string | null, supplierName?: string | null, supplierAddress?: string | null, totalAmount?: any | null, paidAmount?: any | null, remainingAmount?: any | null, totalQty?: any | null, receivedQty?: any | null, remainingQty?: any | null, insertedAt?: any | null, updatedAt?: any | null } | null> | null };
+export type PurchaseOrdersQuery = { __typename?: 'RootQueryType', purchaseOrders?: Array<{ __typename?: 'PurchaseOrder', uuid?: string | null, status?: string | null, receiptStatus?: string | null, billingStatus?: string | null, supplierUuid?: string | null, supplierName?: string | null, supplierAddress?: string | null, totalAmount?: any | null, paidAmount?: any | null, remainingAmount?: any | null, totalQty?: any | null, receivedQty?: any | null, remainingQty?: any | null, insertedAt?: any | null, updatedAt?: any | null, items?: Array<{ __typename?: 'PurchaseOrderItem', uuid?: string | null, itemName?: string | null, uomName?: string | null, unitPrice?: any | null, orderedQty?: any | null, receivedQty?: any | null, amount?: any | null } | null> | null } | null> | null };
+
+export type ReceiptNoteQueryVariables = Exact<{
+  request: ReceiptNoteRequest;
+}>;
+
+
+export type ReceiptNoteQuery = { __typename?: 'RootQueryType', receiptNote?: { __typename?: 'ReceiptNote', uuid?: string | null, status?: string | null, supplierName?: string | null, totalAmount?: any | null, totalQty?: any | null, purchaseOrderUuid?: string | null, insertedAt?: any | null, updatedAt?: any | null, items?: Array<{ __typename?: 'ReceiptNoteItem', uuid?: string | null, itemName?: string | null, uomName?: string | null, unitPrice?: any | null, actualQty?: any | null, amount?: any | null } | null> | null } | null };
+
+export type ReceiptNotesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ReceiptNotesQuery = { __typename?: 'RootQueryType', receiptNotes?: Array<{ __typename?: 'ReceiptNote', uuid?: string | null, status?: string | null, supplierName?: string | null, totalAmount?: any | null, totalQty?: any | null, purchaseOrderUuid?: string | null, insertedAt?: any | null, updatedAt?: any | null } | null> | null };
 
 export type SalesInvoiceQueryVariables = Exact<{
   request: SalesInvoiceRequest;
@@ -1349,12 +1417,12 @@ export type SupplierQueryVariables = Exact<{
 }>;
 
 
-export type SupplierQuery = { __typename?: 'RootQueryType', supplier?: { __typename?: 'Supplier', uuid?: string | null, name?: string | null, address?: string | null, insertedAt?: any | null, updatedAt?: any | null } | null };
+export type SupplierQuery = { __typename?: 'RootQueryType', supplier?: { __typename?: 'Supplier', uuid?: string | null, name?: string | null, address?: string | null } | null };
 
 export type SuppliersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type SuppliersQuery = { __typename?: 'RootQueryType', suppliers?: Array<{ __typename?: 'Supplier', uuid?: string | null, name?: string | null, address?: string | null, insertedAt?: any | null, updatedAt?: any | null } | null> | null };
+export type SuppliersQuery = { __typename?: 'RootQueryType', suppliers?: Array<{ __typename?: 'Supplier', uuid?: string | null, name?: string | null, address?: string | null } | null> | null };
 
 export type UoMsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1389,13 +1457,6 @@ export type WorkstationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type WorkstationsQuery = { __typename?: 'RootQueryType', workstations?: Array<{ __typename?: 'Workstation', name?: string | null } | null> | null };
-
-export type PurchaseOrderQueryVariables = Exact<{
-  request: PurchaseOrderRequest;
-}>;
-
-
-export type PurchaseOrderQuery = { __typename?: 'RootQueryType', purchaseOrder?: { __typename?: 'PurchaseOrder', uuid?: string | null, status?: string | null, receiptStatus?: string | null, billingStatus?: string | null, supplierUuid?: string | null, supplierName?: string | null, supplierAddress?: string | null, totalAmount?: any | null, paidAmount?: any | null, remainingAmount?: any | null, totalQty?: any | null, receivedQty?: any | null, remainingQty?: any | null, insertedAt?: any | null, updatedAt?: any | null } | null };
 
 export const BomFieldsFragmentDoc = gql`
     fragment BOMFields on Bom {
@@ -1458,6 +1519,17 @@ export const ProcessFieldsFragmentDoc = gql`
   updatedAt
 }
     `;
+export const PurchaseInvoiceFieldsFragmentDoc = gql`
+    fragment PurchaseInvoiceFields on PurchaseInvoice {
+  uuid
+  status
+  amount
+  supplierName
+  purchaseOrderUuid
+  insertedAt
+  updatedAt
+}
+    `;
 export const PurchaseOrderFieldsFragmentDoc = gql`
     fragment PurchaseOrderFields on PurchaseOrder {
   uuid
@@ -1480,6 +1552,34 @@ export const PurchaseOrderFieldsFragmentDoc = gql`
 export const PurchaseOrderItemFieldsFragmentDoc = gql`
     fragment PurchaseOrderItemFields on PurchaseOrderItem {
   uuid
+  itemName
+  uomName
+  unitPrice
+  orderedQty
+  receivedQty
+  amount
+}
+    `;
+export const ReceiptNoteFieldsFragmentDoc = gql`
+    fragment ReceiptNoteFields on ReceiptNote {
+  uuid
+  status
+  supplierName
+  totalAmount
+  totalQty
+  purchaseOrderUuid
+  insertedAt
+  updatedAt
+}
+    `;
+export const ReceiptNoteItemFieldsFragmentDoc = gql`
+    fragment ReceiptNoteItemFields on ReceiptNoteItem {
+  uuid
+  itemName
+  uomName
+  unitPrice
+  actualQty
+  amount
 }
     `;
 export const SalesInvoiceFieldsFragmentDoc = gql`
@@ -1527,8 +1627,6 @@ export const SupplierFieldsFragmentDoc = gql`
   uuid
   name
   address
-  insertedAt
-  updatedAt
 }
     `;
 export const UomFieldsFragmentDoc = gql`
@@ -1609,6 +1707,40 @@ export function useCompleteDeliveryNoteMutation(baseOptions?: Apollo.MutationHoo
 export type CompleteDeliveryNoteMutationHookResult = ReturnType<typeof useCompleteDeliveryNoteMutation>;
 export type CompleteDeliveryNoteMutationResult = Apollo.MutationResult<CompleteDeliveryNoteMutation>;
 export type CompleteDeliveryNoteMutationOptions = Apollo.BaseMutationOptions<CompleteDeliveryNoteMutation, CompleteDeliveryNoteMutationVariables>;
+export const CompleteReceiptNoteDocument = gql`
+    mutation CompleteReceiptNote($request: ReceiptNoteRequest!) {
+  completeReceiptNote(request: $request) {
+    status
+    uuid
+  }
+}
+    `;
+export type CompleteReceiptNoteMutationFn = Apollo.MutationFunction<CompleteReceiptNoteMutation, CompleteReceiptNoteMutationVariables>;
+
+/**
+ * __useCompleteReceiptNoteMutation__
+ *
+ * To run a mutation, you first call `useCompleteReceiptNoteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCompleteReceiptNoteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [completeReceiptNoteMutation, { data, loading, error }] = useCompleteReceiptNoteMutation({
+ *   variables: {
+ *      request: // value for 'request'
+ *   },
+ * });
+ */
+export function useCompleteReceiptNoteMutation(baseOptions?: Apollo.MutationHookOptions<CompleteReceiptNoteMutation, CompleteReceiptNoteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CompleteReceiptNoteMutation, CompleteReceiptNoteMutationVariables>(CompleteReceiptNoteDocument, options);
+      }
+export type CompleteReceiptNoteMutationHookResult = ReturnType<typeof useCompleteReceiptNoteMutation>;
+export type CompleteReceiptNoteMutationResult = Apollo.MutationResult<CompleteReceiptNoteMutation>;
+export type CompleteReceiptNoteMutationOptions = Apollo.BaseMutationOptions<CompleteReceiptNoteMutation, CompleteReceiptNoteMutationVariables>;
 export const ConfirmDeliveryNoteDocument = gql`
     mutation ConfirmDeliveryNote($request: DeliveryNoteRequest!) {
   confirmDeliveryNote(request: $request) {
@@ -3138,13 +3270,148 @@ export type ProcessesQueryHookResult = ReturnType<typeof useProcessesQuery>;
 export type ProcessesLazyQueryHookResult = ReturnType<typeof useProcessesLazyQuery>;
 export type ProcessesSuspenseQueryHookResult = ReturnType<typeof useProcessesSuspenseQuery>;
 export type ProcessesQueryResult = Apollo.QueryResult<ProcessesQuery, ProcessesQueryVariables>;
+export const PurchaseInvoiceDocument = gql`
+    query PurchaseInvoice($request: PurchaseInvoiceRequest!) {
+  purchaseInvoice(request: $request) {
+    ...PurchaseInvoiceFields
+  }
+}
+    ${PurchaseInvoiceFieldsFragmentDoc}`;
+
+/**
+ * __usePurchaseInvoiceQuery__
+ *
+ * To run a query within a React component, call `usePurchaseInvoiceQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePurchaseInvoiceQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePurchaseInvoiceQuery({
+ *   variables: {
+ *      request: // value for 'request'
+ *   },
+ * });
+ */
+export function usePurchaseInvoiceQuery(baseOptions: Apollo.QueryHookOptions<PurchaseInvoiceQuery, PurchaseInvoiceQueryVariables> & ({ variables: PurchaseInvoiceQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<PurchaseInvoiceQuery, PurchaseInvoiceQueryVariables>(PurchaseInvoiceDocument, options);
+      }
+export function usePurchaseInvoiceLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PurchaseInvoiceQuery, PurchaseInvoiceQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<PurchaseInvoiceQuery, PurchaseInvoiceQueryVariables>(PurchaseInvoiceDocument, options);
+        }
+export function usePurchaseInvoiceSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<PurchaseInvoiceQuery, PurchaseInvoiceQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<PurchaseInvoiceQuery, PurchaseInvoiceQueryVariables>(PurchaseInvoiceDocument, options);
+        }
+export type PurchaseInvoiceQueryHookResult = ReturnType<typeof usePurchaseInvoiceQuery>;
+export type PurchaseInvoiceLazyQueryHookResult = ReturnType<typeof usePurchaseInvoiceLazyQuery>;
+export type PurchaseInvoiceSuspenseQueryHookResult = ReturnType<typeof usePurchaseInvoiceSuspenseQuery>;
+export type PurchaseInvoiceQueryResult = Apollo.QueryResult<PurchaseInvoiceQuery, PurchaseInvoiceQueryVariables>;
+export const PurchaseInvoicesDocument = gql`
+    query PurchaseInvoices {
+  purchaseInvoices {
+    ...PurchaseInvoiceFields
+  }
+}
+    ${PurchaseInvoiceFieldsFragmentDoc}`;
+
+/**
+ * __usePurchaseInvoicesQuery__
+ *
+ * To run a query within a React component, call `usePurchaseInvoicesQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePurchaseInvoicesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePurchaseInvoicesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function usePurchaseInvoicesQuery(baseOptions?: Apollo.QueryHookOptions<PurchaseInvoicesQuery, PurchaseInvoicesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<PurchaseInvoicesQuery, PurchaseInvoicesQueryVariables>(PurchaseInvoicesDocument, options);
+      }
+export function usePurchaseInvoicesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PurchaseInvoicesQuery, PurchaseInvoicesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<PurchaseInvoicesQuery, PurchaseInvoicesQueryVariables>(PurchaseInvoicesDocument, options);
+        }
+export function usePurchaseInvoicesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<PurchaseInvoicesQuery, PurchaseInvoicesQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<PurchaseInvoicesQuery, PurchaseInvoicesQueryVariables>(PurchaseInvoicesDocument, options);
+        }
+export type PurchaseInvoicesQueryHookResult = ReturnType<typeof usePurchaseInvoicesQuery>;
+export type PurchaseInvoicesLazyQueryHookResult = ReturnType<typeof usePurchaseInvoicesLazyQuery>;
+export type PurchaseInvoicesSuspenseQueryHookResult = ReturnType<typeof usePurchaseInvoicesSuspenseQuery>;
+export type PurchaseInvoicesQueryResult = Apollo.QueryResult<PurchaseInvoicesQuery, PurchaseInvoicesQueryVariables>;
+export const PurchaseOrderDocument = gql`
+    query PurchaseOrder($request: PurchaseOrderRequest!) {
+  purchaseOrder(request: $request) {
+    ...PurchaseOrderFields
+    items {
+      ...PurchaseOrderItemFields
+    }
+    purchaseInvoices {
+      ...PurchaseInvoiceFields
+    }
+    receiptNotes {
+      ...ReceiptNoteFields
+    }
+  }
+}
+    ${PurchaseOrderFieldsFragmentDoc}
+${PurchaseOrderItemFieldsFragmentDoc}
+${PurchaseInvoiceFieldsFragmentDoc}
+${ReceiptNoteFieldsFragmentDoc}`;
+
+/**
+ * __usePurchaseOrderQuery__
+ *
+ * To run a query within a React component, call `usePurchaseOrderQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePurchaseOrderQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePurchaseOrderQuery({
+ *   variables: {
+ *      request: // value for 'request'
+ *   },
+ * });
+ */
+export function usePurchaseOrderQuery(baseOptions: Apollo.QueryHookOptions<PurchaseOrderQuery, PurchaseOrderQueryVariables> & ({ variables: PurchaseOrderQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<PurchaseOrderQuery, PurchaseOrderQueryVariables>(PurchaseOrderDocument, options);
+      }
+export function usePurchaseOrderLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PurchaseOrderQuery, PurchaseOrderQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<PurchaseOrderQuery, PurchaseOrderQueryVariables>(PurchaseOrderDocument, options);
+        }
+export function usePurchaseOrderSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<PurchaseOrderQuery, PurchaseOrderQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<PurchaseOrderQuery, PurchaseOrderQueryVariables>(PurchaseOrderDocument, options);
+        }
+export type PurchaseOrderQueryHookResult = ReturnType<typeof usePurchaseOrderQuery>;
+export type PurchaseOrderLazyQueryHookResult = ReturnType<typeof usePurchaseOrderLazyQuery>;
+export type PurchaseOrderSuspenseQueryHookResult = ReturnType<typeof usePurchaseOrderSuspenseQuery>;
+export type PurchaseOrderQueryResult = Apollo.QueryResult<PurchaseOrderQuery, PurchaseOrderQueryVariables>;
 export const PurchaseOrdersDocument = gql`
     query PurchaseOrders {
   purchaseOrders {
     ...PurchaseOrderFields
+    items {
+      ...PurchaseOrderItemFields
+    }
   }
 }
-    ${PurchaseOrderFieldsFragmentDoc}`;
+    ${PurchaseOrderFieldsFragmentDoc}
+${PurchaseOrderItemFieldsFragmentDoc}`;
 
 /**
  * __usePurchaseOrdersQuery__
@@ -3177,6 +3444,89 @@ export type PurchaseOrdersQueryHookResult = ReturnType<typeof usePurchaseOrdersQ
 export type PurchaseOrdersLazyQueryHookResult = ReturnType<typeof usePurchaseOrdersLazyQuery>;
 export type PurchaseOrdersSuspenseQueryHookResult = ReturnType<typeof usePurchaseOrdersSuspenseQuery>;
 export type PurchaseOrdersQueryResult = Apollo.QueryResult<PurchaseOrdersQuery, PurchaseOrdersQueryVariables>;
+export const ReceiptNoteDocument = gql`
+    query ReceiptNote($request: ReceiptNoteRequest!) {
+  receiptNote(request: $request) {
+    ...ReceiptNoteFields
+    items {
+      ...ReceiptNoteItemFields
+    }
+  }
+}
+    ${ReceiptNoteFieldsFragmentDoc}
+${ReceiptNoteItemFieldsFragmentDoc}`;
+
+/**
+ * __useReceiptNoteQuery__
+ *
+ * To run a query within a React component, call `useReceiptNoteQuery` and pass it any options that fit your needs.
+ * When your component renders, `useReceiptNoteQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useReceiptNoteQuery({
+ *   variables: {
+ *      request: // value for 'request'
+ *   },
+ * });
+ */
+export function useReceiptNoteQuery(baseOptions: Apollo.QueryHookOptions<ReceiptNoteQuery, ReceiptNoteQueryVariables> & ({ variables: ReceiptNoteQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ReceiptNoteQuery, ReceiptNoteQueryVariables>(ReceiptNoteDocument, options);
+      }
+export function useReceiptNoteLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ReceiptNoteQuery, ReceiptNoteQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ReceiptNoteQuery, ReceiptNoteQueryVariables>(ReceiptNoteDocument, options);
+        }
+export function useReceiptNoteSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<ReceiptNoteQuery, ReceiptNoteQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<ReceiptNoteQuery, ReceiptNoteQueryVariables>(ReceiptNoteDocument, options);
+        }
+export type ReceiptNoteQueryHookResult = ReturnType<typeof useReceiptNoteQuery>;
+export type ReceiptNoteLazyQueryHookResult = ReturnType<typeof useReceiptNoteLazyQuery>;
+export type ReceiptNoteSuspenseQueryHookResult = ReturnType<typeof useReceiptNoteSuspenseQuery>;
+export type ReceiptNoteQueryResult = Apollo.QueryResult<ReceiptNoteQuery, ReceiptNoteQueryVariables>;
+export const ReceiptNotesDocument = gql`
+    query ReceiptNotes {
+  receiptNotes {
+    ...ReceiptNoteFields
+  }
+}
+    ${ReceiptNoteFieldsFragmentDoc}`;
+
+/**
+ * __useReceiptNotesQuery__
+ *
+ * To run a query within a React component, call `useReceiptNotesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useReceiptNotesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useReceiptNotesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useReceiptNotesQuery(baseOptions?: Apollo.QueryHookOptions<ReceiptNotesQuery, ReceiptNotesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ReceiptNotesQuery, ReceiptNotesQueryVariables>(ReceiptNotesDocument, options);
+      }
+export function useReceiptNotesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ReceiptNotesQuery, ReceiptNotesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ReceiptNotesQuery, ReceiptNotesQueryVariables>(ReceiptNotesDocument, options);
+        }
+export function useReceiptNotesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<ReceiptNotesQuery, ReceiptNotesQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<ReceiptNotesQuery, ReceiptNotesQueryVariables>(ReceiptNotesDocument, options);
+        }
+export type ReceiptNotesQueryHookResult = ReturnType<typeof useReceiptNotesQuery>;
+export type ReceiptNotesLazyQueryHookResult = ReturnType<typeof useReceiptNotesLazyQuery>;
+export type ReceiptNotesSuspenseQueryHookResult = ReturnType<typeof useReceiptNotesSuspenseQuery>;
+export type ReceiptNotesQueryResult = Apollo.QueryResult<ReceiptNotesQuery, ReceiptNotesQueryVariables>;
 export const SalesInvoiceDocument = gql`
     query SalesInvoice($request: SalesInvoiceRequest!) {
   salesInvoice(request: $request) {
@@ -3666,46 +4016,6 @@ export type WorkstationsQueryHookResult = ReturnType<typeof useWorkstationsQuery
 export type WorkstationsLazyQueryHookResult = ReturnType<typeof useWorkstationsLazyQuery>;
 export type WorkstationsSuspenseQueryHookResult = ReturnType<typeof useWorkstationsSuspenseQuery>;
 export type WorkstationsQueryResult = Apollo.QueryResult<WorkstationsQuery, WorkstationsQueryVariables>;
-export const PurchaseOrderDocument = gql`
-    query PurchaseOrder($request: PurchaseOrderRequest!) {
-  purchaseOrder(request: $request) {
-    ...PurchaseOrderFields
-  }
-}
-    ${PurchaseOrderFieldsFragmentDoc}`;
-
-/**
- * __usePurchaseOrderQuery__
- *
- * To run a query within a React component, call `usePurchaseOrderQuery` and pass it any options that fit your needs.
- * When your component renders, `usePurchaseOrderQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = usePurchaseOrderQuery({
- *   variables: {
- *      request: // value for 'request'
- *   },
- * });
- */
-export function usePurchaseOrderQuery(baseOptions: Apollo.QueryHookOptions<PurchaseOrderQuery, PurchaseOrderQueryVariables> & ({ variables: PurchaseOrderQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<PurchaseOrderQuery, PurchaseOrderQueryVariables>(PurchaseOrderDocument, options);
-      }
-export function usePurchaseOrderLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PurchaseOrderQuery, PurchaseOrderQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<PurchaseOrderQuery, PurchaseOrderQueryVariables>(PurchaseOrderDocument, options);
-        }
-export function usePurchaseOrderSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<PurchaseOrderQuery, PurchaseOrderQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<PurchaseOrderQuery, PurchaseOrderQueryVariables>(PurchaseOrderDocument, options);
-        }
-export type PurchaseOrderQueryHookResult = ReturnType<typeof usePurchaseOrderQuery>;
-export type PurchaseOrderLazyQueryHookResult = ReturnType<typeof usePurchaseOrderLazyQuery>;
-export type PurchaseOrderSuspenseQueryHookResult = ReturnType<typeof usePurchaseOrderSuspenseQuery>;
-export type PurchaseOrderQueryResult = Apollo.QueryResult<PurchaseOrderQuery, PurchaseOrderQueryVariables>;
 
       export interface PossibleTypesResultData {
         possibleTypes: {

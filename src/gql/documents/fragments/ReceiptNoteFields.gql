@@ -1,0 +1,11 @@
+fragment ReceiptNoteFields on ReceiptNote {
+  uuid
+  status
+	supplierName
+	totalAmount
+	totalQty
+	purchaseOrderUuid
+	insertedAt
+	updatedAt
+}
+

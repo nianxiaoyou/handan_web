@@ -4,17 +4,19 @@ import { ProTable } from '@ant-design/pro-components';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 
 // locale
+import { useMessageContext } from '@/components/common/message-context';
 import client from '@/gql/apollo';
 import { SuppliersDocument, useCreateSupplierMutation } from '@/gql';
 import { onError } from '@/utils';
 import SupplierNew from './new';
 
 const SupplierList: React.FC = () => {
+  const { messageApi } = useMessageContext();
   const router = useRouter();
 
   const [createSupplier] = useCreateSupplierMutation({
     onCompleted: () => {
-      console.log('onCompleted');
+      messageApi?.success('供应商创建成功');
       handleReloadTable();
     },
     onError,

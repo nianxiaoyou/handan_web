@@ -1,4 +1,11 @@
 fragment PurchaseOrderItemFields on PurchaseOrderItem {
   uuid
+  itemName
+  uomName
+  unitPrice
+  orderedQty
+  receivedQty
+  amount
 }
+
 

@@ -1,0 +1,8 @@
+query ReceiptNote($request: ReceiptNoteRequest!) {
+	receiptNote(request: $request) {
+		...ReceiptNoteFields
+		items {
+			...ReceiptNoteItemFields
+		}
+	}
+}
