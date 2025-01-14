@@ -1,0 +1,6 @@
+fragment StaffFields on Staff {
+  uuid
+	email
+	name
+}
+

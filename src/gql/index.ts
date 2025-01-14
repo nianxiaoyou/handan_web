@@ -262,6 +262,23 @@ export type Item = {
   uuid?: Maybe<Scalars['ID']['output']>;
 };
 
+export type JobCard = {
+  __typename?: 'JobCard';
+  defectiveQty?: Maybe<Scalars['Decimal']['output']>;
+  endTime?: Maybe<Scalars['DateTime']['output']>;
+  insertedAt?: Maybe<Scalars['DateTime']['output']>;
+  operatorStaffUuid?: Maybe<Scalars['ID']['output']>;
+  producedQty?: Maybe<Scalars['Decimal']['output']>;
+  startTime?: Maybe<Scalars['DateTime']['output']>;
+  status?: Maybe<Scalars['String']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  uuid?: Maybe<Scalars['ID']['output']>;
+  workOrder?: Maybe<WorkOrder>;
+  workOrderItem?: Maybe<WorkOrderItem>;
+  workOrderItemUuid?: Maybe<Scalars['ID']['output']>;
+  workOrderUuid?: Maybe<Scalars['ID']['output']>;
+};
+
 export type LoginRequest = {
   email?: InputMaybe<Scalars['String']['input']>;
   password?: InputMaybe<Scalars['String']['input']>;
@@ -665,6 +682,8 @@ export type RootQueryType = {
   item?: Maybe<Item>;
   /** list items */
   items?: Maybe<Array<Maybe<Item>>>;
+  /** list staff */
+  listStaff?: Maybe<Array<Maybe<Staff>>>;
   /** list payment entries */
   paymentEntries?: Maybe<Array<Maybe<PaymentEntry>>>;
   /** get payment entry */
@@ -709,6 +728,10 @@ export type RootQueryType = {
   warehouses?: Maybe<Array<Maybe<Warehouse>>>;
   /** get work order */
   workOrder?: Maybe<WorkOrder>;
+  /** get work order item */
+  workOrderItem?: Maybe<WorkOrderItem>;
+  /** list work order items */
+  workOrderItems?: Maybe<Array<Maybe<WorkOrderItem>>>;
   /** list work orders */
   workOrders?: Maybe<Array<Maybe<WorkOrder>>>;
   /** get workstation */
@@ -798,6 +821,12 @@ export type RootQueryTypeSupplierArgs = {
 
 /** the root of query. */
 export type RootQueryTypeWorkOrderArgs = {
+  request: IdRequest;
+};
+
+
+/** the root of query. */
+export type RootQueryTypeWorkOrderItemArgs = {
   request: IdRequest;
 };
 
@@ -997,12 +1026,14 @@ export type WorkOrderItem = {
   defectiveQty?: Maybe<Scalars['Decimal']['output']>;
   insertedAt?: Maybe<Scalars['DateTime']['output']>;
   itemName?: Maybe<Scalars['String']['output']>;
+  jobCards?: Maybe<Array<Maybe<JobCard>>>;
   position?: Maybe<Scalars['Int']['output']>;
   processName?: Maybe<Scalars['String']['output']>;
   producedQty?: Maybe<Scalars['Decimal']['output']>;
   requiredQty?: Maybe<Scalars['Decimal']['output']>;
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
   uuid?: Maybe<Scalars['ID']['output']>;
+  workOrderUuid?: Maybe<Scalars['ID']['output']>;
 };
 
 export type WorkOrderMaterialRequest = {
@@ -1066,6 +1097,8 @@ export type SalesOrderFieldsFragment = { __typename?: 'SalesOrder', uuid?: strin
 
 export type SalesOrderItemFieldsFragment = { __typename?: 'SalesOrderItem', uuid?: string | null, itemUuid?: string | null, itemName?: string | null, amount?: any | null, unitPrice?: any | null, orderedQty?: any | null, deliveredQty?: any | null, remainingQty?: any | null };
 
+export type StaffFieldsFragment = { __typename?: 'Staff', uuid?: string | null, email?: string | null, name?: string | null };
+
 export type SupplierFieldsFragment = { __typename?: 'Supplier', uuid?: string | null, name?: string | null, address?: string | null };
 
 export type UomFieldsFragment = { __typename?: 'Uom', uuid?: string | null, name?: string | null, insertedAt?: any | null, updatedAt?: any | null };
@@ -1074,7 +1107,7 @@ export type WarehouseFieldsFragment = { __typename?: 'Warehouse', uuid?: string 
 
 export type WorkOrderFieldsFragment = { __typename?: 'WorkOrder', uuid?: string | null, title?: string | null, startTime?: any | null, endTime?: any | null, type?: string | null, status?: string | null, plannedQty?: any | null, storedQty?: any | null, producedQty?: any | null, scrapedQty?: any | null, itemUuid?: string | null, itemName?: string | null, uomName?: string | null, supplierName?: string | null, supplierUuid?: string | null, salesOrderUuid?: string | null, stockUomUuid?: string | null, insertedAt?: any | null, updatedAt?: any | null };
 
-export type WorkOrderItemFieldsFragment = { __typename?: 'WorkOrderItem', uuid?: string | null, itemName?: string | null, processName?: string | null, position?: number | null, requiredQty?: any | null, defectiveQty?: any | null, producedQty?: any | null };
+export type WorkOrderItemFieldsFragment = { __typename?: 'WorkOrderItem', uuid?: string | null, workOrderUuid?: string | null, itemName?: string | null, processName?: string | null, position?: number | null, requiredQty?: any | null, defectiveQty?: any | null, producedQty?: any | null };
 
 export type WorkstationFieldsFragment = { __typename?: 'Workstation', uuid?: string | null, name?: string | null, insertedAt?: any | null, updatedAt?: any | null };
 
@@ -1323,6 +1356,11 @@ export type ItemsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type ItemsQuery = { __typename?: 'RootQueryType', items?: Array<{ __typename?: 'Item', uuid?: string | null, name?: string | null, spec?: string | null, sellingPrice?: any | null, defaultStockUomUuid?: string | null, defaultStockUomName?: string | null, insertedAt?: any | null, updatedAt?: any | null, stockUoms?: Array<{ __typename?: 'StockUom', uuid?: string | null, conversionFactor?: number | null, uomName?: string | null } | null> | null } | null> | null };
 
+export type ListStaffQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ListStaffQuery = { __typename?: 'RootQueryType', listStaff?: Array<{ __typename?: 'Staff', uuid?: string | null, email?: string | null, name?: string | null } | null> | null };
+
 export type PaymentEntriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1439,7 +1477,19 @@ export type WorkOrderQueryVariables = Exact<{
 }>;
 
 
-export type WorkOrderQuery = { __typename?: 'RootQueryType', workOrder?: { __typename?: 'WorkOrder', uuid?: string | null, title?: string | null, startTime?: any | null, endTime?: any | null, type?: string | null, status?: string | null, plannedQty?: any | null, storedQty?: any | null, producedQty?: any | null, scrapedQty?: any | null, itemUuid?: string | null, itemName?: string | null, uomName?: string | null, supplierName?: string | null, supplierUuid?: string | null, salesOrderUuid?: string | null, stockUomUuid?: string | null, insertedAt?: any | null, updatedAt?: any | null, items?: Array<{ __typename?: 'WorkOrderItem', uuid?: string | null, itemName?: string | null, processName?: string | null, position?: number | null, requiredQty?: any | null, defectiveQty?: any | null, producedQty?: any | null } | null> | null, materialRequests?: Array<{ __typename?: 'WorkOrderMaterialRequest', uuid?: string | null, itemName?: string | null, actualQty?: any | null, remainingQty?: any | null, receivedQty?: any | null, uomName?: string | null, stockUomUuid?: string | null, bomUuid?: string | null, warehouseUuid?: string | null, itemUuid?: string | null, workOrderUuid?: string | null } | null> | null } | null };
+export type WorkOrderQuery = { __typename?: 'RootQueryType', workOrder?: { __typename?: 'WorkOrder', uuid?: string | null, title?: string | null, startTime?: any | null, endTime?: any | null, type?: string | null, status?: string | null, plannedQty?: any | null, storedQty?: any | null, producedQty?: any | null, scrapedQty?: any | null, itemUuid?: string | null, itemName?: string | null, uomName?: string | null, supplierName?: string | null, supplierUuid?: string | null, salesOrderUuid?: string | null, stockUomUuid?: string | null, insertedAt?: any | null, updatedAt?: any | null, items?: Array<{ __typename?: 'WorkOrderItem', uuid?: string | null, workOrderUuid?: string | null, itemName?: string | null, processName?: string | null, position?: number | null, requiredQty?: any | null, defectiveQty?: any | null, producedQty?: any | null } | null> | null, materialRequests?: Array<{ __typename?: 'WorkOrderMaterialRequest', uuid?: string | null, itemName?: string | null, actualQty?: any | null, remainingQty?: any | null, receivedQty?: any | null, uomName?: string | null, stockUomUuid?: string | null, bomUuid?: string | null, warehouseUuid?: string | null, itemUuid?: string | null, workOrderUuid?: string | null } | null> | null } | null };
+
+export type WorkOrderItemQueryVariables = Exact<{
+  request: IdRequest;
+}>;
+
+
+export type WorkOrderItemQuery = { __typename?: 'RootQueryType', workOrderItem?: { __typename?: 'WorkOrderItem', uuid?: string | null, workOrderUuid?: string | null, itemName?: string | null, processName?: string | null, position?: number | null, requiredQty?: any | null, defectiveQty?: any | null, producedQty?: any | null } | null };
+
+export type WorkOrderItemsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type WorkOrderItemsQuery = { __typename?: 'RootQueryType', workOrderItems?: Array<{ __typename?: 'WorkOrderItem', uuid?: string | null, workOrderUuid?: string | null, itemName?: string | null, processName?: string | null, position?: number | null, requiredQty?: any | null, defectiveQty?: any | null, producedQty?: any | null } | null> | null };
 
 export type WorkOrdersQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1645,6 +1695,13 @@ export const SalesOrderItemFieldsFragmentDoc = gql`
   remainingQty
 }
     `;
+export const StaffFieldsFragmentDoc = gql`
+    fragment StaffFields on Staff {
+  uuid
+  email
+  name
+}
+    `;
 export const SupplierFieldsFragmentDoc = gql`
     fragment SupplierFields on Supplier {
   uuid
@@ -1695,6 +1752,7 @@ export const WorkOrderFieldsFragmentDoc = gql`
 export const WorkOrderItemFieldsFragmentDoc = gql`
     fragment WorkOrderItemFields on WorkOrderItem {
   uuid
+  workOrderUuid
   itemName
   processName
   position
@@ -3085,6 +3143,45 @@ export type ItemsQueryHookResult = ReturnType<typeof useItemsQuery>;
 export type ItemsLazyQueryHookResult = ReturnType<typeof useItemsLazyQuery>;
 export type ItemsSuspenseQueryHookResult = ReturnType<typeof useItemsSuspenseQuery>;
 export type ItemsQueryResult = Apollo.QueryResult<ItemsQuery, ItemsQueryVariables>;
+export const ListStaffDocument = gql`
+    query ListStaff {
+  listStaff {
+    ...StaffFields
+  }
+}
+    ${StaffFieldsFragmentDoc}`;
+
+/**
+ * __useListStaffQuery__
+ *
+ * To run a query within a React component, call `useListStaffQuery` and pass it any options that fit your needs.
+ * When your component renders, `useListStaffQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useListStaffQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useListStaffQuery(baseOptions?: Apollo.QueryHookOptions<ListStaffQuery, ListStaffQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ListStaffQuery, ListStaffQueryVariables>(ListStaffDocument, options);
+      }
+export function useListStaffLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ListStaffQuery, ListStaffQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ListStaffQuery, ListStaffQueryVariables>(ListStaffDocument, options);
+        }
+export function useListStaffSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<ListStaffQuery, ListStaffQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<ListStaffQuery, ListStaffQueryVariables>(ListStaffDocument, options);
+        }
+export type ListStaffQueryHookResult = ReturnType<typeof useListStaffQuery>;
+export type ListStaffLazyQueryHookResult = ReturnType<typeof useListStaffLazyQuery>;
+export type ListStaffSuspenseQueryHookResult = ReturnType<typeof useListStaffSuspenseQuery>;
+export type ListStaffQueryResult = Apollo.QueryResult<ListStaffQuery, ListStaffQueryVariables>;
 export const PaymentEntriesDocument = gql`
     query PaymentEntries {
   paymentEntries {
@@ -3911,6 +4008,85 @@ export type WorkOrderQueryHookResult = ReturnType<typeof useWorkOrderQuery>;
 export type WorkOrderLazyQueryHookResult = ReturnType<typeof useWorkOrderLazyQuery>;
 export type WorkOrderSuspenseQueryHookResult = ReturnType<typeof useWorkOrderSuspenseQuery>;
 export type WorkOrderQueryResult = Apollo.QueryResult<WorkOrderQuery, WorkOrderQueryVariables>;
+export const WorkOrderItemDocument = gql`
+    query workOrderItem($request: IdRequest!) {
+  workOrderItem(request: $request) {
+    ...WorkOrderItemFields
+  }
+}
+    ${WorkOrderItemFieldsFragmentDoc}`;
+
+/**
+ * __useWorkOrderItemQuery__
+ *
+ * To run a query within a React component, call `useWorkOrderItemQuery` and pass it any options that fit your needs.
+ * When your component renders, `useWorkOrderItemQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useWorkOrderItemQuery({
+ *   variables: {
+ *      request: // value for 'request'
+ *   },
+ * });
+ */
+export function useWorkOrderItemQuery(baseOptions: Apollo.QueryHookOptions<WorkOrderItemQuery, WorkOrderItemQueryVariables> & ({ variables: WorkOrderItemQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<WorkOrderItemQuery, WorkOrderItemQueryVariables>(WorkOrderItemDocument, options);
+      }
+export function useWorkOrderItemLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<WorkOrderItemQuery, WorkOrderItemQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<WorkOrderItemQuery, WorkOrderItemQueryVariables>(WorkOrderItemDocument, options);
+        }
+export function useWorkOrderItemSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<WorkOrderItemQuery, WorkOrderItemQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<WorkOrderItemQuery, WorkOrderItemQueryVariables>(WorkOrderItemDocument, options);
+        }
+export type WorkOrderItemQueryHookResult = ReturnType<typeof useWorkOrderItemQuery>;
+export type WorkOrderItemLazyQueryHookResult = ReturnType<typeof useWorkOrderItemLazyQuery>;
+export type WorkOrderItemSuspenseQueryHookResult = ReturnType<typeof useWorkOrderItemSuspenseQuery>;
+export type WorkOrderItemQueryResult = Apollo.QueryResult<WorkOrderItemQuery, WorkOrderItemQueryVariables>;
+export const WorkOrderItemsDocument = gql`
+    query WorkOrderItems {
+  workOrderItems {
+    ...WorkOrderItemFields
+  }
+}
+    ${WorkOrderItemFieldsFragmentDoc}`;
+
+/**
+ * __useWorkOrderItemsQuery__
+ *
+ * To run a query within a React component, call `useWorkOrderItemsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useWorkOrderItemsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useWorkOrderItemsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useWorkOrderItemsQuery(baseOptions?: Apollo.QueryHookOptions<WorkOrderItemsQuery, WorkOrderItemsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<WorkOrderItemsQuery, WorkOrderItemsQueryVariables>(WorkOrderItemsDocument, options);
+      }
+export function useWorkOrderItemsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<WorkOrderItemsQuery, WorkOrderItemsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<WorkOrderItemsQuery, WorkOrderItemsQueryVariables>(WorkOrderItemsDocument, options);
+        }
+export function useWorkOrderItemsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<WorkOrderItemsQuery, WorkOrderItemsQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<WorkOrderItemsQuery, WorkOrderItemsQueryVariables>(WorkOrderItemsDocument, options);
+        }
+export type WorkOrderItemsQueryHookResult = ReturnType<typeof useWorkOrderItemsQuery>;
+export type WorkOrderItemsLazyQueryHookResult = ReturnType<typeof useWorkOrderItemsLazyQuery>;
+export type WorkOrderItemsSuspenseQueryHookResult = ReturnType<typeof useWorkOrderItemsSuspenseQuery>;
+export type WorkOrderItemsQueryResult = Apollo.QueryResult<WorkOrderItemsQuery, WorkOrderItemsQueryVariables>;
 export const WorkOrdersDocument = gql`
     query WorkOrders {
   workOrders {

@@ -1,0 +1,5 @@
+query workOrderItem($request: IdRequest!) {
+	workOrderItem(request: $request) {
+		...WorkOrderItemFields
+	}
+}

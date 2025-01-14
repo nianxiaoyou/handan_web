@@ -1,6 +1,33 @@
 import client from '@/gql/apollo';
 
-import { WarehousesDocument, CustomersDocument, SuppliersDocument, ItemsDocument, BomsDocument } from '@/gql';
+import {
+  WarehousesDocument,
+  CustomersDocument,
+  SuppliersDocument,
+  ItemsDocument,
+  BomsDocument,
+  ListStaffDocument,
+} from '@/gql';
+
+export const fetchStaff = async (params?: any) => {
+  const request = {
+    name: params.name,
+  };
+
+  const { data } = await client.query({
+    query: ListStaffDocument,
+    variables: { request },
+  });
+
+  const result = data?.listStaff?.map((item: any) => {
+    return {
+      value: item.uuid,
+      label: item.email,
+    };
+  });
+
+  return result;
+};
 
 export const fetchBoms = async (params?: any) => {
   const request = {
