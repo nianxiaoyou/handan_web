@@ -267,6 +267,7 @@ export type JobCard = {
   defectiveQty?: Maybe<Scalars['Decimal']['output']>;
   endTime?: Maybe<Scalars['DateTime']['output']>;
   insertedAt?: Maybe<Scalars['DateTime']['output']>;
+  operatorStaff?: Maybe<Staff>;
   operatorStaffUuid?: Maybe<Scalars['ID']['output']>;
   producedQty?: Maybe<Scalars['Decimal']['output']>;
   startTime?: Maybe<Scalars['DateTime']['output']>;
@@ -1077,6 +1078,8 @@ export type DeliveryNoteItemFieldsFragment = { __typename?: 'DeliveryNoteItem', 
 
 export type ItemFieldsFragment = { __typename?: 'Item', uuid?: string | null, name?: string | null, spec?: string | null, sellingPrice?: any | null, defaultStockUomUuid?: string | null, defaultStockUomName?: string | null, insertedAt?: any | null, updatedAt?: any | null };
 
+export type JobCardFieldsFragment = { __typename?: 'JobCard', uuid?: string | null, startTime?: any | null, endTime?: any | null, status?: string | null, defectiveQty?: any | null, producedQty?: any | null, workOrderItemUuid?: string | null, workOrderUuid?: string | null, operatorStaff?: { __typename?: 'Staff', email?: string | null } | null };
+
 export type MaterialRequestFieldsFragment = { __typename?: 'WorkOrderMaterialRequest', uuid?: string | null, itemName?: string | null, actualQty?: any | null, remainingQty?: any | null, receivedQty?: any | null, uomName?: string | null, stockUomUuid?: string | null, bomUuid?: string | null, warehouseUuid?: string | null, itemUuid?: string | null, workOrderUuid?: string | null };
 
 export type ProcessFieldsFragment = { __typename?: 'Process', uuid?: string | null, name?: string | null, description?: string | null, insertedAt?: any | null, updatedAt?: any | null };
@@ -1484,7 +1487,7 @@ export type WorkOrderItemQueryVariables = Exact<{
 }>;
 
 
-export type WorkOrderItemQuery = { __typename?: 'RootQueryType', workOrderItem?: { __typename?: 'WorkOrderItem', uuid?: string | null, workOrderUuid?: string | null, itemName?: string | null, processName?: string | null, position?: number | null, requiredQty?: any | null, defectiveQty?: any | null, producedQty?: any | null } | null };
+export type WorkOrderItemQuery = { __typename?: 'RootQueryType', workOrderItem?: { __typename?: 'WorkOrderItem', uuid?: string | null, workOrderUuid?: string | null, itemName?: string | null, processName?: string | null, position?: number | null, requiredQty?: any | null, defectiveQty?: any | null, producedQty?: any | null, jobCards?: Array<{ __typename?: 'JobCard', uuid?: string | null, startTime?: any | null, endTime?: any | null, status?: string | null, defectiveQty?: any | null, producedQty?: any | null, workOrderItemUuid?: string | null, workOrderUuid?: string | null, operatorStaff?: { __typename?: 'Staff', email?: string | null } | null } | null> | null } | null };
 
 export type WorkOrderItemsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1566,6 +1569,21 @@ export const ItemFieldsFragmentDoc = gql`
   defaultStockUomName
   insertedAt
   updatedAt
+}
+    `;
+export const JobCardFieldsFragmentDoc = gql`
+    fragment JobCardFields on JobCard {
+  uuid
+  startTime
+  endTime
+  status
+  operatorStaff {
+    email
+  }
+  defectiveQty
+  producedQty
+  workOrderItemUuid
+  workOrderUuid
 }
     `;
 export const MaterialRequestFieldsFragmentDoc = gql`
@@ -4012,9 +4030,13 @@ export const WorkOrderItemDocument = gql`
     query workOrderItem($request: IdRequest!) {
   workOrderItem(request: $request) {
     ...WorkOrderItemFields
+    jobCards {
+      ...JobCardFields
+    }
   }
 }
-    ${WorkOrderItemFieldsFragmentDoc}`;
+    ${WorkOrderItemFieldsFragmentDoc}
+${JobCardFieldsFragmentDoc}`;
 
 /**
  * __useWorkOrderItemQuery__

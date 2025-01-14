@@ -1,6 +1,7 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { ProTable } from '@ant-design/pro-components';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
+import { Button } from 'antd';
 
 // locale
 import { useMessageContext } from '../common/message-context';
@@ -9,9 +10,13 @@ import { WorkOrderItemsDocument, useReportJobCardMutation } from '@/gql';
 import { onError } from '@/utils';
 
 import ReportJobCard from './report-job-card';
+import ItemDetail from './item-detail';
 
 const WorkOrderItems: React.FC = () => {
   const { messageApi } = useMessageContext();
+
+  const [detailVisible, setDetailVisible] = useState(false);
+  const [record, setRecord] = useState<any>({});
 
   const [reportJobCard] = useReportJobCardMutation({
     onCompleted: () => {
@@ -31,6 +36,11 @@ const WorkOrderItems: React.FC = () => {
     await reportJobCard({ variables: { request: values } });
   };
 
+  const handleDetail = (record: any) => {
+    setDetailVisible(true);
+    setRecord(record);
+  };
+
   const columns: ProColumns<any>[] = [
     // {
     //   title: 'uuid',
@@ -42,6 +52,11 @@ const WorkOrderItems: React.FC = () => {
       key: 'itemName',
       width: 200,
       dataIndex: 'itemName',
+      render: (text, record) => (
+        <Button type="link" onClick={() => handleDetail(record)}>
+          {text}
+        </Button>
+      ),
     },
     {
       title: '工艺名称',
@@ -102,6 +117,8 @@ const WorkOrderItems: React.FC = () => {
         // }}
         dateFormatter="string"
       />
+
+      <ItemDetail uuid={record?.uuid} visible={detailVisible} record={record} onClose={() => setDetailVisible(false)} />
     </>
   );
 };
