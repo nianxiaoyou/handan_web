@@ -1,0 +1,8 @@
+query DeliveryNote($request: DeliveryNoteRequest!) {
+	deliveryNote(request: $request) {
+		...DeliveryNoteFields
+		items {
+			...DeliveryNoteItemFields
+		}
+	}
+}

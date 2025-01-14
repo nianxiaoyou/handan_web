@@ -99,7 +99,15 @@ const menuProps = {
         name: '库存管理',
         routes: [
           {
-            name: '出入库',
+            name: '出库凭证',
+            path: '/stock/delivery-notes',
+          },
+          {
+            name: '入库凭证',
+            path: '/stock/receipt-notes',
+          },
+          {
+            name: '库存记录',
             path: '/stock/inventory-entries',
           },
         ],
@@ -109,7 +117,15 @@ const menuProps = {
         name: '财务管理',
         routes: [
           {
-            name: '收付款',
+            name: '销售收款凭证',
+            path: '/finance/sales-invoices',
+          },
+          {
+            name: '采购付款凭证',
+            path: '/finance/purchase-invoices',
+          },
+          {
+            name: '交易记录',
             path: '/finance/payment-entries',
           },
           {

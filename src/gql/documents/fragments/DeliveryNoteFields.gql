@@ -1,0 +1,11 @@
+fragment DeliveryNoteFields on DeliveryNote {
+  uuid
+  status
+	customerName
+	totalAmount
+	totalQty
+	salesOrderUuid
+	insertedAt
+	updatedAt
+}
+

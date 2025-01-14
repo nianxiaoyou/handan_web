@@ -1,0 +1,5 @@
+query SalesInvoice($request: SalesInvoiceRequest!) {
+	salesInvoice(request: $request) {
+		...SalesInvoiceFields
+	}
+}

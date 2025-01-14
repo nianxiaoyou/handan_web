@@ -1,16 +1,35 @@
 import { useState, useEffect } from 'react';
 import { Space, Button } from 'antd';
-import { ModalForm, ProForm, ProFormText, ProFormDigit, ProFormSelect } from '@ant-design/pro-components';
+import {
+  ModalForm,
+  ProForm,
+  ProFormText,
+  ProFormDigit,
+  ProFormSelect,
+  EditableProTable,
+} from '@ant-design/pro-components';
+import type { ProColumns } from '@ant-design/pro-components';
 
 // locale
-import { useUoMsLazyQuery } from '@/gql';
+import { useUoMsLazyQuery, useWarehousesLazyQuery } from '@/gql';
 import { onError } from '@/utils';
 
 const ItemNew = (props: any) => {
-  const [form] = ProForm.useForm();
   const { onCreate } = props;
+
+  const [form] = ProForm.useForm();
   const [modalVisible, setModalVisible] = useState(false);
   const [uoms, setUoms] = useState([]);
+  const [warehouses, setWarehouses] = useState([]);
+  const [stockItems, setStockItems] = useState([]);
+
+  const waitTime = (time: number = 100) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(true);
+      }, time);
+    });
+  };
 
   const [fetchUoMs] = useUoMsLazyQuery({
     fetchPolicy: 'no-cache',
@@ -28,28 +47,96 @@ const ItemNew = (props: any) => {
     onError,
   });
 
+  const [fetchWarehouses] = useWarehousesLazyQuery({
+    fetchPolicy: 'no-cache',
+    variables: {},
+    onCompleted: (data: any) => {
+      const result = data?.warehouses?.map((item: any) => {
+        return {
+          ...item,
+          qty: 0,
+        };
+      });
+
+      setStockItems(result);
+    },
+    onError,
+  });
+
   useEffect(() => {
     fetchUoMs();
+    fetchWarehouses();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+  const handleAdjustDataSource = (values: any) => {
+    setStockItems(values);
+  };
+
   const onFinish = async (values: any) => {
-    console.log('values:', values);
+    const stockUoms = [
+      {
+        uomUuid: values.uomUuid,
+        conversionFactor: 1,
+        sequence: 1,
+      },
+    ];
+
+    const openingStocks = stockItems.map((item: any) => {
+      return {
+        warehouseUuid: item.uuid,
+        qty: item.qty,
+      };
+    });
+
     const request = {
       name: values.name,
       sellingPrice: parseFloat(values.sellingPrice),
       spec: values.spec,
-      stockUoms: [
-        {
-          uomUuid: values.uomUuid,
-          conversionFactor: 1,
-          sequence: 1,
-        },
-      ],
+      stockUoms,
+      openingStocks,
     };
 
     await onCreate(request);
+
     setModalVisible(false);
   };
+
+  const columns: ProColumns<any>[] = [
+    {
+      title: '仓库',
+      dataIndex: 'name',
+      valueType: 'select',
+      align: 'center',
+      readonly: true,
+    },
+    {
+      title: '数量',
+      dataIndex: 'qty',
+      valueType: 'digit',
+      fieldProps: {
+        defaultValue: 0,
+      },
+      formItemProps: () => {
+        return {
+          rules: [{ required: true, message: '此项为必填项' }],
+        };
+      },
+    },
+    {
+      title: '操作',
+      valueType: 'option',
+      render: (text, record, _, action) => [
+        <a
+          key="editable"
+          onClick={() => {
+            action?.startEditable?.(record.uuid);
+          }}
+        >
+          编辑
+        </a>,
+      ],
+    },
+  ];
 
   return (
     <>
@@ -110,6 +197,21 @@ const ItemNew = (props: any) => {
             }}
           />
         </ProForm.Group>
+
+        <EditableProTable
+          rowKey="uuid"
+          size="small"
+          maxLength={20}
+          controlled
+          recordCreatorProps={false}
+          loading={false}
+          columns={columns}
+          value={stockItems}
+          onChange={(values) => handleAdjustDataSource(values)}
+          editable={{
+            actionRender: (row, config, defaultDom) => [defaultDom.save, defaultDom.cancel],
+          }}
+        />
       </ModalForm>
     </>
   );

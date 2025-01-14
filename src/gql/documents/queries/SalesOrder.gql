@@ -1,5 +1,14 @@
 query SalesOrder($request: SalesOrderRequest!) {
 	salesOrder(request: $request) {
 		...SalesOrderFields
+		items {
+			...SalesOrderItemFields
+		}
+		deliveryNotes {
+			...DeliveryNoteFields
+		}
+		salesInvoices {
+			...SalesInvoiceFields
+		}
 	}
 }
