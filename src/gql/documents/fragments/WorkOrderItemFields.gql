@@ -1,0 +1,4 @@
+fragment WorkOrderItemFields on WorkOrderItem {
+  uuid
+}
+

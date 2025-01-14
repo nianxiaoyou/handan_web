@@ -1,0 +1,5 @@
+query SalesOrder($request: SalesOrderRequest!) {
+	salesOrder(request: $request) {
+		...SalesOrderFields
+	}
+}

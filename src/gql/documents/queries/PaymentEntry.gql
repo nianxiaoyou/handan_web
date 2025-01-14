@@ -1,0 +1,5 @@
+query PaymentEntry($request: IdRequest!) {
+	paymentEntry(request: $request) {
+		uuid
+	}
+}

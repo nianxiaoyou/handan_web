@@ -1,0 +1,6 @@
+mutation ConfirmPurchaseOrder($request: PurchaseOrderRequest!) {
+	confirmPurchaseOrder(request: $request) {
+		status
+		uuid
+	}
+}

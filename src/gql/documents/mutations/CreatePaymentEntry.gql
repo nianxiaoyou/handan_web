@@ -1,0 +1,5 @@
+mutation CreatePaymentEntry($request: CreatePaymentEntryRequest!) {
+	createPaymentEntry(request: $request) {
+		uuid
+	}
+}

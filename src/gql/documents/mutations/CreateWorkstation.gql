@@ -1,0 +1,5 @@
+mutation CreateWorkstation($request: CreateWorkstationRequest!) {
+	createWorkstation(request: $request) {
+		name
+	}
+}

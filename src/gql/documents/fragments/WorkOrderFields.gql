@@ -1,0 +1,22 @@
+fragment WorkOrderFields on WorkOrder {
+  uuid
+  title
+  startTime
+  endTime
+  type
+  status
+  plannedQty
+  storedQty
+  producedQty
+  scrapedQty
+  itemUuid
+  itemName
+  uomName
+  supplierName
+  supplierUuid
+  salesOrderUuid
+  stockUomUuid
+  insertedAt
+  updatedAt
+}
+

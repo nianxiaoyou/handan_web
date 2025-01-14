@@ -1,0 +1,9 @@
+mutation CreatePurchaseOrder($request: CreatePurchaseOrderRequest!) {
+	createPurchaseOrder(request: $request) {
+		supplierUuid
+		status
+		items {
+			itemName
+		}
+	}
+}

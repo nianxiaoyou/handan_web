@@ -1,0 +1,5 @@
+query Process($request: IdRequest!) {
+	process(request: $request) {
+		uuid
+	}
+}

@@ -1,0 +1,16 @@
+fragment SalesOrderFields on SalesOrder {
+  uuid
+  status
+  billingStatus
+  deliveryStatus
+  customerName
+  totalAmount
+  paidAmount
+  remainingAmount
+  totalQty
+  deliveredQty
+  remainingQty
+  insertedAt
+  updatedAt
+}
+

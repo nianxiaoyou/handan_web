@@ -1,0 +1,6 @@
+mutation CreatePurchaseInvoice($request: CreatePurchaseInvoiceRequest!) {
+	createPurchaseInvoice(request: $request) {
+		status
+		amount
+	}
+}

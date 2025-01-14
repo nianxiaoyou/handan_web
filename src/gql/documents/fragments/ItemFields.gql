@@ -1,0 +1,9 @@
+fragment ItemFields on Item {
+  uuid
+  name
+	spec
+  sellingPrice
+	defaultStockUomName
+  insertedAt
+  updatedAt
+}

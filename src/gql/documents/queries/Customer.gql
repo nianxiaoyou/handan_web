@@ -1,0 +1,5 @@
+query Customer($request: IdRequest!) {
+	customer(request: $request) {
+		...CustomerFields
+	}
+}

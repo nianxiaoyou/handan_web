@@ -1,0 +1,6 @@
+query company{
+  company {
+    uuid
+    name
+  }
+}

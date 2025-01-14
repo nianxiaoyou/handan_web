@@ -1,0 +1,5 @@
+mutation CreateBOM($request: CreateBomRequest!) {
+	createBom(request: $request) {
+		name
+	}
+}

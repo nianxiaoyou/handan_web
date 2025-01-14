@@ -1,0 +1,5 @@
+query PurchaseOrder($request: PurchaseOrderRequest!) {
+	purchaseOrder(request: $request) {
+		...PurchaseOrderFields
+	}
+}

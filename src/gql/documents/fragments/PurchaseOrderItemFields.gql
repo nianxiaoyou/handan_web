@@ -1,0 +1,4 @@
+fragment PurchaseOrderItemFields on PurchaseOrderItem {
+  uuid
+}
+

@@ -1,0 +1,8 @@
+fragment ProcessFields on Process {
+  uuid
+  name
+  description
+  insertedAt
+  updatedAt
+}
+

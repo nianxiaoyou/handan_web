@@ -1,0 +1,6 @@
+mutation CreateWorkOrder($request: CreateWorkOrderRequest!) {
+	createWorkOrder(request: $request) {
+		itemUuid
+		status
+	}
+}

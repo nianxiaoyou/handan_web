@@ -1,0 +1,10 @@
+mutation CreateReceiptNote($request: CreateReceiptNoteRequest!) {
+	createReceiptNote(request: $request) {
+		purchaseOrderUuid
+		totalQty
+		status
+		items {
+			itemName
+		}
+	}
+}

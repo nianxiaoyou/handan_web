@@ -1,0 +1,8 @@
+fragment CustomerFields on Customer {
+  uuid
+  name
+  address
+  insertedAt
+  updatedAt
+}
+

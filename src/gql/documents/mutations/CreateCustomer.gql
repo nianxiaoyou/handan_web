@@ -1,0 +1,7 @@
+mutation CreateCustomer($request: CreateCustomerRequest!) {
+	createCustomer(request: $request) {
+		uuid
+		name
+		address
+	}
+}

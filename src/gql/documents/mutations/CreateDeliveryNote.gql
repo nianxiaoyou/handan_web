@@ -1,0 +1,10 @@
+mutation CreateDeliveryNote($request: CreateDeliveryNoteRequest!) {
+	createDeliveryNote(request: $request) {
+		salesOrderUuid
+		totalQty
+		status
+		items {
+			itemName
+		}
+	}
+}

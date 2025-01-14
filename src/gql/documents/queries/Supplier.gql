@@ -1,0 +1,5 @@
+query Supplier($request: IdRequest!) {
+	supplier(request: $request) {
+		...SupplierFields
+	}
+}

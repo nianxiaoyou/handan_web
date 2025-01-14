@@ -1,0 +1,7 @@
+mutation CreateSupplier($request: CreateSupplierRequest!) {
+	createSupplier(request: $request) {
+		uuid
+		name
+		address
+	}
+}

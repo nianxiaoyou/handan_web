@@ -1,0 +1,5 @@
+query SalesOrders {
+	salesOrders {
+		...SalesOrderFields
+	}
+}

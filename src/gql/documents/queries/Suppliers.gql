@@ -1,0 +1,5 @@
+query Suppliers {
+	suppliers {
+		...SupplierFields
+	}
+}

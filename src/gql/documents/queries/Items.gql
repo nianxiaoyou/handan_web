@@ -1,0 +1,10 @@
+query Items {
+	items {
+		...ItemFields
+		stockUoms {
+			uuid
+			conversionFactor
+			uomName
+		}
+	}
+}

@@ -1,0 +1,7 @@
+fragment BOMFields on Bom {
+  uuid
+  name
+  insertedAt
+  updatedAt
+}
+

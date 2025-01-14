@@ -1,0 +1,7 @@
+fragment WarehouseFields on Warehouse {
+  uuid
+  name
+  insertedAt
+  updatedAt
+}
+

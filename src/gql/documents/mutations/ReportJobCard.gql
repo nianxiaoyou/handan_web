@@ -1,0 +1,6 @@
+mutation ReportJobCard($request: ReportJobCardRequest!) {
+	reportJobCard(request: $request) {
+		status
+		uuid
+	}
+}

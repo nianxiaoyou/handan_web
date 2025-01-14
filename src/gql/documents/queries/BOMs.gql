@@ -1,0 +1,5 @@
+query Boms {
+	boms {
+		...BOMFields
+	}
+}

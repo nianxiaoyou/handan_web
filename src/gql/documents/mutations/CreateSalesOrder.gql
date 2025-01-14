@@ -1,0 +1,8 @@
+mutation CreateSalesOrder($request: CreateSalesOrderRequest!) {
+	createSalesOrder(request: $request) {
+		customerUuid
+		items {
+			itemName
+		}
+	}
+}

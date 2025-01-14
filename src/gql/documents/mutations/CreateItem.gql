@@ -1,0 +1,5 @@
+mutation CreateItem($request: CreateItemRequest!) {
+	createItem(request: $request) {
+		name
+	}
+}

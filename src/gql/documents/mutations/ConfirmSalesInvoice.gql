@@ -1,0 +1,6 @@
+mutation ConfirmSalesInvoice($request: SalesInvoiceRequest!) {
+	confirmSalesInvoice(request: $request) {
+		status
+		uuid
+	}
+}

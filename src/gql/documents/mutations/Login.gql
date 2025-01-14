@@ -1,0 +1,7 @@
+mutation Login($request: LoginRequest!) {
+	login(request: $request) {
+		uuid
+		email
+		accessToken
+	}
+}

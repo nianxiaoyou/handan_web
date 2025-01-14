@@ -1,0 +1,8 @@
+query Item($request: IdRequest!) {
+	item(request: $request) {
+		uuid
+		name
+		description
+		sellingPrice
+	}
+}

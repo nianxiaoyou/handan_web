@@ -1,0 +1,18 @@
+fragment PurchaseOrderFields on PurchaseOrder {
+  uuid
+  status
+  receiptStatus
+  billingStatus
+  supplierUuid
+  supplierName
+  supplierAddress
+  totalAmount
+  paidAmount
+  remainingAmount
+  totalQty
+  receivedQty
+  remainingQty
+  insertedAt
+  updatedAt
+}
+

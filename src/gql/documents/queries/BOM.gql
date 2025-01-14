@@ -1,0 +1,5 @@
+query Bom($request: IdRequest!) {
+	bom(request: $request) {
+		uuid
+	}
+}

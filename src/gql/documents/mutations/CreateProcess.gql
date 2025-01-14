@@ -1,0 +1,5 @@
+mutation CreateProcess($request: CreateProcessRequest!) {
+	createProcess(request: $request) {
+		name
+	}
+}

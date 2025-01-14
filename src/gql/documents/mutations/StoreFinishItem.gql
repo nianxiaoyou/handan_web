@@ -1,0 +1,6 @@
+mutation StoreFinishItem($request: StoreFinishItemRequest!) {
+	storeFinishItem(request: $request) {
+		status
+		uuid
+	}
+}

@@ -1,0 +1,7 @@
+fragment UOMFields on Uom {
+  uuid
+	name
+	insertedAt
+	updatedAt
+}
+

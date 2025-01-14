@@ -1,0 +1,5 @@
+query Warehouses {
+	warehouses {
+		...WarehouseFields
+	}
+}
