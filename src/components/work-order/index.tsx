@@ -57,15 +57,20 @@ const WorkOrderList: React.FC = () => {
 
   const columns: ProColumns<any>[] = [
     {
-      title: '产品名称',
-      key: 'itemName',
+      title: '单号',
+      key: 'code',
       width: 200,
-      dataIndex: 'itemName',
+      dataIndex: 'code',
       render: (text, record) => (
         <Button type="link" onClick={() => handleDetail(record)}>
           {text}
         </Button>
       ),
+    },
+    {
+      title: '产品名称',
+      key: 'itemName',
+      dataIndex: 'itemName',
     },
     {
       title: '计划生产数量',

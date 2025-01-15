@@ -9,7 +9,6 @@ import { useMessageContext } from '@/components/common/message-context';
 import client from '@/gql/apollo';
 import {
   useCreatePurchaseOrderMutation,
-  useConfirmPurchaseOrderMutation,
   useCreateReceiptNoteMutation,
   useCreatePurchaseInvoiceMutation,
   PurchaseOrdersDocument,
@@ -29,14 +28,6 @@ const PurchaseOrderList: React.FC = () => {
   const [createPurchaseOrder] = useCreatePurchaseOrderMutation({
     onCompleted: () => {
       messageApi?.success('采购订单创建成功');
-      handleReloadTable();
-    },
-    onError,
-  });
-
-  const [confirmPurchaseOrder] = useConfirmPurchaseOrderMutation({
-    onCompleted: () => {
-      messageApi?.success('采购订单确认成功');
       handleReloadTable();
     },
     onError,
@@ -73,14 +64,6 @@ const PurchaseOrderList: React.FC = () => {
     await createPurchaseOrder({ variables: { request: values } });
   };
 
-  const handleConfirm = async (values: any) => {
-    const request = {
-      purchaseOrderUuid: values.uuid,
-    };
-
-    await confirmPurchaseOrder({ variables: { request } });
-  };
-
   const handleReceiptNote = async (values: any) => {
     const receiptItems = values.items.map((item: any) => ({
       purchaseOrderItemUuid: item.uuid,
@@ -106,9 +89,8 @@ const PurchaseOrderList: React.FC = () => {
 
   const columns: ProColumns<any>[] = [
     {
-      title: '订单号',
-      key: 'uuid',
-      dataIndex: 'uuid',
+      title: '单号',
+      dataIndex: 'code',
       render: (text, record) => (
         <Button type="link" onClick={() => handleDetail(record)}>
           {text}
@@ -150,19 +132,6 @@ const PurchaseOrderList: React.FC = () => {
       key: 'option',
       valueType: 'option',
       render: (item: any, record: any) => [
-        <>
-          {record.status === 'draft' && (
-            <Popconfirm
-              key="link2"
-              title="确定提交吗？"
-              onConfirm={() => handleConfirm(record)}
-              okText="是"
-              cancelText="否"
-            >
-              <a key="link2">确定</a>
-            </Popconfirm>
-          )}
-        </>,
         <>
           {record.status !== 'draft' && record.billingStatus != 'fully_billed' && (
             <Popconfirm

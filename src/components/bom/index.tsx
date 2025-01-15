@@ -43,8 +43,7 @@ const BOMList: React.FC = () => {
 
   const columns: ProColumns<any>[] = [
     {
-      title: 'uuid',
-      key: 'uuid',
+      title: 'ID',
       search: false,
       width: 200,
       dataIndex: 'uuid',

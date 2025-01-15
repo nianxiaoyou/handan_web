@@ -1,5 +1,4 @@
 import { useRef } from 'react';
-import { useRouter } from 'next/router';
 import { ProTable } from '@ant-design/pro-components';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 
@@ -12,7 +11,6 @@ import SupplierNew from './new';
 
 const SupplierList: React.FC = () => {
   const { messageApi } = useMessageContext();
-  const router = useRouter();
 
   const [createSupplier] = useCreateSupplierMutation({
     onCompleted: () => {
@@ -74,11 +72,12 @@ const SupplierList: React.FC = () => {
       pagination={{
         showQuickJumper: true,
       }}
-      search={{
-        span: 6,
-        layout: 'vertical',
-        defaultCollapsed: true,
-      }}
+      search={false}
+      // search={{
+      //   span: 6,
+      //   layout: 'vertical',
+      //   defaultCollapsed: true,
+      // }}
       dateFormatter="string"
       toolBarRender={() => [<SupplierNew key="supplier-new" onCreate={(values: any) => handleCreate(values)} />]}
     />

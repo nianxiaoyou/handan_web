@@ -7,6 +7,11 @@ import { InventoryEntriesDocument } from '@/gql';
 
 const InventoryEntryList: React.FC = () => {
   const columns: ProColumns<any>[] = [
+    // {
+    //   title: '单号',
+    //   width: 200,
+    //   dataIndex: 'code',
+    // },
     {
       title: '类型',
       dataIndex: 'type',

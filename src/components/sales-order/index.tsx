@@ -9,7 +9,6 @@ import client from '@/gql/apollo';
 import {
   useCreateSalesOrderMutation,
   SalesOrdersDocument,
-  useConfirmSalesOrderMutation,
   useCreateDeliveryNoteMutation,
   useCreateSalesInvoiceMutation,
 } from '@/gql';
@@ -49,14 +48,6 @@ const SalesOrderList: React.FC = () => {
     onError,
   });
 
-  const [confirmSalesOrder] = useConfirmSalesOrderMutation({
-    onCompleted: () => {
-      messageApi?.success('销售订单提交成功');
-      handleReloadTable();
-    },
-    onError,
-  });
-
   const actionRef = useRef<ActionType | null>(null);
 
   const handleReloadTable = () => {
@@ -65,14 +56,6 @@ const SalesOrderList: React.FC = () => {
 
   const handleCreate = async (values: any) => {
     await createSalesOrder({ variables: { request: values } });
-  };
-
-  const handleConfirmSalesOrder = async (values: any) => {
-    const request = {
-      salesOrderUuid: values.uuid,
-    };
-
-    await confirmSalesOrder({ variables: { request } });
   };
 
   const handleCreateDeliveryNote = async (values: any) => {
@@ -105,8 +88,8 @@ const SalesOrderList: React.FC = () => {
 
   const columns: ProColumns<any>[] = [
     {
-      title: 'ID',
-      dataIndex: 'uuid',
+      title: '单号',
+      dataIndex: 'code',
       render: (text, record) => (
         <Button type="link" onClick={() => handleDetail(record)}>
           {text}
@@ -154,19 +137,6 @@ const SalesOrderList: React.FC = () => {
       key: 'option',
       valueType: 'option',
       render: (item: any, record: any) => [
-        <>
-          {record.status === 'draft' && (
-            <Popconfirm
-              key="link2"
-              title="确定提交吗？"
-              onConfirm={() => handleConfirmSalesOrder(record)}
-              okText="是"
-              cancelText="否"
-            >
-              <a key="link2">确定</a>
-            </Popconfirm>
-          )}
-        </>,
         <>
           {record.status !== 'draft' && record.billingStatus != 'fully_billed' && (
             <Popconfirm

@@ -1,5 +1,6 @@
 query InventoryEntries{
 	inventoryEntries {
+		code
 		actualQty
 		type
 		qtyAfterTransaction

@@ -1,5 +1,6 @@
 fragment DeliveryNoteFields on DeliveryNote {
   uuid
+	code
   status
 	customerName
 	totalAmount

@@ -7,7 +7,7 @@ import { Popconfirm, Button } from 'antd';
 // locale
 import { useMessageContext } from '@/components/common/message-context';
 import client from '@/gql/apollo';
-import { useConfirmDeliveryNoteMutation, useCompleteDeliveryNoteMutation, DeliveryNotesDocument } from '@/gql';
+import { useCompleteDeliveryNoteMutation, DeliveryNotesDocument } from '@/gql';
 import { onError } from '@/utils';
 
 import DeliveryNoteDetail from './detail';
@@ -18,14 +18,6 @@ const DeliveryNoteList: React.FC = () => {
 
   const [detailVisible, setDetailVisible] = useState(false);
   const [record, setRecord] = useState<any>({});
-
-  const [confirmDeliveryNote] = useConfirmDeliveryNoteMutation({
-    onCompleted: () => {
-      messageApi?.success('出库凭证提交成功');
-      handleReloadTable();
-    },
-    onError,
-  });
 
   const [completeDeliveryNote] = useCompleteDeliveryNoteMutation({
     onCompleted: () => {
@@ -39,15 +31,6 @@ const DeliveryNoteList: React.FC = () => {
 
   const handleReloadTable = () => {
     actionRef.current?.reload();
-  };
-
-  const handleConfirmDeliveryNote = async (values: any) => {
-    const request = {
-      salesOrderUuid: values.salesOrderUuid,
-      deliveryNoteUuid: values.uuid,
-    };
-
-    await confirmDeliveryNote({ variables: { request } });
   };
 
   const handleCompleteDeliveryNote = async (values: any) => {
@@ -66,9 +49,8 @@ const DeliveryNoteList: React.FC = () => {
 
   const columns: ProColumns<any>[] = [
     {
-      title: 'uuid',
-      key: 'uuid',
-      dataIndex: 'uuid',
+      title: '单号',
+      dataIndex: 'code',
       width: 200,
       search: false,
       render: (text, record) => (
@@ -105,19 +87,6 @@ const DeliveryNoteList: React.FC = () => {
       key: 'option',
       valueType: 'option',
       render: (item: any, record: any) => [
-        <>
-          {record.status === 'draft' && (
-            <Popconfirm
-              key="link2"
-              title="确定提交吗？"
-              onConfirm={() => handleConfirmDeliveryNote(record)}
-              okText="是"
-              cancelText="否"
-            >
-              <a key="link2">确定</a>
-            </Popconfirm>
-          )}
-        </>,
         <>
           {record.status === 'to_deliver' && (
             <Popconfirm

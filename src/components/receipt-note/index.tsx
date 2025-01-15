@@ -7,7 +7,7 @@ import size from 'lodash.size';
 // locale
 import { useMessageContext } from '@/components/common/message-context';
 import client from '@/gql/apollo';
-import { useConfirmReceiptNoteMutation, useCompleteReceiptNoteMutation, ReceiptNotesDocument } from '@/gql';
+import { useCompleteReceiptNoteMutation, ReceiptNotesDocument } from '@/gql';
 import { onError } from '@/utils';
 
 import DeliveryNoteDetail from './detail';
@@ -17,14 +17,6 @@ const ReceiptNoteList: React.FC = () => {
 
   const [detailVisible, setDetailVisible] = useState(false);
   const [record, setRecord] = useState<any>({});
-
-  const [confirmReceiptNote] = useConfirmReceiptNoteMutation({
-    onCompleted: () => {
-      messageApi?.success('入库凭证提交成功');
-      handleReloadTable();
-    },
-    onError,
-  });
 
   const [completeReceiptNote] = useCompleteReceiptNoteMutation({
     onCompleted: () => {
@@ -38,15 +30,6 @@ const ReceiptNoteList: React.FC = () => {
 
   const handleReloadTable = () => {
     actionRef.current?.reload();
-  };
-
-  const handleConfirmReceiptNote = async (values: any) => {
-    const request = {
-      purchaseOrderUuid: values.purchaseOrderUuid,
-      receiptNoteUuid: values.uuid,
-    };
-
-    await confirmReceiptNote({ variables: { request } });
   };
 
   const handleCompleteReceiptNote = async (values: any) => {
@@ -65,10 +48,9 @@ const ReceiptNoteList: React.FC = () => {
 
   const columns: ProColumns<any>[] = [
     {
-      title: 'uuid',
-      key: 'uuid',
+      title: '单号',
       width: 200,
-      dataIndex: 'uuid',
+      dataIndex: 'code',
       search: false,
       render: (text, record) => (
         <Button type="link" onClick={() => handleDetail(record)}>
@@ -104,19 +86,6 @@ const ReceiptNoteList: React.FC = () => {
       key: 'option',
       valueType: 'option',
       render: (item: any, record: any) => [
-        <>
-          {record.status === 'draft' && (
-            <Popconfirm
-              key="link2"
-              title="确定提交吗？"
-              onConfirm={() => handleConfirmReceiptNote(record)}
-              okText="是"
-              cancelText="否"
-            >
-              <a key="link2">确定</a>
-            </Popconfirm>
-          )}
-        </>,
         <>
           {record.status === 'to_receive' && (
             <Popconfirm
