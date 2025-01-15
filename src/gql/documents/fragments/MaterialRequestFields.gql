@@ -1,0 +1,13 @@
+fragment MaterialRequestFields on WorkOrderMaterialRequest {
+  uuid
+  itemName
+  actualQty
+  remainingQty
+  receivedQty
+  uomName
+  stockUomUuid
+  bomUuid
+  warehouseUuid
+  itemUuid
+  workOrderUuid
+}

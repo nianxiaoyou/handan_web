@@ -1,0 +1,13 @@
+fragment JobCardFields on JobCard {
+  uuid
+	startTime
+	endTime
+	status
+	operatorStaff {
+		email
+	}
+	defectiveQty
+	producedQty
+	workOrderItemUuid
+	workOrderUuid
+}

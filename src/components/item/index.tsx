@@ -81,12 +81,12 @@ const ItemList: React.FC = () => {
       pagination={{
         showQuickJumper: true,
       }}
-      search={{
-        span: 6,
-        // filterType: 'light',
-        layout: 'vertical',
-        defaultCollapsed: true,
-      }}
+      search={false}
+      // search={{
+      //   span: 6,
+      //   layout: 'vertical',
+      //   defaultCollapsed: true,
+      // }}
       dateFormatter="string"
       toolBarRender={() => [<ItemNew key="item-new" onCreate={(values: any) => handleCreate(values)} />]}
     />

@@ -1,0 +1,5 @@
+ query WorkOrderItems{
+	workOrderItems {
+		...WorkOrderItemFields
+	}
+}

@@ -1,5 +1,6 @@
 fragment PurchaseOrderFields on PurchaseOrder {
   uuid
+  code
   status
   receiptStatus
   billingStatus

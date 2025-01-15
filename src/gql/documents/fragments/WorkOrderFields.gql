@@ -1,5 +1,6 @@
 fragment WorkOrderFields on WorkOrder {
   uuid
+  code
   title
   startTime
   endTime

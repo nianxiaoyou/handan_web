@@ -4,6 +4,7 @@ import { ProTable } from '@ant-design/pro-components';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 
 // locale
+import { useMessageContext } from '../common/message-context';
 import client from '@/gql/apollo';
 import { ProcessesDocument, useCreateProcessMutation } from '@/gql';
 import { onError } from '@/utils';
@@ -12,10 +13,11 @@ import ProcessNew from './new';
 
 const ProcessList: React.FC = () => {
   const router = useRouter();
+  const { messageApi } = useMessageContext();
 
   const [createProcess] = useCreateProcessMutation({
     onCompleted: () => {
-      console.log('onCompleted');
+      messageApi?.success('创建成功');
       handleReloadTable();
     },
     onError,
@@ -35,11 +37,11 @@ const ProcessList: React.FC = () => {
     {
       title: '名称',
       key: 'name',
-      width: 200,
       dataIndex: 'name',
     },
     {
       title: '创建时间',
+      search: false,
       dataIndex: 'insertedAt',
       valueType: 'dateTime',
     },
@@ -67,10 +69,12 @@ const ProcessList: React.FC = () => {
       pagination={{
         showQuickJumper: true,
       }}
-      search={{
-        layout: 'vertical',
-        defaultCollapsed: true,
-      }}
+      search={false}
+      // search={{
+      //   span: 6,
+      //   layout: 'vertical',
+      //   defaultCollapsed: true,
+      // }}
       dateFormatter="string"
       toolBarRender={() => [<ProcessNew key="process-new" onCreate={(values: any) => handleCreate(values)} />]}
     />

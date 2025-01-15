@@ -1,5 +1,6 @@
 fragment ReceiptNoteFields on ReceiptNote {
   uuid
+	code
   status
 	supplierName
 	totalAmount

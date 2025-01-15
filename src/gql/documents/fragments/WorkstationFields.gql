@@ -1,0 +1,7 @@
+fragment WorkstationFields on Workstation {
+  uuid
+  name
+  insertedAt
+  updatedAt
+}
+

@@ -4,28 +4,28 @@ import { ProDescriptions, ProCard, ProTable } from '@ant-design/pro-components';
 import size from 'lodash.size';
 
 // locale
-import { useReceiptNoteLazyQuery } from '@/gql';
+import { useBomLazyQuery } from '@/gql';
 import { onError } from '@/utils';
 
-const ReceiptNoteDetail = ({ uuid, visible, record, onClose }: any) => {
+const BomDetail = ({ uuid, visible, record, onClose }: any) => {
   const [entry, setEntry] = useState<any>({});
 
   useEffect(() => {
     if (!uuid) {
       return;
     }
-    fetchReceiptNote({ variables: { request: { receiptNoteUuid: uuid } } });
+    fetchBom({ variables: { request: { uuid } } });
   }, [uuid]); // eslint-disable-line
 
-  const [fetchReceiptNote] = useReceiptNoteLazyQuery({
+  const [fetchBom] = useBomLazyQuery({
     fetchPolicy: 'no-cache',
     onCompleted: (data: any) => {
-      setEntry(data.receiptNote);
+      setEntry(data.bom);
     },
     onError,
   });
 
-  const receiptNoteItemColumns = [
+  const bomItemColumns = [
     {
       title: '商品名称',
       dataIndex: 'itemName',
@@ -33,36 +33,52 @@ const ReceiptNoteDetail = ({ uuid, visible, record, onClose }: any) => {
     },
     {
       title: '数量',
-      dataIndex: 'actualQty',
-      key: 'actualQty',
-      render: (text: any, record: any) => (
-        <span>
-          {record.actualQty} {record.uomName}
-        </span>
-      ),
+      dataIndex: 'qty',
+      key: 'qty',
     },
     {
-      title: '单价',
-      dataIndex: 'unitPrice',
-      valueType: 'money',
-      key: 'unitPrice',
+      title: '单位',
+      dataIndex: 'uomName',
+      key: 'uomName',
+    },
+  ];
+
+  const bomProcessColumns = [
+    {
+      title: '工序名称',
+      dataIndex: 'processName',
+      key: 'processName',
     },
     {
-      title: '金额',
-      valueType: 'money',
-      dataIndex: 'amount',
-      key: 'amount',
+      title: '顺序',
+      dataIndex: 'position',
+      key: 'position',
     },
   ];
 
   const items: TabsProps['items'] = [
     {
       key: '1',
-      label: `商品信息(${size(entry?.items)})`,
+      label: `商品信息(${size(entry?.bomItems)})`,
       children: (
         <ProTable
-          columns={receiptNoteItemColumns}
-          dataSource={entry?.items}
+          columns={bomItemColumns}
+          dataSource={entry?.bomItems}
+          size="small"
+          bordered={true}
+          search={false}
+          pagination={false}
+          options={false}
+        />
+      ),
+    },
+    {
+      key: '2',
+      label: `工序信息(${size(entry?.bomProcesses)})`,
+      children: (
+        <ProTable
+          columns={bomProcessColumns}
+          dataSource={entry?.bomProcesses}
           size="small"
           bordered={true}
           search={false}
@@ -79,9 +95,8 @@ const ReceiptNoteDetail = ({ uuid, visible, record, onClose }: any) => {
     <Drawer width={'60%'} title={entry?.uuid} onClose={onClose} open={visible} style={{ backgroundColor: '#f7f8fa' }}>
       <ProCard title="基本信息" style={{ marginTop: '10px' }}>
         <ProDescriptions column={3} size="small">
-          <ProDescriptions.Item label="供应商名称">{entry?.supplierName}</ProDescriptions.Item>
-          <ProDescriptions.Item label="状态">{entry.status}</ProDescriptions.Item>
-          <ProDescriptions.Item label="仓库名称">{entry.warehouseName}</ProDescriptions.Item>
+          <ProDescriptions.Item label="BOM名称">{entry?.name}</ProDescriptions.Item>
+          <ProDescriptions.Item label="商品名称">{entry?.itemName}</ProDescriptions.Item>
         </ProDescriptions>
       </ProCard>
 
@@ -92,4 +107,4 @@ const ReceiptNoteDetail = ({ uuid, visible, record, onClose }: any) => {
   );
 };
 
-export default ReceiptNoteDetail;
+export default BomDetail;

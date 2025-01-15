@@ -1,6 +1,7 @@
 fragment WarehouseFields on Warehouse {
   uuid
   name
+  address
   insertedAt
   updatedAt
 }

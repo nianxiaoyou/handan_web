@@ -1,6 +1,73 @@
 import client from '@/gql/apollo';
 
-import { WarehousesDocument, CustomersDocument, SuppliersDocument } from '@/gql';
+import {
+  WarehousesDocument,
+  CustomersDocument,
+  SuppliersDocument,
+  ItemsDocument,
+  BomsDocument,
+  ListStaffDocument,
+} from '@/gql';
+
+export const fetchStaff = async (params?: any) => {
+  const request = {
+    name: params.name,
+  };
+
+  const { data } = await client.query({
+    query: ListStaffDocument,
+    variables: { request },
+  });
+
+  const result = data?.listStaff?.map((item: any) => {
+    return {
+      value: item.uuid,
+      label: item.email,
+    };
+  });
+
+  return result;
+};
+
+export const fetchBoms = async (params?: any) => {
+  const request = {
+    name: params.name,
+  };
+
+  const { data } = await client.query({
+    query: BomsDocument,
+    variables: { request },
+  });
+
+  const result = data?.boms?.map((item: any) => {
+    return {
+      value: item.uuid,
+      label: item.name,
+    };
+  });
+
+  return result;
+};
+
+export const fetchItems = async (params?: any) => {
+  const request = {
+    name: params.name,
+  };
+
+  const { data } = await client.query({
+    query: ItemsDocument,
+    variables: { request },
+  });
+
+  const result = data?.items?.map((item: any) => {
+    return {
+      value: item.uuid,
+      label: item.name,
+    };
+  });
+
+  return result;
+};
 
 export const fetchCustomers = async (params?: any) => {
   const request = {

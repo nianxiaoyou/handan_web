@@ -1,6 +1,0 @@
-mutation ConfirmDeliveryNote($request: DeliveryNoteRequest!) {
-	confirmDeliveryNote(request: $request) {
-		status
-		uuid
-	}
-}

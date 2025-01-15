@@ -89,7 +89,7 @@ const menuProps = {
             name: '生产任务',
           },
           {
-            name: '工位管理',
+            name: '生产线管理',
             path: '/production/workstations',
           },
         ],

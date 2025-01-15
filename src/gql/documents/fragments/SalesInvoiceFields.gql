@@ -1,5 +1,6 @@
 fragment SalesInvoiceFields on SalesInvoice {
   uuid
+	code
   status
 	amount
 	customerName

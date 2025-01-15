@@ -1,5 +1,11 @@
 query workOrder($request: IdRequest!) {
 	workOrder(request: $request) {
-		uuid
+		...WorkOrderFields
+		items {
+			...WorkOrderItemFields
+		}
+		materialRequests {
+			...MaterialRequestFields
+		}
 	}
 }

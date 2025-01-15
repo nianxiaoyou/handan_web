@@ -15,6 +15,7 @@
     "@ant-design/pro-skeleton": "^2.2.1",
     "@apollo/client": "^3.12.5",
     "antd": "^5.23.0",
+    "dayjs": "^1.11.13",
     "graphql": "^16.10.0",
     "lodash.round": "^4.0.4",
     "lodash.size": "^4.2.0",
