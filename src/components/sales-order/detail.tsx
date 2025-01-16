@@ -148,6 +148,10 @@ const SalesOrderDetail = ({ uuid, visible, record, onClose }: any) => {
           <ProDescriptions.Item label="状态">{entry.status}</ProDescriptions.Item>
           <ProDescriptions.Item label="支付状态">{entry.billingStatus}</ProDescriptions.Item>
           <ProDescriptions.Item label="发货状态">{entry.deliveryStatus}</ProDescriptions.Item>
+          <ProDescriptions.Item label="仓库">{entry.warehouseName}</ProDescriptions.Item>
+          <ProDescriptions.Item label="创建时间" valueType="dateTime">
+            {entry.insertedAt}
+          </ProDescriptions.Item>
         </ProDescriptions>
       </ProCard>
 

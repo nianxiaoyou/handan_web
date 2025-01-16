@@ -13,6 +13,7 @@ fragment PurchaseOrderFields on PurchaseOrder {
   totalQty
   receivedQty
   remainingQty
+  warehouseName
   insertedAt
   updatedAt
 }

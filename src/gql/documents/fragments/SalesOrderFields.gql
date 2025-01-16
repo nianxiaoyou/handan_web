@@ -11,6 +11,7 @@ fragment SalesOrderFields on SalesOrder {
   totalQty
   deliveredQty
   remainingQty
+  warehouseName
   insertedAt
   updatedAt
 }

@@ -113,12 +113,18 @@ const SalesOrderList: React.FC = () => {
       dataIndex: 'billingStatus',
     },
     {
-      title: '待支付/总额',
-      dataIndex: 'pendingPayAmount',
+      title: '仓库',
+      dataIndex: 'warehouseName',
+    },
+    {
+      title: '待支付/已支付/总额',
+      dataIndex: 'totalAmount',
       search: false,
+      width: 200,
       render: (item: any, record: any) => (
         <>
           <Tag color="red">{record.remainingAmount}</Tag>
+          <Tag color="green">{record.paidAmount}</Tag>
           <Tag>{record.totalAmount}</Tag>
         </>
       ),
