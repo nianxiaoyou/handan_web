@@ -27,6 +27,7 @@ const StoredItem = (props: any) => {
     <>
       <Button
         size="small"
+        type="link"
         onClick={() => {
           setModalVisible(true);
         }}

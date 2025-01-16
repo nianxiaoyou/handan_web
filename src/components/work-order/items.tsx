@@ -42,25 +42,20 @@ const WorkOrderItems: React.FC = () => {
   };
 
   const columns: ProColumns<any>[] = [
-    // {
-    //   title: 'uuid',
-    //   width: 200,
-    //   dataIndex: 'workOrderUuid',
-    // },
     {
-      title: '产品名称',
+      title: '任务名称',
       key: 'itemName',
-      width: 200,
       dataIndex: 'itemName',
+      width: 100,
       render: (text, record) => (
         <Button type="link" onClick={() => handleDetail(record)}>
-          {text}
+          {text}-{record.processName}
         </Button>
       ),
     },
     {
-      title: '工艺名称',
-      dataIndex: 'processName',
+      title: '生产单号',
+      dataIndex: ['workOrder', 'code'],
     },
     {
       title: '需求数量',
@@ -77,6 +72,11 @@ const WorkOrderItems: React.FC = () => {
     {
       title: '顺序',
       dataIndex: 'position',
+    },
+    {
+      title: '创建时间',
+      valueType: 'dateTime',
+      dataIndex: 'insertedAt',
     },
     {
       title: '操作',

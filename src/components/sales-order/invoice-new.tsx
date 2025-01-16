@@ -18,7 +18,7 @@ const SalesInvoiceNew = (props: any) => {
 
   return (
     <div>
-      <Button size="small" onClick={() => setVisible(true)}>
+      <Button size="small" type="link" onClick={() => setVisible(true)}>
         添加收款凭证
       </Button>
       <Popover

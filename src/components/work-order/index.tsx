@@ -121,6 +121,11 @@ const WorkOrderList: React.FC = () => {
       valueType: 'date',
     },
     {
+      title: '创建时间',
+      valueType: 'dateTime',
+      dataIndex: 'insertedAt',
+    },
+    {
       title: '操作',
       width: 180,
       key: 'option',
@@ -135,13 +140,15 @@ const WorkOrderList: React.FC = () => {
               okText="是"
               cancelText="否"
             >
-              <Button size="small">开始排产</Button>
+              <Button size="small" type="link">
+                开始排产
+              </Button>
             </Popconfirm>
           )}
         </>,
         <>
           {record.status === 'scheduling' && (
-            <Button size="small" onClick={() => handleDetail(record)}>
+            <Button size="small" type="link" onClick={() => handleDetail(record)}>
               查看物料需求
             </Button>
           )}

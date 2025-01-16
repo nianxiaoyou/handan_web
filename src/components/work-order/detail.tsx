@@ -36,7 +36,7 @@ const WorkOrderDetail = ({ uuid, visible, record, onClose }: any) => {
       key: 'processName',
     },
     {
-      title: '数量',
+      title: '需求数量',
       dataIndex: 'requiredQty',
       key: 'requiredQty',
     },

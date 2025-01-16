@@ -152,7 +152,9 @@ const PurchaseOrderList: React.FC = () => {
               okText="是"
               cancelText="否"
             >
-              <Button size="small">添加入库凭证</Button>
+              <Button size="small" type="link">
+                添加入库凭证
+              </Button>
             </Popconfirm>
           )}
         </>,

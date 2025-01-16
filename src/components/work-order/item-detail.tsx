@@ -26,6 +26,16 @@ const WorkOrderDetail = ({ uuid, visible, record, onClose }: any) => {
 
   const jobCardColumns = [
     {
+      title: '操作员',
+      key: 'operatorStaffUuid',
+      dataIndex: ['operatorStaff', 'email'],
+    },
+    {
+      title: '生产数量',
+      dataIndex: 'producedQty',
+      key: 'producedQty',
+    },
+    {
       title: '开始时间',
       dataIndex: 'startTime',
       valueType: 'dateTime',
@@ -37,26 +47,6 @@ const WorkOrderDetail = ({ uuid, visible, record, onClose }: any) => {
       valueType: 'dateTime',
       key: 'endTime',
     },
-    {
-      title: '状态',
-      dataIndex: 'status',
-      key: 'status',
-    },
-    {
-      title: '操作员',
-      key: 'operatorStaffUuid',
-      dataIndex: ['operatorStaff', 'email'],
-    },
-    {
-      title: '缺陷数量',
-      dataIndex: 'defectiveQty',
-      key: 'defectiveQty',
-    },
-    {
-      title: '生产数量',
-      dataIndex: 'producedQty',
-      key: 'producedQty',
-    },
   ];
 
   return (
@@ -67,12 +57,12 @@ const WorkOrderDetail = ({ uuid, visible, record, onClose }: any) => {
           <ProDescriptions.Item label="工艺名称">{entry.processName}</ProDescriptions.Item>
           <ProDescriptions.Item label="顺序">{entry.position}</ProDescriptions.Item>
           <ProDescriptions.Item label="数量">{entry.requiredQty}</ProDescriptions.Item>
-          <ProDescriptions.Item label="缺陷数量">{entry.defectiveQty}</ProDescriptions.Item>
+          {/* <ProDescriptions.Item label="缺陷数量">{entry.defectiveQty}</ProDescriptions.Item> */}
           <ProDescriptions.Item label="生产数量">{entry.producedQty}</ProDescriptions.Item>
         </ProDescriptions>
       </ProCard>
 
-      <ProCard title="工单信息" style={{ marginTop: '10px' }}>
+      <ProCard title="生产报工" style={{ marginTop: '10px' }}>
         <ProTable
           columns={jobCardColumns}
           dataSource={entry?.jobCards}
