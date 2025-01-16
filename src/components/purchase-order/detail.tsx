@@ -52,9 +52,10 @@ const PurchaseOrderDetail = ({ uuid, visible, record, onClose }: any) => {
 
   const receiptNoteColumns = [
     {
-      title: 'id',
-      dataIndex: 'uuid',
-      key: 'uuid',
+      title: '单号',
+      dataIndex: 'code',
+      width: '100px',
+      key: 'code',
     },
     {
       title: '入库数量',
@@ -70,9 +71,10 @@ const PurchaseOrderDetail = ({ uuid, visible, record, onClose }: any) => {
 
   const purchaseInvoiceColumins = [
     {
-      title: 'id',
-      dataIndex: 'uuid',
-      key: 'uuid',
+      title: '单号',
+      dataIndex: 'code',
+      width: '100px',
+      key: 'code',
     },
     {
       title: '金额',
@@ -135,16 +137,19 @@ const PurchaseOrderDetail = ({ uuid, visible, record, onClose }: any) => {
     },
   ];
 
-  console.log('entry', entry);
-
   return (
-    <Drawer width={'60%'} title={entry?.uuid} onClose={onClose} open={visible} style={{ backgroundColor: '#f7f8fa' }}>
+    <Drawer width={'60%'} title={entry?.code} onClose={onClose} open={visible} style={{ backgroundColor: '#f7f8fa' }}>
       <ProCard title="基本信息" style={{ marginTop: '10px' }}>
         <ProDescriptions column={3} size="small">
           <ProDescriptions.Item label="供应商名称">{entry?.supplierName}</ProDescriptions.Item>
           <ProDescriptions.Item label="状态">{entry.status}</ProDescriptions.Item>
           <ProDescriptions.Item label="入库状态">{entry.receiptStatus}</ProDescriptions.Item>
           <ProDescriptions.Item label="付款状态">{entry.billingStatus}</ProDescriptions.Item>
+          <ProDescriptions.Item label="状态">{entry.status}</ProDescriptions.Item>
+          <ProDescriptions.Item label="仓库">{entry.warehouseName}</ProDescriptions.Item>
+          <ProDescriptions.Item label="创建时间" valueType="dateTime">
+            {entry.insertedAt}
+          </ProDescriptions.Item>
         </ProDescriptions>
       </ProCard>
 

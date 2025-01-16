@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import { ProTable } from '@ant-design/pro-components';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
-import { Popconfirm, Button } from 'antd';
+import { Popconfirm, Button, Tag } from 'antd';
 
 // locale
 import { useMessageContext } from '@/components/common/message-context';
@@ -17,6 +17,7 @@ import { onError } from '@/utils';
 
 import PurchaseOrderNew from './new';
 import PurchaseOrderDetail from './detail';
+import PurchaseInvoiceNew from './invoice-new';
 
 const PurchaseOrderList: React.FC = () => {
   const { messageApi } = useMessageContext();
@@ -78,12 +79,7 @@ const PurchaseOrderList: React.FC = () => {
     await createReceiptNote({ variables: { request } });
   };
 
-  const handleInvoice = async (values: any) => {
-    const request = {
-      purchaseOrderUuid: values.uuid,
-      amount: values.totalAmount,
-    };
-
+  const handleInvoice = async (request: any) => {
     await createPurchaseInvoice({ variables: { request } });
   };
 
@@ -100,7 +96,6 @@ const PurchaseOrderList: React.FC = () => {
     {
       title: '供应商名称',
       key: 'supplierName',
-      width: 200,
       dataIndex: 'supplierName',
     },
     {
@@ -116,10 +111,21 @@ const PurchaseOrderList: React.FC = () => {
       dataIndex: 'billingStatus',
     },
     {
-      title: '总金额',
-      search: false,
-      valueType: 'money',
+      title: '待支付/已支付/总额',
       dataIndex: 'totalAmount',
+      search: false,
+      width: 200,
+      render: (item: any, record: any) => (
+        <>
+          <Tag color="red">{record.remainingAmount}</Tag>
+          <Tag color="green">{record.paidAmount}</Tag>
+          <Tag>{record.totalAmount}</Tag>
+        </>
+      ),
+    },
+    {
+      title: '仓库',
+      dataIndex: 'warehouseName',
     },
     {
       title: '创建时间',
@@ -134,15 +140,7 @@ const PurchaseOrderList: React.FC = () => {
       render: (item: any, record: any) => [
         <>
           {record.status !== 'draft' && record.billingStatus != 'fully_billed' && (
-            <Popconfirm
-              key="link2"
-              title="确定创建采购凭证吗？"
-              onConfirm={() => handleInvoice(record)}
-              okText="是"
-              cancelText="否"
-            >
-              <a key="link2">创建采购凭证</a>
-            </Popconfirm>
+            <PurchaseInvoiceNew key="purchase-invoice-new" record={record} onCallback={handleInvoice} />
           )}
         </>,
         <>
