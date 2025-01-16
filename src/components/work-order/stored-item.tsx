@@ -8,6 +8,11 @@ const StoredItem = (props: any) => {
   const [form] = ProForm.useForm();
   const [modalVisible, setModalVisible] = useState(false);
 
+  const initialValues = {
+    workOrderUuid: record.uuid,
+    storedQty: record.producedQty - record.storedQty,
+  };
+
   const onFinish = async (values: any) => {
     const request = {
       workOrderUuid: record.uuid,
@@ -22,6 +27,7 @@ const StoredItem = (props: any) => {
     <>
       <Button
         size="small"
+        type="link"
         onClick={() => {
           setModalVisible(true);
         }}
@@ -31,6 +37,7 @@ const StoredItem = (props: any) => {
 
       <ModalForm
         form={form}
+        initialValues={initialValues}
         modalProps={{
           destroyOnClose: true,
         }}

@@ -26,12 +26,17 @@ const WorkOrderDetail = ({ uuid, visible, record, onClose }: any) => {
 
   const workOrderItemColumns = [
     {
-      title: '商品名称',
+      title: '名称',
       dataIndex: 'itemName',
       key: 'itemName',
     },
     {
-      title: '数量',
+      title: '工艺名称',
+      dataIndex: 'processName',
+      key: 'processName',
+    },
+    {
+      title: '需求数量',
       dataIndex: 'requiredQty',
       key: 'requiredQty',
     },
@@ -39,11 +44,6 @@ const WorkOrderDetail = ({ uuid, visible, record, onClose }: any) => {
       title: '已完成数量',
       dataIndex: 'producedQty',
       key: 'producedQty',
-    },
-    {
-      title: '工艺名称',
-      dataIndex: 'processName',
-      key: 'processName',
     },
     {
       title: '顺序',
@@ -59,26 +59,50 @@ const WorkOrderDetail = ({ uuid, visible, record, onClose }: any) => {
       key: 'itemName',
     },
     {
-      title: '实际数量',
+      title: '仓库',
+      dataIndex: ['warehouse', 'name'],
+      key: 'warehouseName',
+    },
+    {
+      title: '需求数量',
       dataIndex: 'actualQty',
       key: 'actualQty',
+      render: (item: any, record: any) => (
+        <div>
+          {record.actualQty}
+          {record.uomName}
+        </div>
+      ),
     },
     {
       title: '已接收数量',
       dataIndex: 'receivedQty',
       key: 'receivedQty',
+      render: (item: any, record: any) => (
+        <div>
+          {record.receivedQty}
+          {record.uomName}
+        </div>
+      ),
     },
     {
-      title: '还需要数量',
+      title: '待领取数量',
       dataIndex: 'remainingQty',
       key: 'remainingQty',
+      render: (item: any, record: any) => (
+        <div>
+          {record.remainingQty}
+          {record.uomName}
+        </div>
+      ),
     },
   ];
 
   return (
-    <Drawer width={'60%'} title={entry?.uuid} onClose={onClose} open={visible} style={{ backgroundColor: '#f7f8fa' }}>
+    <Drawer width={'60%'} title={entry?.code} onClose={onClose} open={visible} style={{ backgroundColor: '#f7f8fa' }}>
       <ProCard title="基本信息" style={{ marginTop: '10px' }}>
         <ProDescriptions column={3} size="small">
+          <ProDescriptions.Item label="生产产品">{entry.itemName}</ProDescriptions.Item>
           <ProDescriptions.Item label="状态">{entry.status}</ProDescriptions.Item>
           <ProDescriptions.Item label="开始时间" valueType="dateTime">
             {entry.startTime}

@@ -1,5 +1,5 @@
 import { ProForm, ProFormText } from '@ant-design/pro-components';
-import { Popover } from 'antd';
+import { Button, Popover } from 'antd';
 import { useState } from 'react';
 
 const PurchaseInvoiceNew = (props: any) => {
@@ -18,7 +18,9 @@ const PurchaseInvoiceNew = (props: any) => {
 
   return (
     <div>
-      <a onClick={() => setVisible(true)}>添加付款凭证</a>
+      <Button size="small" type="link" onClick={() => setVisible(true)}>
+        添加付款凭证
+      </Button>
       <Popover
         title="添加付款凭证"
         overlayInnerStyle={{ width: '200px' }}
@@ -28,7 +30,7 @@ const PurchaseInvoiceNew = (props: any) => {
             <ProFormText
               width="sm"
               name="amount"
-              label="收款金额"
+              label="付款金额"
               placeholder="请输入金额"
               rules={[{ required: true, message: '请输入金额' }]}
             />

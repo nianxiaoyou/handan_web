@@ -11,13 +11,20 @@ const ReportJobCard = (props: any) => {
   const { onCreate, record } = props;
   const [modalVisible, setModalVisible] = useState(false);
 
+  const initialValues = {
+    workOrderUuid: record.workOrderUuid,
+    workOrderItemUuid: record.uuid,
+    producedQty: record.requiredQty - record.producedQty,
+    defectiveQty: 0,
+  };
+
   const onFinish = async (values: any) => {
     const request = {
       workOrderUuid: record.workOrderUuid,
       workOrderItemUuid: record.uuid,
       operatorStaffUuid: values.staffUuid,
       producedQty: values.producedQty,
-      defectQty: values.defectQty,
+      defectiveQty: 0,
       startTime: getUTCTime(values.startTime),
       endTime: getUTCTime(values.endTime),
     };
@@ -40,6 +47,7 @@ const ReportJobCard = (props: any) => {
 
       <ModalForm
         form={form}
+        initialValues={initialValues}
         modalProps={{
           destroyOnClose: true,
         }}
@@ -72,7 +80,7 @@ const ReportJobCard = (props: any) => {
             rules={[{ required: true, message: '请输入生产数量' }]}
           />
 
-          <ProFormDigit
+          {/* <ProFormDigit
             width="sm"
             name="defectiveQty"
             label="缺陷数量"
@@ -81,7 +89,7 @@ const ReportJobCard = (props: any) => {
             }}
             placeholder="请输入缺陷数量"
             rules={[{ required: true, message: '请输入缺陷数量' }]}
-          />
+          /> */}
 
           <ProFormDateTimePicker
             name="startTime"

@@ -1,12 +1,17 @@
 import { useRef, useState } from 'react';
-import { Button } from 'antd';
+import { Button, Popconfirm } from 'antd';
 import { ProTable } from '@ant-design/pro-components';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 
 // locale
 import { useMessageContext } from '@/components/common/message-context';
 import client from '@/gql/apollo';
-import { WorkOrdersDocument, useCreateWorkOrderMutation, useStoreFinishItemMutation } from '@/gql';
+import {
+  WorkOrdersDocument,
+  useCreateWorkOrderMutation,
+  useStoreFinishItemMutation,
+  useScheduleWorkOrderMutation,
+} from '@/gql';
 import { onError } from '@/utils';
 
 import WorkOrderNew from './new';
@@ -35,6 +40,14 @@ const WorkOrderList: React.FC = () => {
     onError,
   });
 
+  const [scheduleWorkOrder] = useScheduleWorkOrderMutation({
+    onCompleted: () => {
+      messageApi?.success('排产成功');
+      handleReloadTable();
+    },
+    onError,
+  });
+
   const actionRef = useRef<ActionType | null>(null);
 
   const handleReloadTable = () => {
@@ -55,6 +68,14 @@ const WorkOrderList: React.FC = () => {
     await storeFinishItem({ variables: { request: values } });
   };
 
+  const handleScheduleWorkOrder = async (values: any) => {
+    const request = {
+      workOrderUuid: values.uuid,
+    };
+
+    await scheduleWorkOrder({ variables: { request } });
+  };
+
   const columns: ProColumns<any>[] = [
     {
       title: '单号',
@@ -71,6 +92,11 @@ const WorkOrderList: React.FC = () => {
       title: '产品名称',
       key: 'itemName',
       dataIndex: 'itemName',
+    },
+    {
+      title: '状态',
+      key: 'status',
+      dataIndex: 'status',
     },
     {
       title: '计划生产数量',
@@ -95,11 +121,38 @@ const WorkOrderList: React.FC = () => {
       valueType: 'date',
     },
     {
+      title: '创建时间',
+      valueType: 'dateTime',
+      dataIndex: 'insertedAt',
+    },
+    {
       title: '操作',
       width: 180,
       key: 'option',
       valueType: 'option',
       render: (item: any, record: any) => [
+        <>
+          {record.status === 'draft' && (
+            <Popconfirm
+              key="link2"
+              title="确定排产吗？"
+              onConfirm={() => handleScheduleWorkOrder(record)}
+              okText="是"
+              cancelText="否"
+            >
+              <Button size="small" type="link">
+                开始排产
+              </Button>
+            </Popconfirm>
+          )}
+        </>,
+        <>
+          {record.status === 'scheduling' && (
+            <Button size="small" type="link" onClick={() => handleDetail(record)}>
+              查看物料需求
+            </Button>
+          )}
+        </>,
         <>
           {record.producedQty > record.storedQty && (
             <StoredItem key="link2" record={record} onCreate={handleStoredItem} />

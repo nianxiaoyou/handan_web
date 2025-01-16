@@ -96,7 +96,9 @@ const DeliveryNoteList: React.FC = () => {
               okText="是"
               cancelText="否"
             >
-              <a key="link2">出库</a>
+              <Button size="small" type="link">
+                出库
+              </Button>
             </Popconfirm>
           )}
         </>,

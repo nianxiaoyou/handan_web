@@ -490,6 +490,8 @@ export type RootMutationType = {
   register?: Maybe<User>;
   /** report job card */
   reportJobCard?: Maybe<WorkOrder>;
+  /** schedule work order */
+  scheduleWorkOrder?: Maybe<WorkOrder>;
   /** store finish item */
   storeFinishItem?: Maybe<WorkOrder>;
 };
@@ -612,6 +614,12 @@ export type RootMutationTypeLoginArgs = {
 /** the root of mutaion. */
 export type RootMutationTypeReportJobCardArgs = {
   request: ReportJobCardRequest;
+};
+
+
+/** the root of mutaion. */
+export type RootMutationTypeScheduleWorkOrderArgs = {
+  request: WorkOrderRequest;
 };
 
 
@@ -1000,6 +1008,7 @@ export type WorkOrderItem = {
   requiredQty?: Maybe<Scalars['Decimal']['output']>;
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
   uuid?: Maybe<Scalars['ID']['output']>;
+  workOrder?: Maybe<WorkOrder>;
   workOrderUuid?: Maybe<Scalars['ID']['output']>;
 };
 
@@ -1024,6 +1033,10 @@ export type WorkOrderMaterialRequest = {
   workOrderUuid?: Maybe<Scalars['ID']['output']>;
 };
 
+export type WorkOrderRequest = {
+  workOrderUuid?: InputMaybe<Scalars['ID']['input']>;
+};
+
 export type Workstation = {
   __typename?: 'Workstation';
   adminUuid?: Maybe<Scalars['String']['output']>;
@@ -1046,7 +1059,7 @@ export type ItemFieldsFragment = { __typename?: 'Item', uuid?: string | null, na
 
 export type JobCardFieldsFragment = { __typename?: 'JobCard', uuid?: string | null, startTime?: any | null, endTime?: any | null, status?: string | null, defectiveQty?: any | null, producedQty?: any | null, workOrderItemUuid?: string | null, workOrderUuid?: string | null, operatorStaff?: { __typename?: 'Staff', email?: string | null } | null };
 
-export type MaterialRequestFieldsFragment = { __typename?: 'WorkOrderMaterialRequest', uuid?: string | null, itemName?: string | null, actualQty?: any | null, remainingQty?: any | null, receivedQty?: any | null, uomName?: string | null, stockUomUuid?: string | null, bomUuid?: string | null, warehouseUuid?: string | null, itemUuid?: string | null, workOrderUuid?: string | null };
+export type MaterialRequestFieldsFragment = { __typename?: 'WorkOrderMaterialRequest', uuid?: string | null, itemName?: string | null, actualQty?: any | null, remainingQty?: any | null, receivedQty?: any | null, uomName?: string | null, stockUomUuid?: string | null, bomUuid?: string | null, warehouseUuid?: string | null, itemUuid?: string | null, workOrderUuid?: string | null, warehouse?: { __typename?: 'Warehouse', name?: string | null } | null };
 
 export type ProcessFieldsFragment = { __typename?: 'Process', uuid?: string | null, name?: string | null, description?: string | null, insertedAt?: any | null, updatedAt?: any | null };
 
@@ -1076,7 +1089,7 @@ export type WarehouseFieldsFragment = { __typename?: 'Warehouse', uuid?: string 
 
 export type WorkOrderFieldsFragment = { __typename?: 'WorkOrder', uuid?: string | null, code?: string | null, title?: string | null, startTime?: any | null, endTime?: any | null, type?: string | null, status?: string | null, plannedQty?: any | null, storedQty?: any | null, producedQty?: any | null, scrapedQty?: any | null, itemUuid?: string | null, itemName?: string | null, uomName?: string | null, supplierName?: string | null, supplierUuid?: string | null, salesOrderUuid?: string | null, stockUomUuid?: string | null, insertedAt?: any | null, updatedAt?: any | null };
 
-export type WorkOrderItemFieldsFragment = { __typename?: 'WorkOrderItem', uuid?: string | null, workOrderUuid?: string | null, itemName?: string | null, processName?: string | null, position?: number | null, requiredQty?: any | null, defectiveQty?: any | null, producedQty?: any | null };
+export type WorkOrderItemFieldsFragment = { __typename?: 'WorkOrderItem', uuid?: string | null, workOrderUuid?: string | null, itemName?: string | null, processName?: string | null, position?: number | null, requiredQty?: any | null, defectiveQty?: any | null, producedQty?: any | null, insertedAt?: any | null, updatedAt?: any | null };
 
 export type WorkstationFieldsFragment = { __typename?: 'Workstation', uuid?: string | null, name?: string | null, insertedAt?: any | null, updatedAt?: any | null };
 
@@ -1384,6 +1397,13 @@ export type SalesOrdersQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type SalesOrdersQuery = { __typename?: 'RootQueryType', salesOrders?: Array<{ __typename?: 'SalesOrder', uuid?: string | null, code?: string | null, status?: string | null, billingStatus?: string | null, deliveryStatus?: string | null, customerName?: string | null, totalAmount?: any | null, paidAmount?: any | null, remainingAmount?: any | null, totalQty?: any | null, deliveredQty?: any | null, remainingQty?: any | null, warehouseName?: string | null, insertedAt?: any | null, updatedAt?: any | null, items?: Array<{ __typename?: 'SalesOrderItem', uuid?: string | null, itemUuid?: string | null, itemName?: string | null, amount?: any | null, unitPrice?: any | null, orderedQty?: any | null, deliveredQty?: any | null, remainingQty?: any | null } | null> | null } | null> | null };
 
+export type ScheduleWorkOrderMutationVariables = Exact<{
+  request: WorkOrderRequest;
+}>;
+
+
+export type ScheduleWorkOrderMutation = { __typename?: 'RootMutationType', scheduleWorkOrder?: { __typename?: 'WorkOrder', status?: string | null } | null };
+
 export type SupplierQueryVariables = Exact<{
   request: IdRequest;
 }>;
@@ -1411,19 +1431,19 @@ export type WorkOrderQueryVariables = Exact<{
 }>;
 
 
-export type WorkOrderQuery = { __typename?: 'RootQueryType', workOrder?: { __typename?: 'WorkOrder', uuid?: string | null, code?: string | null, title?: string | null, startTime?: any | null, endTime?: any | null, type?: string | null, status?: string | null, plannedQty?: any | null, storedQty?: any | null, producedQty?: any | null, scrapedQty?: any | null, itemUuid?: string | null, itemName?: string | null, uomName?: string | null, supplierName?: string | null, supplierUuid?: string | null, salesOrderUuid?: string | null, stockUomUuid?: string | null, insertedAt?: any | null, updatedAt?: any | null, items?: Array<{ __typename?: 'WorkOrderItem', uuid?: string | null, workOrderUuid?: string | null, itemName?: string | null, processName?: string | null, position?: number | null, requiredQty?: any | null, defectiveQty?: any | null, producedQty?: any | null } | null> | null, materialRequests?: Array<{ __typename?: 'WorkOrderMaterialRequest', uuid?: string | null, itemName?: string | null, actualQty?: any | null, remainingQty?: any | null, receivedQty?: any | null, uomName?: string | null, stockUomUuid?: string | null, bomUuid?: string | null, warehouseUuid?: string | null, itemUuid?: string | null, workOrderUuid?: string | null } | null> | null } | null };
+export type WorkOrderQuery = { __typename?: 'RootQueryType', workOrder?: { __typename?: 'WorkOrder', uuid?: string | null, code?: string | null, title?: string | null, startTime?: any | null, endTime?: any | null, type?: string | null, status?: string | null, plannedQty?: any | null, storedQty?: any | null, producedQty?: any | null, scrapedQty?: any | null, itemUuid?: string | null, itemName?: string | null, uomName?: string | null, supplierName?: string | null, supplierUuid?: string | null, salesOrderUuid?: string | null, stockUomUuid?: string | null, insertedAt?: any | null, updatedAt?: any | null, items?: Array<{ __typename?: 'WorkOrderItem', uuid?: string | null, workOrderUuid?: string | null, itemName?: string | null, processName?: string | null, position?: number | null, requiredQty?: any | null, defectiveQty?: any | null, producedQty?: any | null, insertedAt?: any | null, updatedAt?: any | null } | null> | null, materialRequests?: Array<{ __typename?: 'WorkOrderMaterialRequest', uuid?: string | null, itemName?: string | null, actualQty?: any | null, remainingQty?: any | null, receivedQty?: any | null, uomName?: string | null, stockUomUuid?: string | null, bomUuid?: string | null, warehouseUuid?: string | null, itemUuid?: string | null, workOrderUuid?: string | null, warehouse?: { __typename?: 'Warehouse', name?: string | null } | null } | null> | null } | null };
 
 export type WorkOrderItemQueryVariables = Exact<{
   request: IdRequest;
 }>;
 
 
-export type WorkOrderItemQuery = { __typename?: 'RootQueryType', workOrderItem?: { __typename?: 'WorkOrderItem', uuid?: string | null, workOrderUuid?: string | null, itemName?: string | null, processName?: string | null, position?: number | null, requiredQty?: any | null, defectiveQty?: any | null, producedQty?: any | null, jobCards?: Array<{ __typename?: 'JobCard', uuid?: string | null, startTime?: any | null, endTime?: any | null, status?: string | null, defectiveQty?: any | null, producedQty?: any | null, workOrderItemUuid?: string | null, workOrderUuid?: string | null, operatorStaff?: { __typename?: 'Staff', email?: string | null } | null } | null> | null } | null };
+export type WorkOrderItemQuery = { __typename?: 'RootQueryType', workOrderItem?: { __typename?: 'WorkOrderItem', uuid?: string | null, workOrderUuid?: string | null, itemName?: string | null, processName?: string | null, position?: number | null, requiredQty?: any | null, defectiveQty?: any | null, producedQty?: any | null, insertedAt?: any | null, updatedAt?: any | null, jobCards?: Array<{ __typename?: 'JobCard', uuid?: string | null, startTime?: any | null, endTime?: any | null, status?: string | null, defectiveQty?: any | null, producedQty?: any | null, workOrderItemUuid?: string | null, workOrderUuid?: string | null, operatorStaff?: { __typename?: 'Staff', email?: string | null } | null } | null> | null } | null };
 
 export type WorkOrderItemsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type WorkOrderItemsQuery = { __typename?: 'RootQueryType', workOrderItems?: Array<{ __typename?: 'WorkOrderItem', uuid?: string | null, workOrderUuid?: string | null, itemName?: string | null, processName?: string | null, position?: number | null, requiredQty?: any | null, defectiveQty?: any | null, producedQty?: any | null } | null> | null };
+export type WorkOrderItemsQuery = { __typename?: 'RootQueryType', workOrderItems?: Array<{ __typename?: 'WorkOrderItem', uuid?: string | null, workOrderUuid?: string | null, itemName?: string | null, processName?: string | null, position?: number | null, requiredQty?: any | null, defectiveQty?: any | null, producedQty?: any | null, insertedAt?: any | null, updatedAt?: any | null, workOrder?: { __typename?: 'WorkOrder', code?: string | null } | null } | null> | null };
 
 export type WorkOrdersQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1522,6 +1542,9 @@ export const MaterialRequestFieldsFragmentDoc = gql`
   stockUomUuid
   bomUuid
   warehouseUuid
+  warehouse {
+    name
+  }
   itemUuid
   workOrderUuid
 }
@@ -1710,6 +1733,8 @@ export const WorkOrderItemFieldsFragmentDoc = gql`
   requiredQty
   defectiveQty
   producedQty
+  insertedAt
+  updatedAt
 }
     `;
 export const WorkstationFieldsFragmentDoc = gql`
@@ -3603,6 +3628,39 @@ export type SalesOrdersQueryHookResult = ReturnType<typeof useSalesOrdersQuery>;
 export type SalesOrdersLazyQueryHookResult = ReturnType<typeof useSalesOrdersLazyQuery>;
 export type SalesOrdersSuspenseQueryHookResult = ReturnType<typeof useSalesOrdersSuspenseQuery>;
 export type SalesOrdersQueryResult = Apollo.QueryResult<SalesOrdersQuery, SalesOrdersQueryVariables>;
+export const ScheduleWorkOrderDocument = gql`
+    mutation ScheduleWorkOrder($request: WorkOrderRequest!) {
+  scheduleWorkOrder(request: $request) {
+    status
+  }
+}
+    `;
+export type ScheduleWorkOrderMutationFn = Apollo.MutationFunction<ScheduleWorkOrderMutation, ScheduleWorkOrderMutationVariables>;
+
+/**
+ * __useScheduleWorkOrderMutation__
+ *
+ * To run a mutation, you first call `useScheduleWorkOrderMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useScheduleWorkOrderMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [scheduleWorkOrderMutation, { data, loading, error }] = useScheduleWorkOrderMutation({
+ *   variables: {
+ *      request: // value for 'request'
+ *   },
+ * });
+ */
+export function useScheduleWorkOrderMutation(baseOptions?: Apollo.MutationHookOptions<ScheduleWorkOrderMutation, ScheduleWorkOrderMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ScheduleWorkOrderMutation, ScheduleWorkOrderMutationVariables>(ScheduleWorkOrderDocument, options);
+      }
+export type ScheduleWorkOrderMutationHookResult = ReturnType<typeof useScheduleWorkOrderMutation>;
+export type ScheduleWorkOrderMutationResult = Apollo.MutationResult<ScheduleWorkOrderMutation>;
+export type ScheduleWorkOrderMutationOptions = Apollo.BaseMutationOptions<ScheduleWorkOrderMutation, ScheduleWorkOrderMutationVariables>;
 export const SupplierDocument = gql`
     query Supplier($request: IdRequest!) {
   supplier(request: $request) {
@@ -3856,6 +3914,9 @@ export const WorkOrderItemsDocument = gql`
     query WorkOrderItems {
   workOrderItems {
     ...WorkOrderItemFields
+    workOrder {
+      code
+    }
   }
 }
     ${WorkOrderItemFieldsFragmentDoc}`;

@@ -87,6 +87,7 @@ const SalesOrderList: React.FC = () => {
     {
       title: '单号',
       dataIndex: 'code',
+      width: 100,
       render: (text, record) => (
         <Button type="link" onClick={() => handleDetail(record)}>
           {text}
@@ -154,7 +155,9 @@ const SalesOrderList: React.FC = () => {
               okText="是"
               cancelText="否"
             >
-              <a key="link2">添加出库凭证</a>
+              <Button size="small" type="link">
+                添加出库凭证
+              </Button>
             </Popconfirm>
           )}
         </>,

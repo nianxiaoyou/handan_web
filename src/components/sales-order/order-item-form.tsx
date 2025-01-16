@@ -153,7 +153,7 @@ const OrderItemForm = (props: any) => {
       // width: '15%',
     },
     {
-      title: '小计',
+      title: '金额',
       dataIndex: 'amount',
       readonly: true,
     },
@@ -162,6 +162,7 @@ const OrderItemForm = (props: any) => {
       valueType: 'option',
       render: (text, record, _, action) => [
         <a
+          style={{ color: '#1677ff' }}
           key="editable"
           onClick={() => {
             action?.startEditable?.(record.uuid);

@@ -7,5 +7,7 @@ fragment WorkOrderItemFields on WorkOrderItem {
   requiredQty
   defectiveQty
   producedQty
+  insertedAt
+  updatedAt
 }
 
