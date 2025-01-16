@@ -59,6 +59,11 @@ const WorkOrderDetail = ({ uuid, visible, record, onClose }: any) => {
       key: 'itemName',
     },
     {
+      title: '仓库',
+      dataIndex: ['warehouse', 'name'],
+      key: 'warehouseName',
+    },
+    {
       title: '需求数量',
       dataIndex: 'actualQty',
       key: 'actualQty',

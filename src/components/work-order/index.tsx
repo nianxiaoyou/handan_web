@@ -139,7 +139,13 @@ const WorkOrderList: React.FC = () => {
             </Popconfirm>
           )}
         </>,
-        <>{record.status === 'scheduling' && <Button size="small">查看物料需求</Button>}</>,
+        <>
+          {record.status === 'scheduling' && (
+            <Button size="small" onClick={() => handleDetail(record)}>
+              查看物料需求
+            </Button>
+          )}
+        </>,
         <>
           {record.producedQty > record.storedQty && (
             <StoredItem key="link2" record={record} onCreate={handleStoredItem} />

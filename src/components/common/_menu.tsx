@@ -73,20 +73,20 @@ const menuProps = {
         name: '生产管理',
         routes: [
           {
-            path: '/production/boms',
-            name: 'BOM管理',
-          },
-          {
-            path: '/production/processes',
-            name: '工序管理',
-          },
-          {
             path: '/production/work-orders',
             name: '生产工单',
           },
           {
             path: '/production/work-order-items',
             name: '生产任务',
+          },
+          {
+            path: '/production/boms',
+            name: 'BOM管理',
+          },
+          {
+            path: '/production/processes',
+            name: '工序管理',
           },
           {
             name: '生产线管理',

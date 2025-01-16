@@ -63,17 +63,17 @@ const WorkOrderItems: React.FC = () => {
       dataIndex: 'processName',
     },
     {
-      title: '数量',
+      title: '需求数量',
       dataIndex: 'requiredQty',
     },
     {
       title: '已生产数量',
       dataIndex: 'producedQty',
     },
-    {
-      title: '缺陷数量',
-      dataIndex: 'defectiveQty',
-    },
+    // {
+    //   title: '缺陷数量',
+    //   dataIndex: 'defectiveQty',
+    // },
     {
       title: '顺序',
       dataIndex: 'position',
@@ -83,7 +83,13 @@ const WorkOrderItems: React.FC = () => {
       width: 180,
       key: 'option',
       valueType: 'option',
-      render: (item: any, record: any) => [<ReportJobCard key="link2" record={record} onCreate={handleReportJob} />],
+      render: (item: any, record: any) => [
+        <>
+          {record.producedQty < record.requiredQty && (
+            <ReportJobCard key="link2" record={record} onCreate={handleReportJob} />
+          )}
+        </>,
+      ],
     },
   ];
 

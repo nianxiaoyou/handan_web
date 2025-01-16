@@ -8,6 +8,9 @@ fragment MaterialRequestFields on WorkOrderMaterialRequest {
   stockUomUuid
   bomUuid
   warehouseUuid
+  warehouse {
+    name
+  }
   itemUuid
   workOrderUuid
 }
