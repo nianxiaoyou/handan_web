@@ -66,7 +66,7 @@ const PurchaseInvoiceList: React.FC = () => {
       valueType: 'option',
       render: (item: any, record: any) => [
         <>
-          {record.status === 'submitted' && (
+          {record.status === 'unpaid' && (
             <Button size="small" type="link" onClick={() => handleEntryNew(record)}>
               支付
             </Button>
