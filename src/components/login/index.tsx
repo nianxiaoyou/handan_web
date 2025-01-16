@@ -17,7 +17,7 @@ const Login = () => {
 
   const initialValues = {
     email: 'admin@handan.com',
-    password: '123123123',
+    password: '',
   };
 
   if (isLogin) {
