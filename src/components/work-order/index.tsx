@@ -64,7 +64,6 @@ const WorkOrderList: React.FC = () => {
   };
 
   const handleStoredItem = async (values: any) => {
-    // console.log(values);
     await storeFinishItem({ variables: { request: values } });
   };
 

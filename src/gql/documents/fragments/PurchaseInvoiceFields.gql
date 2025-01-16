@@ -4,6 +4,7 @@ fragment PurchaseInvoiceFields on PurchaseInvoice {
   status
 	amount
 	supplierName
+	supplierUuid
 	purchaseOrderUuid
 	insertedAt
 	updatedAt

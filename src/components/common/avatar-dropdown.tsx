@@ -36,34 +36,7 @@ const AvatarDropdown = (props: any) => {
     </span>
   );
 
-  // if (!initialState) {
-  //   return loading;
-  // }
-
-  // const { currentUser } = initialState;
-
-  // if (!currentUser || !currentUser.name) {
-  //   return loading;
-  // }
-
   const menuItems = [
-    // ...(menu
-    //   ? [
-    //       {
-    //         key: 'center',
-    //         icon: <UserOutlined />,
-    //         label: '个人中心',
-    //       },
-    //       {
-    //         key: 'settings',
-    //         icon: <SettingOutlined />,
-    //         label: '个人设置',
-    //       },
-    //       {
-    //         type: 'divider' as const,
-    //       },
-    //     ]
-    //   : []),
     {
       key: 'logout',
       label: 'logout',

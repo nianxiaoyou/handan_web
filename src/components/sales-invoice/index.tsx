@@ -1,21 +1,33 @@
-import { useRef } from 'react';
-import { useRouter } from 'next/router';
+import { useRef, useState } from 'react';
+import { Button } from 'antd';
 import { ProTable } from '@ant-design/pro-components';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 
 // locale
-import { useMessageContext } from '@/components/common/message-context';
 import client from '@/gql/apollo';
 import { SalesInvoicesDocument } from '@/gql';
 
-const SalesInvoiceList: React.FC = () => {
-  const { messageApi } = useMessageContext();
-  const router = useRouter();
+import PaymentEntryNew from '@/components/payment-entry/new';
 
+const SalesInvoiceList: React.FC = () => {
   const actionRef = useRef<ActionType | null>(null);
+
+  const [detailVisible, setDetailVisible] = useState(false);
+  const [record, setRecord] = useState<any>(null);
 
   const handleReloadTable = () => {
     actionRef.current?.reload();
+  };
+
+  const handleEntryNew = (record: any) => {
+    setRecord(record);
+    setDetailVisible(true);
+  };
+
+  const handleClose = () => {
+    setRecord(null);
+    setDetailVisible(false);
+    handleReloadTable();
   };
 
   const columns: ProColumns<any>[] = [
@@ -42,38 +54,57 @@ const SalesInvoiceList: React.FC = () => {
       dataIndex: 'insertedAt',
       valueType: 'dateTime',
     },
+    {
+      title: '操作',
+      width: 180,
+      key: 'option',
+      valueType: 'option',
+      render: (item: any, record: any) => [
+        <>
+          {record.status === 'unpaid' && (
+            <Button size="small" type="link" onClick={() => handleEntryNew(record)}>
+              支付
+            </Button>
+          )}
+        </>,
+      ],
+    },
   ];
 
   return (
-    <ProTable
-      actionRef={actionRef}
-      columns={columns}
-      request={async (params, sorter, filter) => {
-        const { data } = await client.query({
-          query: SalesInvoicesDocument,
-          variables: {
-            request: {},
-          },
-        });
+    <>
+      <ProTable
+        actionRef={actionRef}
+        columns={columns}
+        request={async (params, sorter, filter) => {
+          const { data } = await client.query({
+            query: SalesInvoicesDocument,
+            variables: {
+              request: {},
+            },
+          });
 
-        return {
-          data: data.salesInvoices,
-          total: data.salesInvoices.length,
-          success: true,
-        };
-      }}
-      rowKey="uuid"
-      pagination={{
-        showQuickJumper: true,
-      }}
-      search={false}
-      // search={{
-      //   span: 6,
-      //   layout: 'vertical',
-      //   defaultCollapsed: true,
-      // }}
-      dateFormatter="string"
-    />
+          return {
+            data: data.salesInvoices,
+            total: data.salesInvoices.length,
+            success: true,
+          };
+        }}
+        rowKey="uuid"
+        pagination={{
+          showQuickJumper: true,
+        }}
+        search={false}
+        // search={{
+        //   span: 6,
+        //   layout: 'vertical',
+        //   defaultCollapsed: true,
+        // }}
+        dateFormatter="string"
+      />
+
+      <PaymentEntryNew visible={detailVisible} saleInvoice={record} onClose={() => handleClose()} />
+    </>
   );
 };
 

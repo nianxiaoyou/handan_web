@@ -3,6 +3,7 @@ fragment SalesInvoiceFields on SalesInvoice {
 	code
   status
 	amount
+	customerUuid
 	customerName
 	salesOrderUuid
 	insertedAt

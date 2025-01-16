@@ -4,6 +4,7 @@ import { ProTable } from '@ant-design/pro-components';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 
 // locale
+import { useMessageContext } from '@/components/common/message-context';
 import client from '@/gql/apollo';
 import { useCreateItemMutation, ItemsDocument } from '@/gql';
 import { onError } from '@/utils';
@@ -11,11 +12,13 @@ import { onError } from '@/utils';
 import ItemNew from './new';
 
 const ItemList: React.FC = () => {
+  const { messageApi } = useMessageContext();
+
   const router = useRouter();
 
   const [createItem] = useCreateItemMutation({
     onCompleted: () => {
-      console.log('onCompleted');
+      messageApi?.success('新增成功');
       handleReloadTable();
     },
     onError,

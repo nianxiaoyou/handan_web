@@ -15,16 +15,10 @@ interface LayoutProps {
 }
 
 const GlobalLayout: FC<LayoutProps> = ({ children }) => {
-  // useEffect(() => {
-  //   console.log('xxxxxxxxxx')
-  //   // const { currentUser } = useAuthUserStore();
-  //   // console.log('currentUser:', currentUser);
-  // }, []);
-
   const router = useRouter();
   const [pathname, setPathname] = useState('/');
 
-  const { currentUser } = useAuthUserStore();
+  const { currentUser, logout } = useAuthUserStore();
 
   return (
     <div
@@ -47,7 +41,7 @@ const GlobalLayout: FC<LayoutProps> = ({ children }) => {
           // src: currentUser?.avatar,
           title: currentUser?.email,
           render: (_, avatarChildren) => {
-            return <AvatarDropdown>{avatarChildren}</AvatarDropdown>;
+            return <AvatarDropdown signOut={logout}>{avatarChildren}</AvatarDropdown>;
           },
         }}
         menuItemRender={(item, dom) => (

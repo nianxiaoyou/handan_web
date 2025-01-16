@@ -21,7 +21,6 @@ const useAuthUserStore = create(
       // login
       login: async (request) => {
         try {
-          console.log('request:', request);
           set({ isLoading: true, error: null });
           const response = await client.mutate({
             mutation: LoginDocument,
@@ -40,6 +39,11 @@ const useAuthUserStore = create(
           set({ error: response, isLoading: false });
         }
       },
+      logout: () => {
+        localStorage.removeItem('accessToken');
+        set({ currentUser: {}, isLogin: false, isLoading: false });
+      },
+
       // getCurrentUser: async () => {
       //   try {
       //     set({ isLoading: true, error: null });
@@ -54,7 +58,6 @@ const useAuthUserStore = create(
       //       isLoading: false,
       //     }));
       //   } catch (error) {
-      //     console.log('error:', error);
       //   }
       // },
     }),

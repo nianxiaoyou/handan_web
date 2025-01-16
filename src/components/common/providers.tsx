@@ -13,8 +13,6 @@ const Providers = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
   const noAuthRoutes = ['/', '/login'];
 
-  console.log('router.pathname', router.pathname);
-
   if (noAuthRoutes.includes(router.pathname)) {
     return (
       <ErrorBoundary>

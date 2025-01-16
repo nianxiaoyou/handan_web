@@ -1,5 +1,5 @@
 query PaymentMethod($request: IdRequest!) {
 	paymentMethod(request: $request) {
-		uuid
+		...PaymentMethodsFields
 	}
 }

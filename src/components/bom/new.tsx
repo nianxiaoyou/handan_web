@@ -37,17 +37,12 @@ const BOMNew = (props: any) => {
 
   const [fetchProcesses] = useProcessesLazyQuery({
     onCompleted: (data: any) => {
-      console.log('data:', data);
       setProcesses(data.processes);
     },
     onError,
   });
 
   const onFinish = async (values: any) => {
-    console.log('bomItems:', bomItems);
-    console.log('bomProcesses:', bomProcesses);
-    console.log('values:', values);
-
     const updatedBomItems = bomItems.map((entry: any) => {
       const { item, qty } = entry;
       return {
@@ -226,12 +221,10 @@ const BOMNew = (props: any) => {
   ];
 
   const handleAdjustBomItems = (values: any) => {
-    console.log('values:', values);
     setBomItems(values);
   };
 
   const handleAdjustBomProcesses = (values: any) => {
-    console.log('values:', values);
     setBomProcesses(values);
   };
 

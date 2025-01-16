@@ -23,12 +23,11 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ## **Features**
 
 - [x] Session
-- [ ] Dashboard
-- [ ] Stock && Item
+- [x] Stock && Item
 - [x] Selling
 - [x] Purchasing
-- [ ] Production 
-- [ ] Finance
+- [x] Production 
+- [x] Finance
 
 ## **Contributing**
 

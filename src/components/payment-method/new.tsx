@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Space, Button } from 'antd';
 import { ModalForm, ProForm, ProFormText } from '@ant-design/pro-components';
 
-const ProcessNew = (props: any) => {
+const PaymentMethodNew = (props: any) => {
   const [form] = ProForm.useForm();
   const { onCreate } = props;
   const [modalVisible, setModalVisible] = useState(false);
@@ -20,7 +20,7 @@ const ProcessNew = (props: any) => {
           setModalVisible(true);
         }}
       >
-        新增流程
+        新增支付方式
       </Button>
 
       <ModalForm
@@ -30,7 +30,7 @@ const ProcessNew = (props: any) => {
         }}
         width={'70%'}
         onOpenChange={setModalVisible}
-        title={<Space>新增流程</Space>}
+        title={<Space>新增支付方式</Space>}
         submitTimeout={2000}
         autoFocusFirstInput
         open={modalVisible}
@@ -50,4 +50,4 @@ const ProcessNew = (props: any) => {
   );
 };
 
-export default ProcessNew;
+export default PaymentMethodNew;

@@ -1,0 +1,5 @@
+query UnpaidSalesInvoicesByCustomer($request: IdRequest!) {
+	unpaidSalesInvoicesByCustomer(request: $request) {
+		...SalesInvoiceFields
+	}
+}

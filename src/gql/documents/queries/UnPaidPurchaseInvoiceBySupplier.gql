@@ -1,0 +1,5 @@
+query UnpaidPurchaseInvoicesBySupplier($request: IdRequest!) {
+	unpaidPurchaseInvoicesBySupplier(request: $request) {
+		...PurchaseInvoiceFields
+	}
+}

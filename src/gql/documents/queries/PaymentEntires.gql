@@ -1,7 +1,5 @@
    query PaymentEntries {
       paymentEntries {
-        uuid
-        partyUuid
-        memo
+        ...PaymentEntryFields
       }
     }

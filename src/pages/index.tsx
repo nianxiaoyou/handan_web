@@ -1,6 +1,8 @@
-import Image from 'next/image';
+import { Button } from 'antd';
+import { useRouter } from 'next/router';
 
 export default function Home() {
+  const router = useRouter();
   return (
     <div
       className={
@@ -8,7 +10,11 @@ export default function Home() {
       }
     >
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image className="dark:invert" src="/next.svg" alt="Next.js logo" width={180} height={38} priority />
+        <div className="text-3xl">Hello Handan</div>
+
+        <Button type="link" onClick={() => router.push('/login')}>
+          Start experiencing
+        </Button>
       </main>
     </div>
   );
