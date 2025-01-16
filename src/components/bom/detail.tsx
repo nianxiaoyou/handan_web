@@ -89,8 +89,6 @@ const BomDetail = ({ uuid, visible, record, onClose }: any) => {
     },
   ];
 
-  console.log('entry', entry);
-
   return (
     <Drawer width={'60%'} title={entry?.uuid} onClose={onClose} open={visible} style={{ backgroundColor: '#f7f8fa' }}>
       <ProCard title="基本信息" style={{ marginTop: '10px' }}>

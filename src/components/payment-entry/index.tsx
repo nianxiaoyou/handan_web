@@ -17,10 +17,31 @@ const PaymentEntryList: React.FC = () => {
 
   const columns: ProColumns<any>[] = [
     {
-      title: '名称',
-      key: 'name',
-      width: 200,
-      dataIndex: 'name',
+      title: '单号',
+      key: 'code',
+      dataIndex: 'code',
+    },
+    {
+      title: '类型',
+      dataIndex: 'type',
+    },
+    {
+      title: '合作伙伴',
+      dataIndex: 'partyName',
+    },
+    {
+      title: '金额',
+      valueType: 'money',
+      dataIndex: 'totalAmount',
+    },
+    {
+      title: '支付方式',
+      dataIndex: ['paymentMethod', 'name'],
+    },
+    {
+      title: '创建时间',
+      valueType: 'dateTime',
+      dataIndex: 'insertedAt',
     },
   ];
 

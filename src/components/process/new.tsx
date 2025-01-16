@@ -8,7 +8,6 @@ const ProcessNew = (props: any) => {
   const [modalVisible, setModalVisible] = useState(false);
 
   const onFinish = async (values: any) => {
-    console.log('values:', values);
     await onCreate(values);
     setModalVisible(false);
   };

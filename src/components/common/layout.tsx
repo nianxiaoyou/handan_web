@@ -15,12 +15,6 @@ interface LayoutProps {
 }
 
 const GlobalLayout: FC<LayoutProps> = ({ children }) => {
-  // useEffect(() => {
-  //   console.log('xxxxxxxxxx')
-  //   // const { currentUser } = useAuthUserStore();
-  //   // console.log('currentUser:', currentUser);
-  // }, []);
-
   const router = useRouter();
   const [pathname, setPathname] = useState('/');
 

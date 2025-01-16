@@ -1,0 +1,15 @@
+fragment PaymentEntryFields on PaymentEntry {
+  uuid
+  code
+	type
+  partyName
+	partyType
+	partyUuid
+	paymentMethodUuid
+	paymentMethod {
+		name
+	}
+  totalAmount
+  insertedAt
+  updatedAt
+}
