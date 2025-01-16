@@ -18,7 +18,9 @@ const SalesInvoiceNew = (props: any) => {
 
   return (
     <div>
-      <a onClick={() => setVisible(true)}>添加收款凭证</a>
+      <a style={{ color: '#1677ff' }} onClick={() => setVisible(true)}>
+        添加收款凭证
+      </a>
       <Popover
         title="添加收款凭证"
         overlayInnerStyle={{ width: '200px' }}

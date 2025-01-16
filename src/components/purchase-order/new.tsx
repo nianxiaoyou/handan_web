@@ -124,7 +124,7 @@ const PurchaseOrderNew = (props: any) => {
             placeholder="请选择供应商"
           />
 
-          <ProFormText width="sm" name="customerAddress" label="供应商地址" placeholder="请输入供应商地址" />
+          <ProFormText width="sm" name="supplierAddress" label="供应商地址" placeholder="请输入供应商地址" />
 
           <ProFormSelect
             width="sm"

@@ -26,9 +26,14 @@ const WorkOrderDetail = ({ uuid, visible, record, onClose }: any) => {
 
   const workOrderItemColumns = [
     {
-      title: '商品名称',
+      title: '名称',
       dataIndex: 'itemName',
       key: 'itemName',
+    },
+    {
+      title: '工艺名称',
+      dataIndex: 'processName',
+      key: 'processName',
     },
     {
       title: '数量',
@@ -39,11 +44,6 @@ const WorkOrderDetail = ({ uuid, visible, record, onClose }: any) => {
       title: '已完成数量',
       dataIndex: 'producedQty',
       key: 'producedQty',
-    },
-    {
-      title: '工艺名称',
-      dataIndex: 'processName',
-      key: 'processName',
     },
     {
       title: '顺序',
@@ -76,9 +76,10 @@ const WorkOrderDetail = ({ uuid, visible, record, onClose }: any) => {
   ];
 
   return (
-    <Drawer width={'60%'} title={entry?.uuid} onClose={onClose} open={visible} style={{ backgroundColor: '#f7f8fa' }}>
+    <Drawer width={'60%'} title={entry?.code} onClose={onClose} open={visible} style={{ backgroundColor: '#f7f8fa' }}>
       <ProCard title="基本信息" style={{ marginTop: '10px' }}>
         <ProDescriptions column={3} size="small">
+          <ProDescriptions.Item label="生产产品">{entry.itemName}</ProDescriptions.Item>
           <ProDescriptions.Item label="状态">{entry.status}</ProDescriptions.Item>
           <ProDescriptions.Item label="开始时间" valueType="dateTime">
             {entry.startTime}

@@ -1,0 +1,5 @@
+mutation ScheduleWorkOrder($request: WorkOrderRequest!) {
+  scheduleWorkOrder(request: $request) {
+    status
+  }
+}
