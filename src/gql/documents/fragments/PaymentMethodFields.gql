@@ -1,0 +1,6 @@
+fragment PaymentMethodsFields on PaymentMethod {
+  uuid
+  name
+  insertedAt
+  updatedAt
+}

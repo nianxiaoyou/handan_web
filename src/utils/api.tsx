@@ -7,7 +7,28 @@ import {
   ItemsDocument,
   BomsDocument,
   ListStaffDocument,
+  PaymentMethodsDocument,
 } from '@/gql';
+
+export const fetchPaymentMethods = async (params?: any) => {
+  const request = {
+    name: params.name,
+  };
+
+  const { data } = await client.query({
+    query: PaymentMethodsDocument,
+    variables: { request },
+  });
+
+  const result = data?.paymentMethods?.map((item: any) => {
+    return {
+      value: item.uuid,
+      label: item.name,
+    };
+  });
+
+  return result;
+};
 
 export const fetchStaff = async (params?: any) => {
   const request = {

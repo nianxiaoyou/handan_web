@@ -1061,6 +1061,8 @@ export type JobCardFieldsFragment = { __typename?: 'JobCard', uuid?: string | nu
 
 export type MaterialRequestFieldsFragment = { __typename?: 'WorkOrderMaterialRequest', uuid?: string | null, itemName?: string | null, actualQty?: any | null, remainingQty?: any | null, receivedQty?: any | null, uomName?: string | null, stockUomUuid?: string | null, bomUuid?: string | null, warehouseUuid?: string | null, itemUuid?: string | null, workOrderUuid?: string | null, warehouse?: { __typename?: 'Warehouse', name?: string | null } | null };
 
+export type PaymentMethodsFieldsFragment = { __typename?: 'PaymentMethod', uuid?: string | null, name?: string | null, insertedAt?: any | null, updatedAt?: any | null };
+
 export type ProcessFieldsFragment = { __typename?: 'Process', uuid?: string | null, name?: string | null, description?: string | null, insertedAt?: any | null, updatedAt?: any | null };
 
 export type PurchaseInvoiceFieldsFragment = { __typename?: 'PurchaseInvoice', uuid?: string | null, code?: string | null, status?: string | null, amount?: any | null, supplierName?: string | null, purchaseOrderUuid?: string | null, insertedAt?: any | null, updatedAt?: any | null };
@@ -1318,12 +1320,12 @@ export type PaymentMethodQueryVariables = Exact<{
 }>;
 
 
-export type PaymentMethodQuery = { __typename?: 'RootQueryType', paymentMethod?: { __typename?: 'PaymentMethod', uuid?: string | null } | null };
+export type PaymentMethodQuery = { __typename?: 'RootQueryType', paymentMethod?: { __typename?: 'PaymentMethod', uuid?: string | null, name?: string | null, insertedAt?: any | null, updatedAt?: any | null } | null };
 
 export type PaymentMethodsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type PaymentMethodsQuery = { __typename?: 'RootQueryType', paymentMethods?: Array<{ __typename?: 'PaymentMethod', name?: string | null } | null> | null };
+export type PaymentMethodsQuery = { __typename?: 'RootQueryType', paymentMethods?: Array<{ __typename?: 'PaymentMethod', uuid?: string | null, name?: string | null, insertedAt?: any | null, updatedAt?: any | null } | null> | null };
 
 export type ProcessQueryVariables = Exact<{
   request: IdRequest;
@@ -1547,6 +1549,14 @@ export const MaterialRequestFieldsFragmentDoc = gql`
   }
   itemUuid
   workOrderUuid
+}
+    `;
+export const PaymentMethodsFieldsFragmentDoc = gql`
+    fragment PaymentMethodsFields on PaymentMethod {
+  uuid
+  name
+  insertedAt
+  updatedAt
 }
     `;
 export const ProcessFieldsFragmentDoc = gql`
@@ -3039,10 +3049,10 @@ export type PaymentEntryQueryResult = Apollo.QueryResult<PaymentEntryQuery, Paym
 export const PaymentMethodDocument = gql`
     query PaymentMethod($request: IdRequest!) {
   paymentMethod(request: $request) {
-    uuid
+    ...PaymentMethodsFields
   }
 }
-    `;
+    ${PaymentMethodsFieldsFragmentDoc}`;
 
 /**
  * __usePaymentMethodQuery__
@@ -3079,10 +3089,10 @@ export type PaymentMethodQueryResult = Apollo.QueryResult<PaymentMethodQuery, Pa
 export const PaymentMethodsDocument = gql`
     query PaymentMethods {
   paymentMethods {
-    name
+    ...PaymentMethodsFields
   }
 }
-    `;
+    ${PaymentMethodsFieldsFragmentDoc}`;
 
 /**
  * __usePaymentMethodsQuery__
