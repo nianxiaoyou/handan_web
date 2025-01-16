@@ -43,20 +43,15 @@ const BOMList: React.FC = () => {
 
   const columns: ProColumns<any>[] = [
     {
-      title: 'ID',
+      title: '名称',
       search: false,
       width: 200,
-      dataIndex: 'uuid',
+      dataIndex: 'name',
       render: (text, record) => (
         <Button type="link" onClick={() => handleDetail(record)}>
           {text}
         </Button>
       ),
-    },
-    {
-      title: '名称',
-      key: 'name',
-      dataIndex: 'name',
     },
     {
       title: '创建时间',

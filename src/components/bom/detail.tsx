@@ -27,7 +27,7 @@ const BomDetail = ({ uuid, visible, record, onClose }: any) => {
 
   const bomItemColumns = [
     {
-      title: '商品名称',
+      title: '名称',
       dataIndex: 'itemName',
       key: 'itemName',
     },
@@ -59,7 +59,7 @@ const BomDetail = ({ uuid, visible, record, onClose }: any) => {
   const items: TabsProps['items'] = [
     {
       key: '1',
-      label: `商品信息(${size(entry?.bomItems)})`,
+      label: `BOM 信息(${size(entry?.bomItems)})`,
       children: (
         <ProTable
           columns={bomItemColumns}
