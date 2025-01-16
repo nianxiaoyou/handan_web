@@ -95,9 +95,7 @@ const ReceiptNoteList: React.FC = () => {
               okText="是"
               cancelText="否"
             >
-              <a style={{ color: '#1677ff' }} key="link2">
-                入库
-              </a>
+              <Button size="small">入库</Button>
             </Popconfirm>
           )}
         </>,

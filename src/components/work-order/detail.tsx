@@ -59,19 +59,37 @@ const WorkOrderDetail = ({ uuid, visible, record, onClose }: any) => {
       key: 'itemName',
     },
     {
-      title: '实际数量',
+      title: '需求数量',
       dataIndex: 'actualQty',
       key: 'actualQty',
+      render: (item: any, record: any) => (
+        <div>
+          {record.actualQty}
+          {record.uomName}
+        </div>
+      ),
     },
     {
       title: '已接收数量',
       dataIndex: 'receivedQty',
       key: 'receivedQty',
+      render: (item: any, record: any) => (
+        <div>
+          {record.receivedQty}
+          {record.uomName}
+        </div>
+      ),
     },
     {
-      title: '还需要数量',
+      title: '待领取数量',
       dataIndex: 'remainingQty',
       key: 'remainingQty',
+      render: (item: any, record: any) => (
+        <div>
+          {record.remainingQty}
+          {record.uomName}
+        </div>
+      ),
     },
   ];
 

@@ -1,5 +1,5 @@
 import { ProForm, ProFormText } from '@ant-design/pro-components';
-import { Popover } from 'antd';
+import { Button, Popover } from 'antd';
 import { useState } from 'react';
 
 const SalesInvoiceNew = (props: any) => {
@@ -18,9 +18,9 @@ const SalesInvoiceNew = (props: any) => {
 
   return (
     <div>
-      <a style={{ color: '#1677ff' }} onClick={() => setVisible(true)}>
+      <Button size="small" onClick={() => setVisible(true)}>
         添加收款凭证
-      </a>
+      </Button>
       <Popover
         title="添加收款凭证"
         overlayInnerStyle={{ width: '200px' }}

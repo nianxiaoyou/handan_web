@@ -127,11 +127,6 @@ const WorkOrderList: React.FC = () => {
       valueType: 'option',
       render: (item: any, record: any) => [
         <>
-          {record.producedQty > record.storedQty && (
-            <StoredItem key="link2" record={record} onCreate={handleStoredItem} />
-          )}
-        </>,
-        <>
           {record.status === 'draft' && (
             <Popconfirm
               key="link2"
@@ -140,10 +135,14 @@ const WorkOrderList: React.FC = () => {
               okText="是"
               cancelText="否"
             >
-              <a style={{ color: '#1677ff' }} key="link2">
-                开始排产
-              </a>
+              <Button size="small">开始排产</Button>
             </Popconfirm>
+          )}
+        </>,
+        <>{record.status === 'scheduling' && <Button size="small">查看物料需求</Button>}</>,
+        <>
+          {record.producedQty > record.storedQty && (
+            <StoredItem key="link2" record={record} onCreate={handleStoredItem} />
           )}
         </>,
       ],
