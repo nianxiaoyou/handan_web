@@ -50,15 +50,21 @@ const SalesOrderDetail = ({ uuid, visible, record, onClose }: any) => {
 
   const deliveryNoteColumns = [
     {
-      title: 'id',
-      dataIndex: 'uuid',
-      key: 'uuid',
+      title: '单号',
+      dataIndex: 'code',
+      width: '100px',
+      key: 'code',
     },
     {
       title: '出库数量',
       dataIndex: 'totalQty',
       key: 'totalQty',
     },
+    // {
+    //   title: '商品名称',
+    //   dataIndex: 'itemName',
+    //   key: 'itemName',
+    // },
     {
       title: '状态',
       dataIndex: 'status',
@@ -68,9 +74,10 @@ const SalesOrderDetail = ({ uuid, visible, record, onClose }: any) => {
 
   const salesInvoiceColumins = [
     {
-      title: 'id',
-      dataIndex: 'uuid',
-      key: 'uuid',
+      title: '单号',
+      dataIndex: 'code',
+      width: '100px',
+      key: 'code',
     },
     {
       title: '金额',
@@ -133,10 +140,8 @@ const SalesOrderDetail = ({ uuid, visible, record, onClose }: any) => {
     },
   ];
 
-  console.log('entry', entry);
-
   return (
-    <Drawer width={'60%'} title={entry?.uuid} onClose={onClose} open={visible} style={{ backgroundColor: '#f7f8fa' }}>
+    <Drawer width={'60%'} title={entry?.code} onClose={onClose} open={visible} style={{ backgroundColor: '#f7f8fa' }}>
       <ProCard title="基本信息" style={{ marginTop: '10px' }}>
         <ProDescriptions column={3} size="small">
           <ProDescriptions.Item label="客户名称">{entry?.customerName}</ProDescriptions.Item>

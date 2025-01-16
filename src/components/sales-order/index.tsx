@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { ProTable } from '@ant-design/pro-components';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { Popconfirm, Tag, Button } from 'antd';
+import size from 'lodash.size';
 
 // locale
 import { useMessageContext } from '@/components/common/message-context';
@@ -17,6 +18,7 @@ import { fetchCustomers } from '@/utils/api';
 
 import SalesOrderNew from './new';
 import SalesOrderDetail from './detail';
+import SalesInvoiceNew from './invoice-new';
 
 const SalesOrderList: React.FC = () => {
   const { messageApi } = useMessageContext();
@@ -72,12 +74,7 @@ const SalesOrderList: React.FC = () => {
     await createDeliveryNote({ variables: { request } });
   };
 
-  const handleCreateSalesInvoice = async (values: any) => {
-    const request = {
-      salesOrderUuid: values.uuid,
-      amount: values.remainingAmount,
-    };
-
+  const handleCreateSalesInvoice = async (request: any) => {
     await createSalesInvoice({ variables: { request } });
   };
 
@@ -139,15 +136,7 @@ const SalesOrderList: React.FC = () => {
       render: (item: any, record: any) => [
         <>
           {record.status !== 'draft' && record.billingStatus != 'fully_billed' && (
-            <Popconfirm
-              key="link2"
-              title="确定创建收款凭证吗？"
-              onConfirm={() => handleCreateSalesInvoice(record)}
-              okText="是"
-              cancelText="否"
-            >
-              <a key="link2">添加收款凭证</a>
-            </Popconfirm>
+            <SalesInvoiceNew key="sales-invoice-new" record={record} onCallback={handleCreateSalesInvoice} />
           )}
         </>,
         <>
@@ -182,7 +171,7 @@ const SalesOrderList: React.FC = () => {
 
           return {
             data: data.salesOrders,
-            total: data.salesOrders.length,
+            total: size(data.salesOrders),
             success: true,
           };
         }}
