@@ -39,6 +39,11 @@ const useAuthUserStore = create(
           set({ error: response, isLoading: false });
         }
       },
+      logout: () => {
+        localStorage.removeItem('accessToken');
+        set({ currentUser: {}, isLogin: false, isLoading: false });
+      },
+
       // getCurrentUser: async () => {
       //   try {
       //     set({ isLoading: true, error: null });

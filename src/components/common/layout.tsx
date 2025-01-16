@@ -18,7 +18,7 @@ const GlobalLayout: FC<LayoutProps> = ({ children }) => {
   const router = useRouter();
   const [pathname, setPathname] = useState('/');
 
-  const { currentUser } = useAuthUserStore();
+  const { currentUser, logout } = useAuthUserStore();
 
   return (
     <div
@@ -41,7 +41,7 @@ const GlobalLayout: FC<LayoutProps> = ({ children }) => {
           // src: currentUser?.avatar,
           title: currentUser?.email,
           render: (_, avatarChildren) => {
-            return <AvatarDropdown>{avatarChildren}</AvatarDropdown>;
+            return <AvatarDropdown signOut={logout}>{avatarChildren}</AvatarDropdown>;
           },
         }}
         menuItemRender={(item, dom) => (

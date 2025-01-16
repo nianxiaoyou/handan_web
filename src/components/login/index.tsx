@@ -15,6 +15,11 @@ const Login = () => {
     await login(values);
   };
 
+  const initialValues = {
+    email: 'admin@handan.com',
+    password: '123123123',
+  };
+
   if (isLogin) {
     messageAPI.success('login success');
 
@@ -24,15 +29,15 @@ const Login = () => {
   }
 
   return (
-    <div className="flex justify-center items-center h-screen">
+    <div className="flex justify-center items-center min-h-screen">
       {contextHolder}
-      <LoginForm title="handan web" onFinish={onFinish}>
+      <LoginForm title="Handan" onFinish={onFinish} initialValues={initialValues}>
         <ProFormText
           name="email"
           fieldProps={{
             size: 'large',
           }}
-          placeholder={'pls input your email'}
+          placeholder={'admin@handan.com'}
           rules={[
             {
               required: true,
@@ -45,7 +50,7 @@ const Login = () => {
           fieldProps={{
             size: 'large',
           }}
-          placeholder={'pls input your password'}
+          placeholder={'123123123'}
           rules={[
             {
               required: true,
