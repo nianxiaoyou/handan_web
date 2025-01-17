@@ -46,9 +46,7 @@ const GlobalLayout: FC<LayoutProps> = ({ children }) => {
         actionsRender={(props) => {
           if (props.isMobile) return [];
           if (typeof window === 'undefined') return [];
-          return [
-            <GithubFilled key="GithubFilled" onClick={() => window.open('https://github.com/zven21/handan')} />,
-          ];
+          return [<GithubFilled key="GithubFilled" onClick={() => window.open('https://github.com/zven21/handan')} />];
         }}
         menuItemRender={(item, dom) => (
           <div
