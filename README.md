@@ -2,6 +2,15 @@
 
 HandanWeb is a project under construction, it's a web application for [Handan](https://github.com/zven21/handan).
 
+
+<div align="center">
+	<img src="./docs/live-demo.jpg"/>
+</div>
+
+<div align="center">
+	<a href="https://handan-web.vercel.app">Live Demo</a>
+</div>
+
 ## **Getting Started**
 
 First, run the development server:
@@ -13,12 +22,11 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## **Technologies Used**
 
-- Next.js: 14.2.11
-- Tailwind CSS: 3.4.11
-- Apollo Client: 3.11.0
-- GraphQL: 16.6.0
-- TypeScript: 5.5.4
-- Ant Design: 5.16.0
+- Next.js: A React-based framework for server-side rendering
+- Tailwind CSS: A utility-first CSS framework
+- Apollo Client(GraphQL): A GraphQL client for JavaScript
+- Ant Design: A design system for enterprise-level products
+- Zustand: A state management library for React
 
 ## **Features**
 
