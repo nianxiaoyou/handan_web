@@ -1,9 +1,8 @@
-'use client';
-
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import type { FC, ReactNode } from 'react';
 import { PageContainer, ProLayout } from '@ant-design/pro-components';
+import { GithubFilled } from '@ant-design/icons';
 
 // locale
 import useAuthUserStore from '@/stores/persisted/useAuthUser';
@@ -43,6 +42,13 @@ const GlobalLayout: FC<LayoutProps> = ({ children }) => {
           render: (_, avatarChildren) => {
             return <AvatarDropdown signOut={logout}>{avatarChildren}</AvatarDropdown>;
           },
+        }}
+        actionsRender={(props) => {
+          if (props.isMobile) return [];
+          if (typeof window === 'undefined') return [];
+          return [
+            <GithubFilled key="GithubFilled" onClick={() => window.open('https://github.com/zven21/handan')} />,
+          ];
         }}
         menuItemRender={(item, dom) => (
           <div
