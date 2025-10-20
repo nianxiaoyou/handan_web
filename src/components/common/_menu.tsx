@@ -1,3 +1,14 @@
+import {
+  DashboardOutlined,
+  BookOutlined,
+  ShoppingCartOutlined,
+  ProfileOutlined,
+  PayCircleOutlined,
+  DatabaseOutlined,
+  RocketOutlined,
+  SettingOutlined,
+} from '@ant-design/icons';
+
 const menuProps = {
   route: {
     path: '/',
@@ -5,37 +16,17 @@ const menuProps = {
       {
         path: '/dashboard',
         name: '首页',
-      },
-      {
-        path: '/setup',
-        name: '基础信息',
-        routes: [
-          {
-            path: '/setup/items',
-            name: '商品管理',
-          },
-          {
-            path: '/setup/uoms',
-            name: '计量单位',
-          },
-          {
-            path: '/setup/warehouses',
-            name: '仓库管理',
-          },
-        ],
+        icon: <DashboardOutlined />,
       },
       {
         path: '/selling',
         name: '销售管理',
+        icon: <ProfileOutlined />,
         routes: [
           {
             path: '/selling/sales-orders',
             name: '销售订单',
           },
-          // {
-          //   path: '/sales-order/returns',
-          //   name: '销售退货',
-          // },
           {
             path: '/selling/customers',
             name: '客户管理',
@@ -49,15 +40,12 @@ const menuProps = {
       {
         path: '/purchasing',
         name: '采购管理',
+        icon: <ShoppingCartOutlined />,
         routes: [
           {
             path: '/purchasing/purchase-orders',
             name: '采购订单',
           },
-          // {
-          //   path: '/purchase-order/returns',
-          //   name: '采购退货',
-          // },
           {
             path: '/purchasing/suppliers',
             name: '供应商管理',
@@ -71,6 +59,7 @@ const menuProps = {
       {
         path: '/production',
         name: '生产管理',
+        icon: <RocketOutlined />,
         routes: [
           {
             path: '/production/work-orders',
@@ -82,14 +71,14 @@ const menuProps = {
           },
           {
             path: '/production/boms',
-            name: 'BOM管理',
+            name: 'BOM 管理',
           },
           {
             path: '/production/processes',
-            name: '工序管理',
+            name: '生产工序',
           },
           {
-            name: '生产线管理',
+            name: '生产班组',
             path: '/production/workstations',
           },
         ],
@@ -97,13 +86,14 @@ const menuProps = {
       {
         path: '/stock',
         name: '库存管理',
+        icon: <BookOutlined />,
         routes: [
           {
-            name: '出库凭证',
+            name: '出库记录',
             path: '/stock/delivery-notes',
           },
           {
-            name: '入库凭证',
+            name: '入库记录',
             path: '/stock/receipt-notes',
           },
           {
@@ -115,6 +105,7 @@ const menuProps = {
       {
         path: '/finance',
         name: '财务管理',
+        icon: <PayCircleOutlined />,
         routes: [
           {
             name: '销售收款凭证',
@@ -135,11 +126,31 @@ const menuProps = {
         ],
       },
       {
-        path: '/system',
-        name: '系统管理',
+        path: '/setup',
+        name: '产品管理',
+        icon: <DatabaseOutlined />,
         routes: [
           {
-            name: '用户管理',
+            path: '/setup/items',
+            name: '产品档案',
+          },
+          {
+            path: '/setup/uoms',
+            name: '计量单位',
+          },
+          {
+            path: '/setup/warehouses',
+            name: '仓库管理',
+          },
+        ],
+      },
+      {
+        path: '/system',
+        name: '系统设置',
+        icon: <SettingOutlined />,
+        routes: [
+          {
+            name: '成员管理',
             path: '/system/users',
           },
         ],
